@@ -1,0 +1,168 @@
+#app {
+  // 主体区域
+  .main-container {
+    min-height: 100%;
+    transition: margin-left .28s;
+    margin-left: 240px;
+  }
+  // 侧边栏
+  .sidebar-container {
+    position: absolute;
+    top: 80px;
+    width: 240px !important;
+    height: 1280px;
+    z-index: 999;
+    overflow: hidden;
+    .sideList{
+      padding: 30px 20px;
+      background-color: #E1E1E1;
+      height: 100%;
+      width: 250px;
+      margin: 0;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      .cursor{
+        cursor: pointer;
+      }
+      li{
+        width: 200px;
+        line-height: 50px;
+        border-bottom: #000 1px solid;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        list-style: none;
+        padding-top: 20px;
+        i{
+          float: left;
+          line-height: 50px;
+          color: #518BBD;
+          margin-left: 5px;
+        }
+        span{
+          float: right;
+          line-height: 50px;
+        }
+        >ul{
+          display: none;
+          list-style: none;
+          padding: 10px 0;
+          border-top: #000 1px solid;
+          li{
+            text-align: center;
+            font-size: 14px;
+            line-height: 55px;
+            font-weight: normal;
+            border: none;
+          }
+        }
+        .active {
+          display: block;
+        }
+      }
+      //li:hover{
+      //  .oneList {
+      //    display: block;
+      //  }
+      //}
+
+    }
+    .horizontal-collapse-transition {
+      transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
+    }
+    .scrollbar-wrapper {
+      overflow-x: hidden!important;
+      .el-scrollbar__view {
+        height: 100%;
+      }
+    }
+    .is-horizontal {
+      display: none;
+    }
+    a {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      margin-top: -10px;
+    }
+    .svg-icon {
+      margin-right: 16px;
+    }
+    .el-menu {
+      border: none;
+      height: 100%;
+      width: 100% !important;
+    }
+  }
+  .hideSidebar {
+    .sidebar-container {
+      width: 240px !important;
+    }
+    .main-container {
+      margin-left: 240px;
+    }
+    .submenu-title-noDropdown {
+      padding-left: 10px !important;
+      position: relative;
+      .el-tooltip {
+        padding: 0 10px !important;
+      }
+    }
+    .el-submenu {
+      overflow: hidden;
+      &>.el-submenu__title {
+        padding-left: 10px !important;
+        .el-submenu__icon-arrow {
+          display: none;
+        }
+      }
+    }
+    .el-menu--collapse {
+      .el-submenu {
+        &>.el-submenu__title {
+          &>span {
+            height: 0;
+            width: 0;
+            overflow: hidden;
+            visibility: hidden;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+  .sidebar-container .nest-menu .el-submenu>.el-submenu__title,
+  .sidebar-container .el-submenu .el-menu-item {
+    min-width: 180px !important;
+    background-color: $subMenuBg !important;
+    &:hover {
+      background-color: $menuHover !important;
+    }
+  }
+  .el-menu--collapse .el-menu .el-submenu {
+    min-width: 180px !important;
+  }
+
+  //适配移动端
+  .mobile {
+    .main-container {
+      margin-left: 0px;
+    }
+    .sidebar-container {
+      transition: transform .28s;
+      width: 180px !important;
+    }
+    &.hideSidebar {
+      .sidebar-container {
+        transition-duration: 0.3s;
+        transform: translate3d(-180px, 0, 0);
+      }
+    }
+  }
+  .withoutAnimation {
+    .main-container,
+    .sidebar-container {
+      transition: none;
+    }
+  }
+}
