@@ -3,9 +3,9 @@
 // import Cookies from "js-cookie";
 
 CONFIG = {
-  host: 'http://api.yusj.vip/',
+  host: 'http://psbapi.yusj.vip/',
   // host: "https://test.yusj.vip/",
-  fileHost: 'https://pic.kkip.cn/index/index.php/'
+  fileHost: "https://pic.kkip.cn/index.php"
 }
 
 PUBLIC = {
@@ -268,7 +268,6 @@ PUBLIC = {
       })
   },
   // post请求,token放在get参数里
-  // post请求,token放在get参数里s
   post: function(service, args, retFn) {
     var _this = this
     if (typeof args === 'function') {
@@ -321,19 +320,19 @@ PUBLIC = {
   },
   // 上传文件至文件服务器
   postFile: function(inputId, fn) {
-    fn = fn || function(a) {
+    fn = fn ? fn : function(a) {
       return a
     }
     var _this = this
-    var file = document.getElementById(inputId).files[0]
-    var formdata1 = new FormData() // 创建form对象
+    var file = document.getElementById(inputId).files[0];
+    var formdata1 = new FormData(); // 创建form对象
     var fname = this.comFileName(file.name)
     var upLen = 0
     var lastUpTime = 0
-    formdata1.append('file', file, fname) // 通过append向form对象添加数据,可以通过append继续添加数据
+    formdata1.append('file', file, fname); // 通过append向form对象添加数据,可以通过append继续添加数据
 
-    // 或formdata1.append('img',file);
-    console.log('test join post file')
+    //或formdata1.append('img',file);
+    // console.log("test join post file")
     var configs = {
       headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: function(progressEvent) {
@@ -342,43 +341,36 @@ PUBLIC = {
           return
         }
         lastUpTime = thisUpTime
-        console.log('已有进度：' + upLen)
+        // console.log("已有进度：" + upLen)
         if (progressEvent.loaded > upLen) {
-          console.log('确认上传进度：' + progressEvent.loaded)
+          // console.log("确认上传进度：" + progressEvent.loaded)
           var complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
           // this.progress = complete
-          console.log('文件上传中: ' + complete)
-          _this.toa('文件上传中: ' + complete)
-          console.log('文件上传中2: ' + complete)
+          // console.log("文件上传中: " + complete)
+          _this.toa("文件上传中: " + complete)
+          // console.log("文件上传中2: " + complete)
           upLen = progressEvent.loaded
         }
+
       }
-    } // 添加请求头
-    console.log(fname)
-    console.log(CONFIG.fileHost)
-    axios.post(CONFIG.fileHost + fname, formdata1, configs)
+    }; //添加请求头
+    // console.log(fname)
+    axios.post(CONFIG.fileHost, formdata1, configs)
       .then(function(res) {
-        console.log(res.data)
-        resT = res.data.split(' ')
-        console.log(resT)
-        fn(resT[1] ? JSON.parse(resT[1]) : '')
+        resT = res.data.split(" ");
+        console.log(resT);
+        fn(resT[1] ? JSON.parse(resT[1]) : "");
       })
       .catch(function(error) {
         if (error.response) {
-          // 存在请求，但是服务器的返回一个状态码
-          // 他们都在2xx之外
-          _this.toa('上传文件失败，请稍后重试')
-          console.log('服务接口：' + service + '  请求出现异常')
-          console.log(error.response.data)
-          console.log(error.response.status)
-          console.log(error.response.headers)
+          //存在请求，但是服务器的返回一个状态码
+          //他们都在2xx之外
+
         } else {
-          // 一些错误是在设置请求时触发的
-          _this.toa('网络异常，请稍后重试')
-          console.log('Error', error.message)
+          //一些错误是在设置请求时触发的
+          // _this.toa("网络异常，请稍后重试");
         }
-        console.log(error.config)
-      })
+      });
   },
   // 获取当前日期
   getTime: function() {
@@ -511,66 +503,66 @@ DATAC = {
       value: '',
       label: '普通会员'
     },
-    {
-      value: 318,
-      label: 'VIP用户'
-    }
+      {
+        value: 318,
+        label: 'VIP用户'
+      }
     ],
     phoneStatus: [{
       label: '已认证',
       value: 1
     },
-    {
-      label: '未认证',
-      value: -1
-    },
-    {
-      label: '全部',
-      value: ''
-    }
+      {
+        label: '未认证',
+        value: -1
+      },
+      {
+        label: '全部',
+        value: ''
+      }
     ],
     userLevelStatus: [{
       label: '已实名',
       value: 2
     },
-    {
-      label: '已认证手机',
-      value: 1
-    },
-    {
-      label: '未认证',
-      value: 0
-    },
-    {
-      label: '全部',
-      value: ''
-    }
+      {
+        label: '已认证手机',
+        value: 1
+      },
+      {
+        label: '未认证',
+        value: 0
+      },
+      {
+        label: '全部',
+        value: ''
+      }
     ],
     relStatus: [{
       label: '已认证',
       value: 1
     },
-    {
-      label: '未认证',
-      value: -1
-    },
-    {
-      label: '全部',
-      value: ''
-    }
+      {
+        label: '未认证',
+        value: -1
+      },
+      {
+        label: '全部',
+        value: ''
+      }
     ],
     videoUpStatus: [{
       label: '上架',
       value: 1
     },
-    {
-      label: '下架',
-      value: -1
-    },
-    {
-      label: '全部',
-      value: ''
-    }
+      {
+        label: '下架',
+        value: -1
+      },
+      {
+        label: '全部',
+        value: ''
+      }
     ],
     payStatus: [{
       value: '',

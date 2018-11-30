@@ -541,7 +541,6 @@
     .reject {
       input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
         color:red;
-
       }
     }
   }
