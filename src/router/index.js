@@ -686,7 +686,7 @@ export const asyncRouterMap = [
         path: 'organi-info/:id',
         component: () =>
           import ('@/views/member/all/organiInfo'),
-        name: '机构1详情',
+        name: '机构详情',
         meta: {title: 'organiInfo'}
       },
       {

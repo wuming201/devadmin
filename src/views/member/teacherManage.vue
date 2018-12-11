@@ -274,7 +274,7 @@
         let ee = this.selectArg
         this.searchKey(ee)
       },
-      getTeacherList: function (keyword) {
+      getTeacherList(keyword) {
         console.log(keyword)
         var _this = this
         var args = {page: this.page}
@@ -314,29 +314,15 @@
             _this.tableData3 = []
           } else {
             console.log("有数据")
-            console.log(data.length)
             newData = PUBLIC.formatObj(demo,data)
 
            this.tableData3 = JSON.parse(JSON.stringify(newData))
-            // PUBLIC.get('User.certificate.finds', {id: 82}, p => {
-            //   console.log(p)
-            // })
-            // for (var i = 0; i < newData.length; i++) {
-            //   (function (i) {
-            //     PUBLIC.get('User.User.Userone', {uid: newData[i].uid}, (data) => {
-            //       if (data === []) {
-            //         _this.tableData3 = newData
-            //         // return
-            //       } else {
-            //         newData[i]["relname"] = data.rel_name
-            //         newData[i]["username"] = data.Id
-            //         _this.tableData3 = JSON.parse(JSON.stringify(newData))
-            //       }
-            //       // console.log(data)
-            //
-            //     })
-            //   })(i)
-            // }
+            console.log(this.tableData3)
+            for(let i in this.tableData3) {
+              PUBLIC.get('User.Appuser.getsteacher', {name: this.tableData3[i].rel_name}, v=> {
+                console.log(v)
+              })
+            }
           }
         })
       }

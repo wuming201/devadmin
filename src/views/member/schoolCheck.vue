@@ -214,7 +214,7 @@
       },
       getCheckList(keyword) {
         var _this = this
-        let args= {}
+        let args= {page: this.page}
         for (var k in keyword) {
           args[k] = keyword[k]
         }

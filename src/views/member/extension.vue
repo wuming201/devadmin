@@ -14,12 +14,12 @@
       tooltip-effect="dark"
       border
       style=" backgroundColor: #f5fafe">
-      <el-table-column
-        prop="id"
-        label="订单号"
-      >
-        <template slot-scope="scope">{{ scope.row.id }}</template>
-      </el-table-column>
+      <!--<el-table-column-->
+        <!--prop="id"-->
+        <!--label="订单号"-->
+      <!--&gt;-->
+        <!--<template slot-scope="scope">{{ scope.row.id }}</template>-->
+      <!--</el-table-column>-->
       <el-table-column
         prop="fromUid"
         label="推广员"
@@ -38,14 +38,8 @@
       </el-table-column>
       <el-table-column
         prop="commodity"
-        label="消费内容"
+        label="推广类型"
       >
-      </el-table-column>
-      <el-table-column
-        prop="money"
-        label="消费金额（元）"
-
-        show-overflow-tooltip>
       </el-table-column>
       <el-table-column
         prop="end_time"
@@ -56,22 +50,22 @@
         label="使用状态">
         <template slot-scope="scope">{{ payWays[scope.row.way] }}</template>
       </el-table-column>
-      <el-table-column
-        prop="way"
-        label="支付方式">
-        <template slot-scope="scope">{{ payWays[scope.row.way] }}</template>
-      </el-table-column>
-      <el-table-column
-        prop="earnings"
-        label="收益比例"
-        show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column
-        prop="originalPrice"
-        label="收益金额"
-      >
-        <template slot-scope="scope">{{ scope.row.originalPrice?scope.row.originalPrice:0 }}</template>
-      </el-table-column>
+      <!--<el-table-column-->
+        <!--prop="way"-->
+        <!--label="支付方式">-->
+        <!--<template slot-scope="scope">{{ payWays[scope.row.way] }}</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+        <!--prop="earnings"-->
+        <!--label="收益比例"-->
+        <!--show-overflow-tooltip>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+        <!--prop="originalPrice"-->
+        <!--label="收益金额"-->
+      <!--&gt;-->
+        <!--<template slot-scope="scope">{{ scope.row.originalPrice?scope.row.originalPrice:0 }}</template>-->
+      <!--</el-table-column>-->
 
     </el-table>
     <paginationBox :data='dataLength' :pageSize="pagesize" @getCurrent="handleCurrentChange"></paginationBox>

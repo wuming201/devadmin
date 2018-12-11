@@ -17,9 +17,9 @@
       <!--@select-all="getAll"-->
       <!--@select="getOne"	-->
       <el-table-column
-        prop='id'
+        prop='compName'
         label='执教机构'
-        width='150'>
+        width='300'>
       </el-table-column>
       <el-table-column
         prop='name'
@@ -214,7 +214,7 @@
       getUserList: function(keyword) {
         var _this = this
         this.keyword = keyword
-        var args = { page: this.page }
+        var args = { page: this.page,type: 3, }
         // console.log(keyword)
         for (var k in this.keyword) {
           args[k] = keyword[k]
@@ -222,59 +222,68 @@
         this.args = args
         // console.log(args)
         this.keyword == this.keyword != undefined ? this.keyword : ''
-        PUBLIC.get('User.User.Userlist', args, (data) => {
-          // console.log(data)
-          var newData = []
-          var demo = {
-            id:'Id',
-            user_status: 'user_status',
-            name:'name',
-            telphone:'telphone',
-            reg_time:'reg_time',
-            rel_status:'rel_status'
+        PUBLIC.get('Curriculum.mealese.findMeal', args, (data) => {
+          let arr = []
+          console.log(data)
+          arr = data
+          for(let i in arr) {
+            PUBLIC.get('User.Appuser.selcompany', {tid: arr[i].tid}, v=>{
+              arr[i]['compName'] = v.company_name
+              console.log(this.tableData3[i])
+              this.tableData3.push(arr[i])
+            })
           }
-          newData = PUBLIC.formatObj(demo,data)
-          for(var i=0;i<newData.length;i++){
-            _this.getUserGroup(newData[i].id,newData,i,newData)
-          }
-          _this.tableData3 = newData
-          // console.log(_this.tableData3)
-        },function(data){
-        // console.log(data)
-        _this.dataLength=parseInt(data.data.num)
-        _this.pagesize=parseInt(data.data.pagenum)
-      })
-      },
-      getUserGroup: function(id, relData, index, newData) {
-        // console.log(id, relData, index, newData)
-        var _this = this
-        PUBLIC.get('Team.User.TeamList',{uid:id},function(data){
-          // console.log(data)
-          if (_this.isUser === true && data == ''){
-            newData[index]['tid'] = 0
-            _this.tableData3 = JSON.parse(JSON.stringify(newData))
-            _this.changeData += 1
-            return
-          } else if (data == '') {
-            return
-          }
-          let min = data[0].id
-          for(let i = 0; i < data.length; i++) {
-            // console.log(data[i])
-            // console.log(data[0].id)
-            if(data[i].id < min) {
-              min = data[i].id
-              // console.log(min)
-            }
-            // console.log(newData[index])
-            newData[index]['tid'] = min
-            // console.log(newData[index]['tid'])
-          }
-          newData[index]['groupEndTime'] = data[0]['end_time']
-          _this.tableData3 = JSON.parse(JSON.stringify(newData))
-          // console.log(relData[index])
+        //   var newData = []
+        //   var demo = {
+        //     id:'Id',
+        //     user_status: 'user_status',
+        //     name:'name',
+        //     telphone:'telphone',
+        //     reg_time:'reg_time',
+        //     rel_status:'rel_status'
+        //   }
+        //   newData = PUBLIC.formatObj(demo,data)
+        //   for(var i=0;i<newData.length;i++){
+        //     _this.getUserGroup(newData[i].id,newData,i,newData)
+        //   }
+        //   _this.tableData3 = newData
+        //   // console.log(_this.tableData3)
+        // },function(data){
+        // // console.log(data)
+        // _this.dataLength=parseInt(data.data.num)
+        // _this.pagesize=parseInt(data.data.pagenum)
         })
       },
+      // getUserGroup: function(id, relData, index, newData) {
+      //   // console.log(id, relData, index, newData)
+      //   var _this = this
+      //   PUBLIC.get('Team.User.TeamList',{uid:id},function(data){
+      //     // console.log(data)
+      //     if (_this.isUser === true && data == ''){
+      //       newData[index]['tid'] = 0
+      //       _this.tableData3 = JSON.parse(JSON.stringify(newData))
+      //       _this.changeData += 1
+      //       return
+      //     } else if (data == '') {
+      //       return
+      //     }
+      //     let min = data[0].id
+      //     for(let i = 0; i < data.length; i++) {
+      //       // console.log(data[i])
+      //       // console.log(data[0].id)
+      //       if(data[i].id < min) {
+      //         min = data[i].id
+      //         // console.log(min)
+      //       }
+      //       // console.log(newData[index])
+      //       newData[index]['tid'] = min
+      //       // console.log(newData[index]['tid'])
+      //     }
+      //     newData[index]['groupEndTime'] = data[0]['end_time']
+      //     _this.tableData3 = JSON.parse(JSON.stringify(newData))
+      //     // console.log(relData[index])
+      //   })
+      // },
       cleanIt() {
         var op = this.selectArg
         for(var i in op) {

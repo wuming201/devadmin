@@ -2,12 +2,13 @@
   <div class='app-container'>
     <div class='memberHead'>
       <p class='firstLine'><span></span>
-        <!--<span class='phoneNum'>激活状态：<selectKuang :selectData="activateStatus" @value="activateValue"></selectKuang></span><span class='overTime'>到期时间:<timeBox @value='endTime'></timeBox></span>-->
+        <!--<span class='phoneNum'>认证状态：<selectKuang :selectData="activateStatus" @value="activateValue"></selectKuang></span><span class='overTime'>到期时间:<timeBox @value='endTime'></timeBox></span>-->
       </p>
       <p><span class='buttons'>
         <el-button type='primary'>批量导入</el-button>
         <el-button type='success' @click="chufa">批量导入</el-button><input id="upload" ref="upload" type="file" @change="importfxx(this)"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"  style="display: none"/>
-        <router-link to="/member/organi-entry"><el-button type='warning'>添加机构</el-button></router-link></span><searchBox @searchKey='searchKey' v-bind:searchSelect='searchSelect'></searchBox></span></p>
+        <router-link to="/member/organi-entry"><el-button type='warning'>添加机构</el-button></router-link></span>
+        <span class="fr">审核状态：<selectKuang :selectData="activateStatus" @value="activateValue"></selectKuang><searchBox @searchKey='searchKey' v-bind:searchSelect='searchSelect'></searchBox></span></p>
     </div>
     <el-table
       ref='multipleTable'
@@ -16,8 +17,8 @@
       border
       style=' backgroundColor: #f5fafe'>
       <!--<el-table-column-->
-        <!--type='selection'-->
-        <!--width='55'>-->
+      <!--type='selection'-->
+      <!--width='55'>-->
       <!--</el-table-column>-->
       <el-table-column
         prop='id'
@@ -26,46 +27,36 @@
         <template slot-scope='scope'>{{ scope.row.id }}</template>
       </el-table-column>
       <el-table-column
-        prop='name'
-        label='机构名称'>
+        prop='company_name'
+        label='园所名称'>
       </el-table-column>
       <el-table-column
-        prop='name'
-        label='机构简称'>
+        prop='company_jc'
+        label='园所简称'>
       </el-table-column>
       <el-table-column
-        prop='name'
+        prop='company_uid'
         label='创建者ID'>
       </el-table-column>
       <el-table-column
-        prop='user'
+        prop='company_user'
         label='负责人'
         width='150'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='phone'
+        prop='company_phone'
         label='联系方式'>
-        <template slot-scope='scope'>{{ scope.row.phone }}</template>
+        <template slot-scope='scope'>{{ scope.row.company_phone }}</template>
       </el-table-column>
-      <!--<el-table-column-->
-        <!--prop='auth_dir'-->
-        <!--label='授权类目'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='endtime'-->
-        <!--label='到期时间'>-->
-        <!--<template slot-scope='scope'>{{ scope.row.endtime=="0000-00-00 00:00:00"?"":scope.row.endtime }}</template>-->
-      <!--</el-table-column>-->
       <el-table-column
-        prop='use_state'
+        prop='company_statu'
         label='认证状态'
         width='150'
         show-overflow-tooltip>
         <template slot-scope="scope">
-          <span class="innerText" v-if="scope.row.use_state === '0'">未激活</span>
-          <span class="innerText" v-else-if="scope.row.use_state === '1'">已激活</span>
+          <span class="innerText" v-if="scope.row.company_statu == 0">未认证</span>
+          <span class="innerText" v-else-if="scope.row.company_statu == 1">已认证</span>
           <span class="innerText" v-else></span>
         </template>
       </el-table-column>
@@ -78,7 +69,6 @@
           <el-button type='text' size='small' @click="edit(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
-
     </el-table>
     <paginationBox :data='dataLength' :page='page' :pageSize='pagesize' @getCurrent='handleCurrentChange'></paginationBox>
   </div>
@@ -128,11 +118,11 @@ export default {
         },
         {
           value: 1,
-          label: '已激活'
+          label: '已认证'
         },
         {
           value: 0,
-          label: '未激活'
+          label: '未认证'
         }
       ],
       etStatus: [
@@ -274,16 +264,16 @@ export default {
     handleClick(row) {
       var _this = this
       console.log(row.id)
-      _this.$router.push({ name: '机构详情', params: { id: row.id, page: this.page }})
+      _this.$router.push({ name: '机构详情', params: { id: row.id, page: this.page,type: 1 }})
     },
     edit(msg) {
       localStorage.setItem("pageInfo",JSON.stringify(this.keyword))
-      this.$router.push({ name: '机构编辑', params: { id: msg.id, page: this.page }})
+      this.$router.push({ name: '机构编辑', params: { id: msg.company_tid, page: this.page }})
     },
     getUserList(keyword) {
       this.keyword = keyword
       var _this=this
-      var args = { page: this.page }
+      var args = { page: this.page,type: 0 }
       for(var k in keyword){
         args[k]=keyword[k]
       }
@@ -294,48 +284,9 @@ export default {
           delete args[k]
         }
       }
-      PUBLIC.get('User.Mechanism.Melist', args, function(data) {
+      PUBLIC.get('User.Company.sellist', args, function(data) {
         console.log(data)
-        var newData = []
-        var demo = {
-          id: 'id',
-          name: 'name',
-          user: 'username',
-          phone: 'user_phone',
-          endtime: 'end_time',
-          status: 'rec_status',
-          use_state:"use_state",
-          code: 'code',
-          auth_dir: 'auth_dir'
-        }
-        newData = PUBLIC.formatObj(demo,data)
-        _this.tableData3 = newData
-        var tmp={}
-        PUBLIC.get("Video.drama.classlist",{},function(data){
-          // console.log(_this.videoClass)
-          for(var n=0;n<data.length;n++){
-            tmp[data[n]["id"]]=data[n]["class"]
-          }
-          console.log(tmp)
-          _this.videoClassDict=tmp
-          console.log("222222222222222222222222222222")
-          console.log(_this.videoClassDict)
-          console.log(_this.videoClassDict)
-
-          for (var i = 0; i < newData.length; i++) {
-            // _this.getUserGroup(newData[i]['id'],_this.tableData3,i,newData)
-            var auth_dir=newData[i].auth_dir?newData[i].auth_dir.split(","):[]
-            var auth_str=""
-            for(var n=0;n<auth_dir.length;n++){
-              auth_str+=_this.videoClassDict[auth_dir[n]]
-            }
-            newData[i].auth_dir=auth_str
-          }
-          _this.tableData3 = JSON.parse(JSON.stringify(newData))
-        })
-
-
-        _this.tableData3 = JSON.parse(JSON.stringify(newData))
+        _this.tableData3 = data
 
       },function(data){
         // console.log(data)
@@ -371,7 +322,7 @@ export default {
     activateValue(e) {
       this.page=1
       console.log(e)
-      this.selectArg['rec_status'] = e
+      this.selectArg['company_statu'] = e
       let ee = this.selectArg
       this.searchKey(ee)
     },
@@ -431,6 +382,13 @@ export default {
           .el-button{
             margin: 0;
             border-radius: 0;
+          }
+        }
+        .fr{
+          .selectKuang{
+            .el-select{
+              width: 150px;
+            }
           }
         }
         .record{
