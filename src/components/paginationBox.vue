@@ -4,7 +4,6 @@
       layout='total, prev, pager, next, jumper'
       :total='data'
       :page-size='pageSize'
-      v-if=" data > pageSize "
       :current-page.sync="page"
       >
       <!-- v-if=" data > pageSize " -->

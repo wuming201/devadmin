@@ -4,8 +4,8 @@
       <p class = 'firstLine'><span class='phoneNum'>课时状态：<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span>
         <span class='regTime'>评分:<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span><span class='overTime'>结束日期:<timeBox @value='endTime'></timeBox></span></p>
       <p><span class='buttons'>
-        <el-button type='success'>批量导出</el-button><el-button type='warning'>课评汇总</el-button><el-button type='danger'>调课记录</el-button>
-        <router-link to='/member/add-member'><el-button type='warning'>增加用户</el-button></router-link></span>
+        <el-button type='success'>批量导出</el-button><router-link to='/orders/reviewList'><el-button type='warning'>课评汇总</el-button></router-link>
+        <router-link to='/orders/changeLesson'><el-button type='danger'>调课记录</el-button></router-link></span>
         <span class='record'>总记录：<span>{{dataLength}}</span>昨日新增：<span>{{yesterdayAdd}}</span>今日新增：<span>{{todayAdd}}</span>
           <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
 
@@ -17,61 +17,67 @@
       border
       style=' backgroundColor: #f5fafe'>
       <el-table-column
-        prop='id'
+        prop='school_name'
         label='幼儿园'
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='school_name'
         label='执教机构'
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='school_name'
+        label='执教老师'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='school_name'
         label='合约'
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='name'
+        prop='name_ja'
         label='教案'
         width='200'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='time'
         label='日期'
         width='300'>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='sigintime'
         label='签到时间'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='pay_statu'
         label='状态'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='grade'
         label='评分'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
-        label='评价'
-        show-overflow-tooltip>
+        prop='synthesize'
+        label='评价'>
       </el-table-column>
       <el-table-column
-        prop='telphone'
-        label='院长签字'
-        show-overflow-tooltip>
+        prop='signUrl'
+        label='院长签字'>
+        <template slot-scope="scope">
+          <span class="innerText"><img :src="scope.row.signUrl" alt=""></span>
+        </template>
       </el-table-column>
     </el-table>
     <paginationBox :data='dataLength' :page='page' :pageSize="pagesize" @getCurrent='handleCurrentChange'></paginationBox>
     <div class="pass" v-show="showChange">
       <h3>查看信息 <i class="fa fa-close" @click="passIt"></i></h3>
       <div class="inner">
-        <p>&emsp;完成率：{{oldProfit}}</p>
+        <p>&emsp;完成率：</p>
         <p>带操情况：</p>
         <p>预设教案：</p>
         <p>执行教案：</p>
@@ -94,7 +100,7 @@
     },
     data() {
       return {
-        showChange: true,
+        showChange: false,
         list: null,
         listLoading: true,
         downloadLoading: false,
@@ -103,7 +109,7 @@
         filename: '',
         page: 1,
         pagesize: 40,
-        dataLength: '',
+        dataLength: 400,
         yesterdayAdd: '',
         todayAdd: '',
         selectAll: [],
@@ -272,58 +278,19 @@
         this.args = args
         // console.log(args)
         this.keyword == this.keyword != undefined ? this.keyword : ''
-        PUBLIC.get('User.User.Userlist', args, (data) => {
-          // console.log(data)
-          var newData = []
-          var demo = {
-            id:'Id',
-            user_status: 'user_status',
-            name:'name',
-            telphone:'telphone',
-            reg_time:'reg_time',
-            rel_status:'rel_status'
+        PUBLIC.get('Curriculum.hourese.findAlldata', args, (data) => {
+          this.tableData3 = []
+          console.log(data)
+          for(let i in data) {
+            PUBLIC.get('Curriculum.mealese.findPlan', {id: data[i].ago_pid}, v => {
+              console.log(v)
+              data[i]['name_ja'] = v.name
+              this.tableData3.push(data[i])
+              console.log(this.tableData3)
+            })
           }
-          newData = PUBLIC.formatObj(demo,data)
-          for(var i=0;i<newData.length;i++){
-            _this.getUserGroup(newData[i].id,newData,i,newData)
-          }
-          _this.tableData3 = newData
-          // console.log(_this.tableData3)
-        },function(data){
-        // console.log(data)
-        _this.dataLength=parseInt(data.data.num)
-        _this.pagesize=parseInt(data.data.pagenum)
-      })
-      },
-      getUserGroup: function(id, relData, index, newData) {
-        // console.log(id, relData, index, newData)
-        var _this = this
-        PUBLIC.get('Team.User.TeamList',{uid:id},function(data){
-          // console.log(data)
-          if (_this.isUser === true && data == ''){
-            newData[index]['tid'] = 0
-            _this.tableData3 = JSON.parse(JSON.stringify(newData))
-            _this.changeData += 1
-            return
-          } else if (data == '') {
-            return
-          }
-          let min = data[0].id
-          for(let i = 0; i < data.length; i++) {
-            // console.log(data[i])
-            // console.log(data[0].id)
-            if(data[i].id < min) {
-              min = data[i].id
-              // console.log(min)
-            }
-            // console.log(newData[index])
-            newData[index]['tid'] = min
-            // console.log(newData[index]['tid'])
-          }
-          newData[index]['groupEndTime'] = data[0]['end_time']
-          _this.tableData3 = JSON.parse(JSON.stringify(newData))
-          // console.log(relData[index])
-        })
+
+       })
       },
       cleanIt() {
         var op = this.selectArg

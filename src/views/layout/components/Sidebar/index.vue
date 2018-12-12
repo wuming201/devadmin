@@ -176,7 +176,15 @@
               {
                 link: '/message/message-list',
                 name: '消息列表'
-              }
+              },
+              // {
+              //   link: '/message/issue-type',
+              //   name: '问题类型'
+              // },
+              // {
+              //   link: '/message/message-temp',
+              //   name: '消息模板'
+              // }
             ],
             active: ''
           },

@@ -191,6 +191,20 @@ export const asyncRouterMap = [
         meta: {title: 'schedule'}
       },
       {
+        path: 'changeLesson',
+        component: () =>
+          import ('@/views/orders/all/changeLesson'),
+        name: '调课记录',
+        meta: {title: 'changeLesson'}
+      },
+      {
+        path: 'reviewList',
+        component: () =>
+          import ('@/views/orders/all/reviewList'),
+        name: '课评汇总',
+        meta: {title: 'reviewList'}
+      },
+      {
         path: 'withdraw',
         component: () =>
           import ('@/views/orders/withdraw'),
@@ -219,7 +233,7 @@ export const asyncRouterMap = [
         path: 'message-temp',
         component: () =>
           import ('@/views/message/messageTemp'),
-        name: 'messageTemp',
+        name: '消息模板',
         meta: {title: 'messageTemp'}
       },
       {
@@ -228,7 +242,21 @@ export const asyncRouterMap = [
           import ('@/views/message/messageSend'),
         name: '发送消息',
         meta: {title: 'messageSend'}
-      }
+      },
+      {
+        path: 'issue-type',
+        component: () =>
+          import ('@/views/message/issueType'),
+        name: '问题类型',
+        meta: {title: 'issueType'}
+      },
+      // {
+      //   path: 'message-temp',
+      //   component: () =>
+      //     import ('@/views/message/messageTemp'),
+      //   name: '消息模板',
+      //   meta: {title: 'messageTemp'}
+      // }
     ]
   },
   {

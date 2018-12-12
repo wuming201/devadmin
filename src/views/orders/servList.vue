@@ -27,9 +27,12 @@
         width='200'>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='plan'
         label='包含教案'
         show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span class="innerText" v-for="(item,index) in scope.row.plan">{{index+1}}-{{item.name}}&emsp;</span>
+        </template>
       </el-table-column>
     </el-table>
     <paginationBox :data='dataLength' :page='page' :pageSize="pagesize" @getCurrent='handleCurrentChange'></paginationBox>
@@ -81,10 +84,10 @@
             label: '全部'
           }, {
             value: 1,
-            label: '已验证'
+            label: '有效'
           }, {
-            value: 0,
-            label: '未验证'
+            value: -1,
+            label: '无效'
           }
         ],
         relStatus: [
@@ -309,10 +312,10 @@
       },
       phoneValue(e) {
         // console.log( this.selectArg)
-        this.selectArg['phone_status'] = e
+        this.selectArg['on_statu'] = e
         let ee = this.selectArg
         this.searchKey(ee)
-        let aaa = { phone_status: e } //获取搜索值
+        let aaa = { on_statu: e } //获取搜索值
         this.getTotal(aaa)
       },
       relValue(e) {

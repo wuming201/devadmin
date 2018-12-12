@@ -19,52 +19,59 @@
       <!--@select-all="getAll"-->
       <!--@select="getOne"	-->
       <el-table-column
-        prop='id'
+        prop='yuansuo'
         label='幼儿园'
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='jigou'
         label='执教机构'
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='number'
         label='合约编号'
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='name'
+        prop='mealName'
         label='签约套餐'
         width='200'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='startTime'
         label='服务期限'
         width='300'>
+        <template slot-scope="scope">
+          <span class="innerText"><span style="display:inline-block;width:80px; height: 16px; overflow: hidden">{{scope.row.startTime}}</span>- <span  style="display:inline-block;width:80px; height: 16px; overflow: hidden">{{scope.row.endTime}}</span></span>
+        </template>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='on_statu'
         label='合约状态'
         show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span class="innerText" v-if="scope.row.on_statu === '0'">无效</span>
+          <span class="innerText" v-else-if="scope.row.on_statu === '1'">有效</span>
+        </template>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='makeTime'
         label='结束日期'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='reslutFor'
         label='备注'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='creater'
         label='创建人'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='admin'
         label='处理人'
         show-overflow-tooltip>
       </el-table-column>
@@ -118,10 +125,19 @@
             label: '全部'
           }, {
             value: 1,
-            label: '已验证'
+            label: '已签约'
           }, {
-            value: 0,
-            label: '未验证'
+            value: 2,
+            label: '服务中'
+          }, {
+            value: 3,
+            label: '已到期'
+          }, {
+            value: 4,
+            label: '合约终止中'
+          }, {
+            value: 5,
+            label: '合约已终止'
           }
         ],
         relStatus: [
@@ -259,58 +275,67 @@
         this.args = args
         // console.log(args)
         this.keyword == this.keyword != undefined ? this.keyword : ''
-        PUBLIC.get('User.User.Userlist', args, (data) => {
-          // console.log(data)
-          var newData = []
-          var demo = {
-            id:'Id',
-            user_status: 'user_status',
-            name:'name',
-            telphone:'telphone',
-            reg_time:'reg_time',
-            rel_status:'rel_status'
+        PUBLIC.get('Curriculum.signese.findData', args, (data) => {
+          console.log(data)
+          // this.tableData3 = data
+          for(let i in data) {
+            PUBLIC.get('User.Company.seltid',{ tid: data[i].tid}, v =>{
+              console.log(v)
+              if(v != false) {
+                data[i]['jigou'] = v.company_name
+              }
+            })
+            PUBLIC.get('User.Company.seltid',{ tid: data[i].oid}, v1 =>{
+              console.log(v1)
+              if(v1 != false) {
+                data[i]['yuansuo'] = v1.company_name
+              }
+              PUBLIC.get('User.User.Userlist',{ id: data[i].people}, v2 =>{
+                console.log(v2)
+                if(v2 != false) {
+                  data[i]['admin'] = v2[0].rel_name
+                }
+                PUBLIC.get('User.User.Userlist',{ id: data[i].initiator}, v3 =>{
+                  console.log(v3)
+                  if(v3 != false) {
+                    data[i]['creater'] = v3[0].rel_name
+                  }
+                })
+                this.tableData3.push(data[i])
+              })
+            })
           }
-          newData = PUBLIC.formatObj(demo,data)
-          for(var i=0;i<newData.length;i++){
-            _this.getUserGroup(newData[i].id,newData,i,newData)
-          }
-          _this.tableData3 = newData
-          // console.log(_this.tableData3)
-        },function(data){
-        // console.log(data)
-        _this.dataLength=parseInt(data.data.num)
-        _this.pagesize=parseInt(data.data.pagenum)
-      })
+        })
       },
       getUserGroup: function(id, relData, index, newData) {
         // console.log(id, relData, index, newData)
-        var _this = this
-        PUBLIC.get('Team.User.TeamList',{uid:id},function(data){
-          // console.log(data)
-          if (_this.isUser === true && data == ''){
-            newData[index]['tid'] = 0
-            _this.tableData3 = JSON.parse(JSON.stringify(newData))
-            _this.changeData += 1
-            return
-          } else if (data == '') {
-            return
-          }
-          let min = data[0].id
-          for(let i = 0; i < data.length; i++) {
-            // console.log(data[i])
-            // console.log(data[0].id)
-            if(data[i].id < min) {
-              min = data[i].id
-              // console.log(min)
-            }
-            // console.log(newData[index])
-            newData[index]['tid'] = min
-            // console.log(newData[index]['tid'])
-          }
-          newData[index]['groupEndTime'] = data[0]['end_time']
-          _this.tableData3 = JSON.parse(JSON.stringify(newData))
-          // console.log(relData[index])
-        })
+        // var _this = this
+        // PUBLIC.get('Team.User.TeamList',{uid:id},function(data){
+        //   // console.log(data)
+        //   if (_this.isUser === true && data == ''){
+        //     newData[index]['tid'] = 0
+        //     _this.tableData3 = JSON.parse(JSON.stringify(newData))
+        //     _this.changeData += 1
+        //     return
+        //   } else if (data == '') {
+        //     return
+        //   }
+        //   let min = data[0].id
+        //   for(let i = 0; i < data.length; i++) {
+        //     // console.log(data[i])
+        //     // console.log(data[0].id)
+        //     if(data[i].id < min) {
+        //       min = data[i].id
+        //       // console.log(min)
+        //     }
+        //     // console.log(newData[index])
+        //     newData[index]['tid'] = min
+        //     // console.log(newData[index]['tid'])
+        //   }
+        //   newData[index]['groupEndTime'] = data[0]['end_time']
+        //   _this.tableData3 = JSON.parse(JSON.stringify(newData))
+        //   // console.log(relData[index])
+        // })
       },
       cleanIt() {
         var op = this.selectArg

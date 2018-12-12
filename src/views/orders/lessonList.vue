@@ -5,7 +5,7 @@
         <span class='regTime'>签约日期:<timeBox @value='regTime'></timeBox></span><span class='overTime'>结束日期:<timeBox @value='endTime'></timeBox></span></p>
       <p><span class='buttons'>
         <!--<el-button type='primary'>全选</el-button><el-button type='danger'>批量冻结</el-button>-->
-        <router-link to='/member/add-member'><el-button type='warning'>增加用户</el-button></router-link></span>
+        <router-link to='/member/add-member'><el-button type='warning'>批量导出</el-button></router-link></span>
         <span class='record'>总记录：<span>{{dataLength}}</span>昨日新增：<span>{{yesterdayAdd}}</span>今日新增：<span>{{todayAdd}}</span>
           <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
 
@@ -17,12 +17,12 @@
       border
       style=' backgroundColor: #f5fafe'>
       <el-table-column
-        prop='id'
+        prop='yuansuo'
         label='幼儿园'
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='jigou'
         label='执教机构'
         width='150'>
       </el-table-column>
@@ -32,37 +32,37 @@
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='name'
+        prop='year'
         label='课表年份'
         width='200'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='semester'
         label='学期'
         width='300'>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='hourNum'
         label='课时数'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='weeks'
         label='授课周期'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='timeQuantum'
         label='授课时段'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='lessonsNum'
         label='课节数'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='tecId'
         label='执教老师'
         show-overflow-tooltip>
       </el-table-column>
@@ -257,28 +257,43 @@
         this.args = args
         // console.log(args)
         this.keyword == this.keyword != undefined ? this.keyword : ''
-        PUBLIC.get('User.User.Userlist', args, (data) => {
-          // console.log(data)
-          var newData = []
-          var demo = {
-            id:'Id',
-            user_status: 'user_status',
-            name:'name',
-            telphone:'telphone',
-            reg_time:'reg_time',
-            rel_status:'rel_status'
+        PUBLIC.get('Curriculum.listese.findList', args, (data) => {
+          console.log(data)
+          for(let i in data) {
+            PUBLIC.get('User.Company.seltid',{ tid: data[i].tid}, v =>{
+              console.log(v)
+              if(v != false) {
+                data[i]['yuansuo'] = v.company_name
+              }
+              PUBLIC.get('User.Company.seltid',{ tid: data[i].oid}, v1 =>{
+                console.log(v1)
+                if(v1 != false) {
+                  data[i]['jigou'] = v1.company_name
+                }
+                this.tableData3.push(data[i])
+              })
+            })
           }
-          newData = PUBLIC.formatObj(demo,data)
-          for(var i=0;i<newData.length;i++){
-            _this.getUserGroup(newData[i].id,newData,i,newData)
-          }
-          _this.tableData3 = newData
-          // console.log(_this.tableData3)
-        },function(data){
-        // console.log(data)
-        _this.dataLength=parseInt(data.data.num)
-        _this.pagesize=parseInt(data.data.pagenum)
-      })
+        //   var newData = []
+        //   var demo = {
+        //     id:'Id',
+        //     user_status: 'user_status',
+        //     name:'name',
+        //     telphone:'telphone',
+        //     reg_time:'reg_time',
+        //     rel_status:'rel_status'
+        //   }
+        //   newData = PUBLIC.formatObj(demo,data)
+        //   for(var i=0;i<newData.length;i++){
+        //     _this.getUserGroup(newData[i].id,newData,i,newData)
+        //   }
+        //   _this.tableData3 = newData
+        //   // console.log(_this.tableData3)
+        // },function(data){
+        //   // console.log(data)
+        //   _this.dataLength=parseInt(data.data.num)
+        //   _this.pagesize=parseInt(data.data.pagenum)
+        })
       },
       getUserGroup: function(id, relData, index, newData) {
         // console.log(id, relData, index, newData)

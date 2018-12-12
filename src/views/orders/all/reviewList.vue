@@ -4,7 +4,8 @@
       <p class = 'firstLine'><span class='phoneNum'>课评状态：<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span>
         <span class='regTime'>课评结果:<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span><span class='overTime'>回评时间:<timeBox @value='endTime'></timeBox></span></p>
       <p><span class='buttons'>
-        <el-button type='success'>批量导出</el-button><router-link to="/order/schedule"><el-button type='warning'>课时日程</el-button></router-link><el-button type='danger'>调课记录</el-button>
+        <el-button type='success'>批量导出</el-button><router-link to="/orders/schedule"><el-button type='warning'>课时日程</el-button></router-link>
+        <router-link to='/orders/changeLesson'><el-button type='danger'>调课记录</el-button></router-link>
           <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
 
     </div>
@@ -32,17 +33,17 @@
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='name'
+        prop='bid'
         label='授课班级'
-        width='200'>
+        width='150'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='bid'
         label='配班老师'
-        width='300'>
+        width='100'>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='createTime'
         label='提交时间'
         show-overflow-tooltip>
       </el-table-column>
@@ -52,22 +53,22 @@
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='reviewTime'
         label='回评时间'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='attireScreen'
         label='着装'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='atmosphereScreen'
         label='评分'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='safetyScreen'
         label='安全'
         show-overflow-tooltip>
       </el-table-column>
@@ -77,14 +78,17 @@
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='desc'
         label='备注'
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='signUrl'
         label='老师签字'
         show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span class="innerText"><img :src="scope.row.signUrl" alt=""></span>
+        </template>
       </el-table-column>
     </el-table>
     <paginationBox :data='dataLength' :page='page' :pageSize="pagesize" @getCurrent='handleCurrentChange'></paginationBox>
@@ -92,7 +96,7 @@
 </template>
 
 <script>
-  import { searchBox, selectKuang, timeBox, paginationBox } from '../../components/index'
+  import { searchBox, selectKuang, timeBox, paginationBox } from '../../../components/index'
   export default {
     name: 'allMember',
     components: {
@@ -281,28 +285,9 @@
         this.args = args
         // console.log(args)
         this.keyword == this.keyword != undefined ? this.keyword : ''
-        PUBLIC.get('User.User.Userlist', args, (data) => {
-          // console.log(data)
-          var newData = []
-          var demo = {
-            id:'Id',
-            user_status: 'user_status',
-            name:'name',
-            telphone:'telphone',
-            reg_time:'reg_time',
-            rel_status:'rel_status'
-          }
-          newData = PUBLIC.formatObj(demo,data)
-          for(var i=0;i<newData.length;i++){
-            _this.getUserGroup(newData[i].id,newData,i,newData)
-          }
-          _this.tableData3 = newData
-          // console.log(_this.tableData3)
-        },function(data){
-        // console.log(data)
-        _this.dataLength=parseInt(data.data.num)
-        _this.pagesize=parseInt(data.data.pagenum)
-      })
+        PUBLIC.get('Curriculum.lessonese.findReview', args, (data) => {
+          console.log(data)
+       })
       },
       getUserGroup: function(id, relData, index, newData) {
         // console.log(id, relData, index, newData)

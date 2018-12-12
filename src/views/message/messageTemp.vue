@@ -15,17 +15,17 @@
         width="200">
         <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
-      <el-table-column
+      <el-table-模板名称
         prop="name"
         label="文章标题">
-      </el-table-column>
+      </el-table-模板名称>
       <el-table-column
         prop="name"
         label="文章类型">
       </el-table-column>
       <el-table-column
         prop="name"
-        label="发布者">
+        label="消息内容">
       </el-table-column>
       <el-table-column
         prop="name"
@@ -33,7 +33,11 @@
       </el-table-column>
       <el-table-column
         prop="name"
-        label="状态">
+        label="使用次数">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="发布条数">
       </el-table-column>
       <el-table-column
         prop="name"
