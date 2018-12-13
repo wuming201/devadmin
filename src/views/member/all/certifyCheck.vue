@@ -6,9 +6,11 @@
       <p><span><span class="title">证书类型:</span><span class="innerText">{{person.rel_code}}</span></span><span><span class="title">有效期:</span><span class="innerText">{{person.rel_code}}</span></span></p>
       <p><span><span class="title">真实姓名:</span><span class="innerText">{{person.rel_name}}</span></span><span><span class="title">姓名拼音:</span><span class="innerText">{{newData.spell}}</span></span></p>
       <p><span><span class="title">身份证号:</span><span class="innerText">{{person.rel_code}}</span></span><span><span class="title">艺名:</span><span class="innerText">{{person.rel_code}}</span></span></p>
-      <p><span><span class="title">工号:</span><span class="innerText">{{newData.jobnumber}}</span></span><span><span class="title">入职时间:</span><span class="innerText">{{newData.entryTime.slice(0,10)}}</span></span></p>
+      <p><span><span class="title">工号:</span><span class="innerText">{{newData.jobnumber}}</span></span>
+        <span><span class="title">入职时间:</span><span class="innerText"  v-if="newData.entryTime != null && newData.entryTime != ''">{{newData.entryTime.slice(0,10)}}</span><span v-else></span></span></p>
       <p class="pic"><span><span class="title">证书图片:</span><span class="pics"><img :src="newData.certificates" alt=""></span></span><span><span class="title">寸照:</span><span class="pics"><img :src="newData.identityUrl" alt=""></span></span></p>
-      <p><span><span class="title">首次发证时间:</span><span class="innerText">{{newData.applyTime.slice(0,10)}}</span></span><span><span class="title">证书编号:</span><span class="innerText">{{newData.applyTime.slice(0,10)}}</span></span></p>
+      <p><span><span class="title">首次发证时间:</span><span class="innerText" v-if="newData.applyTime != null && newData.applyTime != ''">{{newData.applyTime.slice(0,10)}}</span><span v-else></span></span>
+        <span><span class="title">证书编号:</span><span class="innerText"  v-if="newData.applyTime != null && newData.applyTime != ''">{{newData.applyTime.slice(0,10)}}</span><span v-else></span></span></p>
       <p><span><span class="title">联系手机:</span><span class="innerText">{{newData.tell}}</span></span><span><span class="title">处理状态:</span><span class="innerText" v-if="newData.pay_statu === '0'">审核中</span><span class="innerText" v-else-if="newData.pay_statu === '-1'">未通过</span><span class="innerText" v-else-if="newData.pay_statu === '1'">通过</span></span></p>
       <p><span><span class="title">处理备注:</span><span class="innerText">{{newData.tell}}</span></span></p>
     </div>

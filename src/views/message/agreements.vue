@@ -122,6 +122,12 @@
       }
     },
     methods: {
+      passIt() {
+        console.log('aaa')
+      },
+      rejectIt() {
+        console.log('aaa')
+      },
       edit(row){
         this.$router.push({name: '编辑协议',query: row.id})
       },
@@ -222,7 +228,7 @@
     },
     mounted() {
       this.getsignList()
-      this.getTotal()
+      // this.getTotal()
     }
     // watch:{
     //   searchKey:function(){
