@@ -103,71 +103,74 @@ export default {
     getInfo(id) {
       var _this=this
       PUBLIC.get('User.certificate.finds',{ id: id }, data =>{
-        this.cerData = data
-        this.uimg = data.identityUrl
-        this.uid = data.uid
-        this.id = data.id
-        this.entryTime = data.entryTime
-        this.stageName = data.stageName
-        this.birth = data.dateBirth
-        this.worknum = data.jobnumber
-        this.grands = this.teacherLevel[data.grade]
-        this.cernum = data.licenceNum
-        this.territory = data.territory
-        this.user_status = this.teacherStatusFlag[data.pay_statu]
-        this.videoProducing = this.teacherVideoFlag[data.videoProducing]
-        this.message = data.message
-        this.certificates=data.certificates
-        this.personalAlbum=data.personalAlbum
-        this.province=data.province
-        this.mycer=data.mycer
-        this.unit=data.unit
-        this.stopTime = data.stopTime?data.stopTime.slice(0, 10):""
-        console.log(this.stopTime)
-        if(data.certificates !== null) {
-          console.log('aaaaaa')
-          this.cers = data.certificates.split(',')
-        }
-        if(data.personalAlbum !==  null) {
-          console.log('aassssss')
-          this.pics = data.personalAlbum.split(',')
-        }
-        // for(let i = 0; i < this.cers.length; i++) {
-        //     let htmls = '<span class="picBox"><img src = "' + this.cers[i] + '" alt=""></span>'
-        //     this.otherCer = this.otherCer + htmls
-        //   }
-        //   for(let i = 0; i < this.pics.length; i++) {
-        //     let htmls = '<span class="picBox"><img src = "' + this.pics[i] + '" alt=""></span>'
-        //     this.morepic = this.morepic + htmls
-        //   }
-        if(data.showHome = 1) {
-          this.showHome = '是'
-        } else{
-          this.showHome = '否'
-        }
-        PUBLIC.get('User.User.Userone' ,{ uid: data.uid }, data =>{
-          console.log(data)
-          this.person = data
-          console.log(this.person)
-        })
-
-        PUBLIC.get("Configure.Configure.Selone",{type:"branch",key:this.unit},function(data){
-          if(data){
-            data=JSON.parse(data.value)
-            console.log(data)
-            _this.region=data.region
+        if(data != false) {
+          this.cerData = data
+          this.uimg = data.identityUrl
+          this.uid = data.uid
+          this.id = data.id
+          this.entryTime = data.entryTime
+          this.stageName = data.stageName
+          this.birth = data.dateBirth
+          this.worknum = data.jobnumber
+          this.grands = this.teacherLevel[data.grade]
+          this.cernum = data.licenceNum
+          this.territory = data.territory
+          this.user_status = this.teacherStatusFlag[data.pay_statu]
+          this.videoProducing = this.teacherVideoFlag[data.videoProducing]
+          this.message = data.message
+          this.certificates=data.certificates
+          this.personalAlbum=data.personalAlbum
+          this.province=data.province
+          this.mycer=data.mycer
+          this.unit=data.unit
+          this.stopTime = data.stopTime?data.stopTime.slice(0, 10):""
+          console.log(this.stopTime)
+          if(data.certificates !== null) {
+            console.log('aaaaaa')
+            this.cers = data.certificates.split(',')
           }
+          if(data.personalAlbum !==  null) {
+            console.log(data.personalAlbum)
+            this.pics = data.personalAlbum.split(',')
+          }
+          // for(let i = 0; i < this.cers.length; i++) {
+          //     let htmls = '<span class="picBox"><img src = "' + this.cers[i] + '" alt=""></span>'
+          //     this.otherCer = this.otherCer + htmls
+          //   }
+          //   for(let i = 0; i < this.pics.length; i++) {
+          //     let htmls = '<span class="picBox"><img src = "' + this.pics[i] + '" alt=""></span>'
+          //     this.morepic = this.morepic + htmls
+          //   }
+          if(data.showHome = 1) {
+            this.showHome = '是'
+          } else{
+            this.showHome = '否'
+          }
+          PUBLIC.get('User.User.Userone' ,{ uid: data.uid }, data =>{
+            console.log(data)
+            this.person = data
+            console.log(this.person)
+          })
+
+          PUBLIC.get("Configure.Configure.Selone",{type:"branch",key:this.unit},function(data){
+            if(data){
+              data=JSON.parse(data.value)
+              console.log(data)
+              _this.region=data.region
+            }
+          })
+          // console.log(this.cers)
+          for(let i = 0; i < this.cers.length; i++) {
+            let htmls = '<span class="picBox"><img src = "' + this.cers[i] + '" alt=""></span>'
+            this.otherCer = this.otherCer + htmls
+          }
+          for(let i = 0; i < this.pics.length; i++) {
+            let htmls = '<span class="picBox"><img src = "' + this.pics[i] + '" alt=""></span>'
+            this.morepic = this.morepic + htmls
+          }
+        }
+
         })
-        // console.log(this.cers)
-        for(let i = 0; i < this.cers.length; i++) {
-          let htmls = '<span class="picBox"><img src = "' + this.cers[i] + '" alt=""></span>'
-          this.otherCer = this.otherCer + htmls
-        }
-        for(let i = 0; i < this.pics.length; i++) {
-          let htmls = '<span class="picBox"><img src = "' + this.pics[i] + '" alt=""></span>'
-          this.morepic = this.morepic + htmls
-        }
-      })
     },
     quit:function(){
       this.$router.push({name:'教师管理',query: { page: this.page }})

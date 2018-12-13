@@ -2,7 +2,6 @@
   <div class = 'messageList'>
     <div class = 'memberHead'>
       <p class = 'firstLine'><span></span></p>
-      <p><span class='buttons'><el-button type='warning' @click="addIt">&emsp;添加&emsp;</el-button></span></p>
     </div>
     <el-table
       ref='multipleTable'
@@ -13,33 +12,46 @@
       @selection-change='handleSelectionChange'>
       <el-table-column
         prop='time'
-        label='问题类型'>
+        label='协议类型'>
       </el-table-column>
       <el-table-column
         prop='read_res'
         label='操作'
         width="300">
         <template slot-scope="scope">
-          <el-button type="text" class="innerText" @click="editIt">编辑</el-button>
-          <el-button type="text" class="innerText">删除</el-button>
+          <el-button type="text" class="innerText" @click="edit(scope.row)">操作</el-button>
         </template>
       </el-table-column>
     </el-table>
     <paginationBox :data='dataLength' @getCurrent='handleCurrentChange'></paginationBox>
     <div class="pass" v-show="showPass">
-      <h3>信息编辑 <i class="fa fa-close" @click="addIt"></i></h3>
+      <h3>信息编辑 <i class="fa fa-close" @click="passIt"></i></h3>
       <div class="inner">
-        <p>消息类型：  问题反馈</p>
-        <p>二级区域：<el-input ></el-input></p>
-        <p><el-button type="success" @click="passAduit()">保存</el-button><el-button type="info" @click="addIt">取消</el-button></p>
+        <p>&emsp;处理人：  wwww</p>
+        <p>处理备注：
+          <el-input
+            type="textarea"
+            :rows="2"
+            v-model="des"
+            placeholder="请输入拒绝原因！">
+          </el-input>
+        </p>
+        <p><el-button type="success" @click="passAduit(1)">提交</el-button><el-button type="info" @click="passIt">取消</el-button></p>
       </div>
     </div>
     <div class="reject" v-show="showReject">
-      <h3>信息编辑 <i class="fa fa-close" @click="editIt"></i></h3>
+      <h3>信息编辑 <i class="fa fa-close" @click="rejectIt"></i></h3>
       <div class="inner">
-        <p>消息类型：  问题反馈</p>
-        <p>二级区域：<el-input ></el-input></p>
-        <p><el-button type="success" @click="passAduit()">保存</el-button><el-button type="info" @click="editIt">取消</el-button></p>
+        <p>&emsp;处理人：  wwww</p>
+        <p>处理备注：
+          <el-input
+            type="textarea"
+            :rows="2"
+            v-model="des"
+            placeholder="请输入拒绝原因！">
+          </el-input>
+        </p>
+        <p><el-button type="danger" @click="rejectAduit(2)">拒绝</el-button><el-button type="info" @click="rejectIt">取消</el-button></p>
       </div>
     </div>
   </div>
@@ -110,16 +122,8 @@
       }
     },
     methods: {
-
-      checkInfo() {
-        this.showBox = !this.showBox
-      },
-      addIt() {
-        console.log(this.showPass)
-        this.showPass = !this.showPass
-      },
-      editIt() {
-        this.showReject = !this.showReject
+      edit(row){
+        this.$router.push({name: '编辑协议',query: row.id})
       },
       handleClick(row) {
         console.log(row)
@@ -321,8 +325,8 @@
         padding:36px 16px;
         p{
           padding-bottom: 30px;
-          .el-input{
-            vertical-align: middle;
+          .el-textarea{
+            vertical-align: top;
             width: 300px;
             display: inline-block;
           }
@@ -342,7 +346,6 @@
           button{
             width: 120px;
             margin-left: 75px;
-            margin-top: 50px;
           }
         }
       }

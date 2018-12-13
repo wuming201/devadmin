@@ -10,8 +10,7 @@
       :data="wdData"
       tooltip-effect="dark"
       border
-      style=" backgroundColor: #f5fafe"
-      @selection-change="handleSelectionChange">
+      style=" backgroundColor: #f5fafe">
       <el-table-column
         prop="id"
         label="处理单号">
@@ -144,8 +143,8 @@
         list: null,
         filename: '',
         page: 1,
-        dataLength: '',
-        pagesize: '',
+        dataLength: 400,
+        pagesize: 40,
         showPass: false,
         showReject: false,
         wdData: [],
@@ -210,11 +209,11 @@
 
       // }
       //获取总数
-      getTotal() {
-        // PUBLIC.get('User.User.usercount', data => {
-        //   this.dataLength = data
-        // })
-      },
+      // getTotal() {
+      //   // PUBLIC.get('User.User.usercount', data => {
+      //   //   this.dataLength = data
+      //   // })
+      // },
       passIt(row) {
         this.id = row.id
         this.handle = row.handler
@@ -324,10 +323,10 @@
           _this.wdData = newData
           console.log(newData)
         },function(data){
-          // console.log(data)
-          _this.dataLength=parseInt(data.data.num)
-          _this.pagesize=parseInt(data.data.pagenum)
-          console.log(data.data.num)
+          // // console.log(data)
+          // _this.dataLength=parseInt(data.data.num)
+          // _this.pagesize=parseInt(data.data.pagenum)
+          // console.log(data.data.num)
         })
       },
       upImg(tab) {

@@ -250,13 +250,27 @@ export const asyncRouterMap = [
         name: '问题类型',
         meta: {title: 'issueType'}
       },
-      // {
-      //   path: 'message-temp',
-      //   component: () =>
-      //     import ('@/views/message/messageTemp'),
-      //   name: '消息模板',
-      //   meta: {title: 'messageTemp'}
-      // }
+      {
+        path: 'agreement-edit',
+        component: () =>
+          import ('@/views/message/agreementEdit'),
+        name: '编辑协议',
+        meta: {title: 'agreementEdit'}
+      },
+      {
+        path: 'agreements',
+        component: () =>
+          import ('@/views/message/agreements'),
+        name: '平台协议',
+        meta: {title: 'agreements'}
+      },
+      {
+        path: 'issue-replay',
+        component: () =>
+          import ('@/views/message/issueReplay'),
+        name: '问题回复',
+        meta: {title: 'issueReplay'}
+      },
     ]
   },
   {

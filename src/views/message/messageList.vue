@@ -1,7 +1,7 @@
 <template>
   <div class = 'messageList'>
     <div class = 'memberHead'>
-      <p class = 'firstLine'><span class='payWay'>消息类型：<selectKuang v-bind:selectData='msgType' @value='typeValue'></selectKuang></span><span class='phoneNum'>已读状态：<selectKuang  v-bind:selectData='payStatus' @value='stateValue'></selectKuang></span></p>
+      <p class = 'firstLine'><span class='payWay'>消息类型：<selectKuang v-bind:selectData='msgType' @value='typeValue'></selectKuang></span><span class='phoneNum'>消息状态：<selectKuang  v-bind:selectData='payStatus' @value='stateValue'></selectKuang></span></p>
       <p><span class='buttons'><router-link to="/message/message-send"><el-button type='warning'>发送消息</el-button></router-link></span>
         <span><searchBox @searchKey='searchKey' v-bind:searchSelect='searchSelect'></searchBox></span></p>
     </div>
@@ -123,11 +123,11 @@
             value: '',
             label: '全部'
           }, {
-            value: '短信',
-            label: '短信'
+            value: '系统推送',
+            label: '系统推送'
           }, {
-            value: '站内信',
-            label: '站内信'
+            value: '问题反馈',
+            label: '问题反馈'
           }
         ],
         payStatus: [
@@ -137,11 +137,15 @@
           },
           {
             value: '1',
-            label: '已读'
+            label: '已送达'
           },
           {
             value: '0',
-            label: '未读'
+            label: '待回复'
+          },
+          {
+            value: '0',
+            label: '已回复'
           }
         ],
         rowInfo: [],

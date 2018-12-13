@@ -22,7 +22,7 @@
         width='150'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='receive_name'
         label='审批方'
         width='150'>
       </el-table-column>
@@ -37,11 +37,11 @@
         width='200'>
       </el-table-column>
       <el-table-column
-        prop='id'
+        prop='former_teaName'
         label='调课前老师'>
       </el-table-column>
       <el-table-column
-        prop='telphone'
+        prop='former_time'
         label='调课前日期'
         show-overflow-tooltip>
       </el-table-column>

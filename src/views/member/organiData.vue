@@ -98,17 +98,14 @@ export default {
       videoClassDict:{},
       videoClass:[],
       searchSelect: [
-         {
-          value: 'name',
-          label: '机构名称'
+        {
+          value: 'company_name',
+          label: '园所名称'
         }, {
-          value: 'username',
+          value: 'company_user',
           label: '负责人'
         }, {
-          value: 'code',
-          label: '机构邀请码'
-        }, {
-          value: 'user_phone',
+          value: 'company_phone',
           label: '手机号'
         }],
       activateStatus: [
@@ -117,8 +114,12 @@ export default {
           label: '全部'
         },
         {
+          value: 2,
+          label: '高级认证'
+        },
+        {
           value: 1,
-          label: '已认证'
+          label: '普通认证'
         },
         {
           value: 0,
@@ -308,10 +309,10 @@ export default {
       console.log(11111111111)
       console.log(e)
       this.page=1
-      if(["username","name","code"].indexOf(e[0])){
-        delete this.selectArg["username"]
-        delete this.selectArg["name"]
-        delete this.selectArg["code"]
+      if(["company_name","company_user","codcompany_phonee"].indexOf(e[0])){
+        delete this.selectArg["company_name"]
+        delete this.selectArg["company_user"]
+        delete this.selectArg["company_phone"]
       }
 
       var op = this.selectArg
@@ -345,15 +346,15 @@ export default {
     }
     this.getTotal()
     DATAC.setConf(this)
-    var tmp={}
-    console.log(this.videoClass)
-    for(var n=0;n<this.videoClass.length;n++){
-      tmp[this.videoClass[n]["value"]]=this.videoClass[n]["label"]
-    }
-    console.log(tmp)
-    this.videoClassDict=tmp
-    console.log("11111111111111111111111111111111111111111111")
-    console.log(this.videoClassDict)
+    // var tmp={}
+    // console.log(this.videoClass)
+    // for(var n=0;n<this.videoClass.length;n++){
+    //   tmp[this.videoClass[n]["value"]]=this.videoClass[n]["label"]
+    // }
+    // console.log(tmp)
+    // this.videoClassDict=tmp
+    // console.log("11111111111111111111111111111111111111111111")
+    // console.log(this.videoClassDict)
   },
   watch:{
     videoClass:function(){
@@ -386,6 +387,7 @@ export default {
         }
         .fr{
           .selectKuang{
+            margin-right: 40px;
             .el-select{
               width: 150px;
             }

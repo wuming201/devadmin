@@ -8,33 +8,33 @@
           <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
 
     </div>
-    <el-table
-      ref='multipleTable'
-      :data='tableData3'
-      tooltip-effect='dark'
-      border
-      style=' backgroundColor: #f5fafe'>
-      <!--@select-all="getAll"-->
-      <!--@select="getOne"	-->
-      <el-table-column
-        prop='compName'
-        label='执教机构'
-        width='300'>
-      </el-table-column>
-      <el-table-column
-        prop='name'
-        label='套餐名称'
-        width='200'>
-      </el-table-column>
-      <el-table-column
-        prop='plan'
-        label='包含教案'
-        show-overflow-tooltip>
-        <template slot-scope="scope">
-          <span class="innerText" v-for="(item,index) in scope.row.plan">{{index+1}}-{{item.name}}&emsp;</span>
-        </template>
-      </el-table-column>
-    </el-table>
+    <!--<el-table-->
+      <!--ref='multipleTable'-->
+      <!--:data='tableData3'-->
+      <!--tooltip-effect='dark'-->
+      <!--border-->
+      <!--style=' backgroundColor: #f5fafe'>-->
+      <!--&lt;!&ndash;@select-all="getAll"&ndash;&gt;-->
+      <!--&lt;!&ndash;@select="getOne"	&ndash;&gt;-->
+      <!--<el-table-column-->
+        <!--prop='compName'-->
+        <!--label='执教机构'-->
+        <!--width='300'>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+        <!--prop='name'-->
+        <!--label='套餐名称'-->
+        <!--width='200'>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+        <!--prop='plan'-->
+        <!--label='包含教案'-->
+        <!--show-overflow-tooltip>-->
+        <!--<template slot-scope="scope">-->
+          <!--<span class="innerText" v-for="(item,index) in scope.row.plan">{{index+1}}-{{item.name}}&emsp;</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+    <!--</el-table>-->
     <paginationBox :data='dataLength' :page='page' :pageSize="pagesize" @getCurrent='handleCurrentChange'></paginationBox>
   </div>
 </template>

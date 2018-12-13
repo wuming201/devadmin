@@ -80,7 +80,9 @@
           "-1":"已过期",
         },
         shouquan: [],
-        admin:[]
+        admin:[],
+        x: '',
+        y: ''
       }
     },
     methods: {
@@ -106,7 +108,7 @@
       },
       rejectUp() {
         PUBLIC.get('User.Examine.shenhe', { id: this.id, user_statu: -1, user_beizhu: this.rejectDesc, user_uid: this.admin[1] }, data => {
-          console.log(data)
+
           this.$router.push({name:'园所审核'})
         })
       },
@@ -136,58 +138,11 @@
         this.showIt = !this.showIt
       },
       getcompInfo(id) {
-        var _this=this
+        var _this = this
         this.shouquan=[]
         PUBLIC.get('User.Examine.selinfo', { id: id }, (data) => {
-          console.log(data)
+          console.log(data.gps)
           this.compInfo = data
-          console.log(JSON.parse(this.compInfo.user_zl)['yyzz'])
-          // var newData = [];
-          // var demo = {
-          //   name: 'name',
-          //   username:'username',
-          //   rec_status: 'rec_status',
-          //   user_phone: 'user_phone',
-          //   contract_num: 'contract_num',
-          //   contract_doc: 'contract_doc',
-          //   auth_dir: 'auth_dir',
-          //   use_state: 'use_state',
-          //   subaccount_num: 'subaccount_num',
-          //   generate_time: 'generate_time',
-          //   end_time: 'end_time',
-          //   time: 'time',
-          //   code: 'code',
-          //   on_statu:"on_statu",
-          //   id:"id"
-          // }
-          // newData =  PUBLIC.formatObj(demo, data)
-          // this.compInfo = newData
-          // this.schoolGroup = this.compInfo
-          // // console.log(this.allData)
-          // //拉取历史授权码信息
-          // PUBLIC.get("User.Mechanism.selhiscode",{fromid:id},function(data){
-          //   var tmp=[]
-          //   for(var n=0;n<data.length;n++){
-          //     if(data[n].code!=newData.code){
-          //       tmp.push(data[n])
-          //     }
-          //   }
-          //   _this.codeHis=tmp
-          // })
-          // var shouquan = this.compInfo.auth_dir.split(',')
-          // PUBLIC.get('Video.drama.classlist', data => {
-          //   console.log(data)
-          //   console.log(shouquan)
-          //   for (var i in data) {
-          //     // console.log(data[i].id)
-          //     for (var a in shouquan) {
-          //       if (data[i].id === shouquan[a]) {
-          //         this.shouquan.push(data[i].class)
-          //       }
-          //     }
-          //     console.log(this.shouquan)
-          //   }
-          // })
         })
       },
       saveIt() {
@@ -217,6 +172,7 @@
       DATAC.setConf(this)
       this.page = this.$route.params.page
       this.id = this.$route.params.id
+      // console.log(localStorage.getItem('userInfo'))
       this.admin[0] =  JSON.parse(localStorage.getItem('userInfo')).rel_name
       this.admin[1] =  JSON.parse(localStorage.getItem('userInfo')).Id
       console.log(this.admin)
