@@ -111,6 +111,9 @@
         PUBLIC.get("User.Mechanism.jycode",{id:id,on_statu:status},function(data){
           _this.getcompInfo(id)
         })
+      },
+      cancelIt() {
+        this.$router.go(-1)
       }
     },
     mounted() {

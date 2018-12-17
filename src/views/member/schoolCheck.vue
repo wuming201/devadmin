@@ -106,7 +106,7 @@
         checkList: [],
         page: 1,
         pagesize: 40,
-        dataLength: '',
+        dataLength: 400,
         multipleSelection: [],
         selectArg: {},
         adminStatus: [],
@@ -210,7 +210,7 @@
           })
           return
         }
-        this.$router.push({name: '审核园所', params: {id: row.id}})
+        this.$router.push({name: '审核园所', params: {id: row.id,uid: row.shenq_uid}})
       },
       getCheckList(keyword) {
         var _this = this

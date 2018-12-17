@@ -1,56 +1,56 @@
 <template>
   <div class = 'allMember'>
     <div class = 'memberHead'>
-      <p class = 'firstLine'><span class='phoneNum'>合约状态：<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span>
-        <span class='regTime'>签约日期:<timeBox @value='regTime'></timeBox></span><span class='overTime'>结束日期:<timeBox @value='endTime'></timeBox></span></p>
+      <p class = 'firstLine'><span></span></p>
       <p><span class='buttons'>
         <span class='buttons'><el-button type='success'>批量导出</el-button></span>
-          <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
+          <searchOne class="fr" @searchKey='searchKey' v-bind:holder = 'msg'></searchOne></span></p>
 
     </div>
-    <!--<el-table-->
-      <!--ref='multipleTable'-->
-      <!--:data='tableData3'-->
-      <!--tooltip-effect='dark'-->
-      <!--border-->
-      <!--style=' backgroundColor: #f5fafe'>-->
-      <!--&lt;!&ndash;@select-all="getAll"&ndash;&gt;-->
-      <!--&lt;!&ndash;@select="getOne"	&ndash;&gt;-->
-      <!--<el-table-column-->
-        <!--prop='compName'-->
-        <!--label='执教机构'-->
-        <!--width='300'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='name'-->
-        <!--label='套餐名称'-->
-        <!--width='200'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='plan'-->
-        <!--label='包含教案'-->
-        <!--show-overflow-tooltip>-->
-        <!--<template slot-scope="scope">-->
-          <!--<span class="innerText" v-for="(item,index) in scope.row.plan">{{index+1}}-{{item.name}}&emsp;</span>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
-    <!--</el-table>-->
+    <el-table
+      ref='multipleTable'
+      :data='tableData3'
+      tooltip-effect='dark'
+      border
+      style=' backgroundColor: #f5fafe'>
+      <!--@select-all="getAll"-->
+      <!--@select="getOne"	-->
+      <el-table-column
+        prop='compName'
+        label='执教机构'
+        width='300'>
+      </el-table-column>
+      <el-table-column
+        prop='name'
+        label='套餐名称'
+        width='200'>
+      </el-table-column>
+      <el-table-column
+        prop='plan'
+        label='包含教案'
+        show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span class="innerText" v-for="(item,index) in scope.row.plan">{{index+1}}-{{item.name}}&emsp;</span>
+        </template>
+      </el-table-column>
+    </el-table>
     <paginationBox :data='dataLength' :page='page' :pageSize="pagesize" @getCurrent='handleCurrentChange'></paginationBox>
   </div>
 </template>
 
 <script>
-  import { searchBox, selectKuang, timeBox, paginationBox } from '../../components/index'
+  import { searchOne, selectKuang, timeBox, paginationBox } from '../../components/index'
   export default {
     name: 'allMember',
     components: {
-      searchBox,
+      searchOne,
       selectKuang,
       timeBox,
       paginationBox
     },
     data() {
       return {
+        msg:'请输入关键词',
         list: null,
         listLoading: true,
         downloadLoading: false,
@@ -59,69 +59,13 @@
         filename: '',
         page: 1,
         pagesize: 40,
-        dataLength: '',
+        dataLength: 400,
         yesterdayAdd: '',
         todayAdd: '',
         selectAll: [],
         selectAllData: [],
         tableData3: [],
         multipleSelection: [],
-        searchSelect: [
-          {
-            value: 'telphone',
-            label: '手机号'
-          }, {
-            value: 'name',
-            label: '当前昵称'
-          }, {
-            value: 'id',
-            label: '用户ID'
-          }
-        ],
-        phoneStatus: [
-          {
-            value: '',
-            label: '全部'
-          }, {
-            value: 1,
-            label: '有效'
-          }, {
-            value: -1,
-            label: '无效'
-          }
-        ],
-        relStatus: [
-          {
-            value: '',
-            label: '全部'
-          },
-          {
-            value: 1,
-            label: '已验证'
-          },
-          {
-            value: 0,
-            label: '未验证'
-          }
-        ],
-        userStatus: [
-          {
-            value: '',
-            label: '全部'
-          },
-          {
-            value: 318,
-            label: 'VIP用户'
-          },
-          {
-            value: 317,
-            label: '机构用户'
-          },
-          {
-            value: 316,
-            label: '特权用户'
-          }
-        ],
         selectArg: {},
         adataaa: 1
       }
@@ -231,30 +175,17 @@
           arr = data
           for(let i in arr) {
             PUBLIC.get('User.Appuser.selcompany', {tid: arr[i].tid}, v=>{
-              arr[i]['compName'] = v.company_name
-              console.log(this.tableData3[i])
-              this.tableData3.push(arr[i])
+              if(v == '') {
+                this.tableData3 = []
+              }else{
+                arr[i]['compName'] = v.company_name
+                console.log(this.tableData3[i])
+                this.tableData3.push(arr[i])
+              }
             })
           }
-        //   var newData = []
-        //   var demo = {
-        //     id:'Id',
-        //     user_status: 'user_status',
-        //     name:'name',
-        //     telphone:'telphone',
-        //     reg_time:'reg_time',
-        //     rel_status:'rel_status'
-        //   }
-        //   newData = PUBLIC.formatObj(demo,data)
-        //   for(var i=0;i<newData.length;i++){
-        //     _this.getUserGroup(newData[i].id,newData,i,newData)
-        //   }
-        //   _this.tableData3 = newData
-        //   // console.log(_this.tableData3)
-        // },function(data){
-        // // console.log(data)
-        // _this.dataLength=parseInt(data.data.num)
-        // _this.pagesize=parseInt(data.data.pagenum)
+        },function (res) {
+          _this.dataLength = res.num
         })
       },
       // getUserGroup: function(id, relData, index, newData) {
@@ -295,62 +226,20 @@
       },
       searchKey(e) {
         this.page = 1
-        console.log(e[0])
-        this.selectArg[e[0]]=e[1]
-        // if(e!=undefined &&["id","telphone","name"].indexOf(e[0])){
-        //   delete this.selectArg["id"]
-        //   delete this.selectArg["telphone"]
-        //   delete this.selectArg["name"]
-        //   this.selectArg[e[0]]=e[1]
-        // }
-        var op = this.selectArg
-        // op[e[0]] = e[1]
-        // console.log(op)
-        delete op.undefined
+        console.log(e)
+        // this.selectArg[e[0]]=e[1]
+        // // if(e!=undefined &&["id","telphone","name"].indexOf(e[0])){
+        // //   delete this.selectArg["id"]
+        // //   delete this.selectArg["telphone"]
+        // //   delete this.selectArg["name"]
+        // //   this.selectArg[e[0]]=e[1]
+        // // }
+        var op = []
+        op['name'] = e[0]
+        // // console.log(op)
+        // delete op.undefined
         this.getUserList(op)
-        this.cleanIt()
-      },
-      phoneValue(e) {
-        // console.log( this.selectArg)
-        this.selectArg['on_statu'] = e
-        let ee = this.selectArg
-        this.searchKey(ee)
-        let aaa = { on_statu: e } //获取搜索值
-        this.getTotal(aaa)
-      },
-      relValue(e) {
-        this.selectArg['issming'] = e
-        let ee = this.selectArg
-        this.searchKey(ee)
-        let aaa = { issming: e } //获取搜索值
-        this.getTotal(aaa)
-      },
-      userValue(e) {
-        this.selectArg['usertype'] = e
-        let ee = this.selectArg
-        this.searchKey(ee)
-        let aaa = { usertype: e } //获取搜索值
-        this.isUser = true
-        if(e == '') {
-          this.isUser = false
-        }
-        this.getTotal(aaa)
-      },
-      regTime(e) {
-        this.selectArg['regstr_time'] = e[0]
-        this.selectArg['regend_time'] = e[1]
-        let ee = this.selectArg
-        this.searchKey(ee)
-        let aaa = { regstr_time: e[0], regend_time: e[1] } //获取搜索值
-        this.getTotal(aaa)
-      },
-      endTime(e) {
-        this.selectArg['daoqstr_time'] = e[0]
-        this.selectArg['daoqend_time'] = e[1]
-        let ee = this.selectArg
-        this.searchKey(ee)
-        let aaa = { daoqstr_time: e[0], daoqend_time: e[1] } //获取搜索值
-        this.getTotal(aaa)
+        // this.cleanIt()
       },
     //  全选
     //   getAll(a) {

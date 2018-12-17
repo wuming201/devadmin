@@ -6,8 +6,7 @@
       <p><span class='buttons'>
         <!--<el-button type='primary'>全选</el-button><el-button type='danger'>批量冻结</el-button>-->
         <router-link to='/member/add-member'><el-button type='warning'>批量导出</el-button></router-link></span>
-        <span class='record'>总记录：<span>{{dataLength}}</span>昨日新增：<span>{{yesterdayAdd}}</span>今日新增：<span>{{todayAdd}}</span>
-          <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
+        <span class='record'><searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
 
     </div>
     <el-table

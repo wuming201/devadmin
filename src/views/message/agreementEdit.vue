@@ -62,6 +62,7 @@
     methods: {
       getUEContent() {
         let content = this.$refs.ue.getUEContent();
+        console.log(content)
         this.$notify({
           title: '获取成功，可在控制台查看！',
           message: content,
@@ -81,16 +82,20 @@
           _this[tab]=url
         })
       },
-      getType() {
-        var _this = this
-        PUBLIC.get("Configure.Configure.Selfig", { type: 'articleType' }, function(data) {
-          console.log(data[0].value)
-          var newData = []
-          for (var n = 0; n < data.length; n++) {
-            newData.push(JSON.parse(data[n].value))
-          }
-          _this.type = newData
-          console.log(_this.type)
+      getType(a) {
+        PUBLIC.get("Configure.Configure.Selone", { type: 'agreement',key:a }, (data) => {
+          console.log(data.value)
+          let arr = JSON.parse(data.value)
+          this.newTitle = arr.title
+          this.defaultMsg = arr.content
+          console.log(this.newTitle,this.defaultMsg)
+          // this.getUEContent()
+          // var newData = []
+          // for (var n = 0; n < data.length; n++) {
+          //   newData.push(JSON.parse(data[n].value))
+          // }
+          // _this.type = newData
+          // console.log(_this.type)
         })
       },
       typeValue(e) {
@@ -114,8 +119,16 @@
       // }
     },
     mounted() {
-      this.getType()
+      let key = this.$route.query
+      console.log(key)
+      this.getType(key)
       // this.getArt()
+    },
+    watch:{
+      defaultMsg(){
+        let str = this.defaultMsg
+        this.defaultMsg = str
+      }
     }
   }
 </script>
@@ -213,3 +226,4 @@
   }
 
 </style>
+

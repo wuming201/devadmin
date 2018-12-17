@@ -222,7 +222,15 @@ export const asyncRouterMap = [
       title: 'components',
       icon: 'component'
     },
-    children: [{
+    children: [
+      {
+        path: 'feed-back',
+        component: () =>
+          import ('@/views/message/feedBack'),
+        name: '消息反馈',
+        meta: {title: 'feedBack'}
+      },
+      {
       path: 'message-list',
       component: () =>
         import ('@/views/message/messageList'),

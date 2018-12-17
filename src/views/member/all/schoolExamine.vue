@@ -7,7 +7,7 @@
       <p><span><span class="title">负责人:</span><span class="innerText">{{compInfo.company_user}}</span></span><span><span class="title">联系电话:</span><span class="innerText">{{compInfo.company_mall}}</span></span></p>
       <!--<p><span><span class="title">合同编号:</span><span class="innerText">{{compInfo.contract_num}}</span></span><span><span class="title">合同文件:</span><span class="innerText">{{compInfo.contract_doc}}-->
       <!--<a :href="compInfo.contract_doc" download="">下载文件</a></span></span></p>-->
-      <p><span><span class="title">创建者实名:</span><span class="innerText">{{compInfo.shenq_name}}</span></span><span><span class="title">身份证号码:</span><span class="innerText">{{compInfo.name}}</span></span></p>
+      <p><span><span class="title">创建者实名:</span><span class="innerText">{{compInfo.shenq_name}}</span></span><span><span class="title">身份证号码:</span><span class="innerText">{{compInfo.idNum}}</span></span></p>
       <p><span><span class="title">认证密钥 :</span><span class="innerText">{{compInfo.username}}</span></span></p>
       <p class="rzzl"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['khxk']" alt=""></span></p>
       <p><el-button type="success" @click="passIt">通过</el-button><el-button type="danger" @click="rejectIt">拒绝</el-button><el-button type="info" @click="cancelIt">取消</el-button></p>
@@ -101,6 +101,7 @@
       passUp() {
         PUBLIC.get('User.Examine.shenhe', { id: this.id, user_statu: 1, user_beizhu: this.rejectDesc, user_uid: this.admin[1] }, (data) => {
           console.log(data)
+          this.$router.push({name:'园所审核'})
         })
       },
       rejectIt() {
@@ -108,7 +109,6 @@
       },
       rejectUp() {
         PUBLIC.get('User.Examine.shenhe', { id: this.id, user_statu: -1, user_beizhu: this.rejectDesc, user_uid: this.admin[1] }, data => {
-
           this.$router.push({name:'园所审核'})
         })
       },
@@ -137,12 +137,16 @@
         this.codeGroup.push(codes)
         this.showIt = !this.showIt
       },
-      getcompInfo(id) {
+      getcompInfo(id, uid) {
         var _this = this
         this.shouquan=[]
+        console.log(id)
         PUBLIC.get('User.Examine.selinfo', { id: id }, (data) => {
-          console.log(data.gps)
-          this.compInfo = data
+          console.log(data)
+          PUBLIC.get('User.User.Userone', {uid: uid}, v => {
+            data['idNum'] = v.rel_code
+            this.compInfo = data
+          })
         })
       },
       saveIt() {
@@ -172,11 +176,12 @@
       DATAC.setConf(this)
       this.page = this.$route.params.page
       this.id = this.$route.params.id
+      this.uid = this.$route.params.uid
       // console.log(localStorage.getItem('userInfo'))
       this.admin[0] =  JSON.parse(localStorage.getItem('userInfo')).rel_name
       this.admin[1] =  JSON.parse(localStorage.getItem('userInfo')).Id
       console.log(this.admin)
-      this.getcompInfo(this.id)
+      this.getcompInfo(this.id,this.uid)
     }
   }
 </script>

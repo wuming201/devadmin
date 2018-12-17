@@ -9,37 +9,36 @@
       :data='mListData'
       tooltip-effect='dark'
       border
-      style=' backgroundColor: #f5fafe'
-      @selection-change='handleSelectionChange'>
+      style=' backgroundColor: #f5fafe'>
       <el-table-column
-        prop='time'
+        prop='key'
         label='问题类型'>
       </el-table-column>
       <el-table-column
-        prop='read_res'
+        prop='id'
         label='操作'
         width="300">
         <template slot-scope="scope">
-          <el-button type="text" class="innerText" @click="editIt">编辑</el-button>
-          <el-button type="text" class="innerText">删除</el-button>
+          <el-button type="text" class="innerText" @click="editIt(scope.row)">编辑</el-button>
+          <el-button type="text" class="innerText" @click="delIt(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <paginationBox :data='dataLength' @getCurrent='handleCurrentChange'></paginationBox>
     <div class="pass" v-show="showPass">
-      <h3>信息编辑 <i class="fa fa-close" @click="addIt"></i></h3>
+      <h3>添加类型 <i class="fa fa-close" @click="addIt"></i></h3>
       <div class="inner">
         <p>消息类型：  问题反馈</p>
-        <p>二级区域：<el-input ></el-input></p>
-        <p><el-button type="success" @click="passAduit()">保存</el-button><el-button type="info" @click="addIt">取消</el-button></p>
+        <p>二级区域：<el-input v-model="add_name"></el-input></p>
+        <p><el-button type="success" @click="saveAdd()">保存</el-button><el-button type="info" @click="addIt">取消</el-button></p>
       </div>
     </div>
     <div class="reject" v-show="showReject">
       <h3>信息编辑 <i class="fa fa-close" @click="editIt"></i></h3>
       <div class="inner">
         <p>消息类型：  问题反馈</p>
-        <p>二级区域：<el-input ></el-input></p>
-        <p><el-button type="success" @click="passAduit()">保存</el-button><el-button type="info" @click="editIt">取消</el-button></p>
+        <p>二级区域：<el-input v-model="edit_name"></el-input></p>
+        <p><el-button type="success" @click="saveEdit()">保存</el-button><el-button type="info" @click="editIt">取消</el-button></p>
       </div>
     </div>
   </div>
@@ -68,7 +67,9 @@
         dataLength: '',
         pay_status: '',
         id: '',
-        des: '',
+        add_name: '',
+        old_name: '',
+        edit_name: '',
         mListData: [],
         multipleSelection: [],
         searchSelect: [
@@ -118,7 +119,9 @@
         console.log(this.showPass)
         this.showPass = !this.showPass
       },
-      editIt() {
+      editIt(a) {
+        this.edit_name = a.value
+        this.old_name = a.value
         this.showReject = !this.showReject
       },
       handleClick(row) {
@@ -136,53 +139,42 @@
       getsignList(keyword) {
         // console.log(keyword)
         var _this = this
-        var args = { page: this.page,type:"站内信" }
+        var args = { page: this.page, type:"problemType" }
         for (var k in keyword) {
           args[k] = keyword[k]
         }
         console.log(args)
         keyword == keyword != undefined ? keyword : ''
-        PUBLIC.get('Push.Push.Seltsls', args, function(data) {
+        PUBLIC.get('Configure.Configure.Selfig', args, (data) => {
           console.log(data)
-          var demo = {
-            id: 'id',
-            uid: 'uid',
-            type: 'type',
-            types: 'types',
-            to_uid: 'to_uid',
-            value: 'value',
-            time: 'time',
-            statu: 'statu',
-            code: 'code',
-            read_res: 'read_res',
-            res: 'res'
+          this.mListData = data
+        })
+      },
+      saveAdd() {
+        PUBLIC.get('Configure.Configure.Addconfig', { type: 'problemType', key: this.add_name, value: this.add_name,on_status: '1',statu: 1 }, (data) => {
+          if(data == true) {
+            this.add_name = ''
+            this.addIt()
+            this.getsignList()
           }
-          var newData = PUBLIC.formatObj(demo, data)
-          _this.mListData = newData
-          console.log(newData)
-        },function(data){
-          // console.log(data)
-          _this.dataLength=parseInt(data.data.num)
-          _this.pagesize=parseInt(data.data.pagenum)
-          console.log(data.data.num)
         })
       },
-      passAduit(status) {
-        console.log(status)
-        var _this = this
-        // _this.des = { des: this.des}
-        console.log(_this.des)
-        PUBLIC.get('Active.actives.auditApp', { id: this.id, pay_status: status, des: this.des }, function(data) {
+      saveEdit() {
+        PUBLIC.get('Configure.Configure.Addconfig', { type: 'problemType', key: this.old_name, value: this.edit_name, on_status: '-1',statu: 1 }, (data) => {
           console.log(data)
+          PUBLIC.get('Configure.Configure.Addconfig', { type: 'problemType', key: this.edit_name, value: this.edit_name,on_status: '1',statu: 1 }, (v) => {
+            if(data == true) {
+              this.edit_name = ''
+              this.old_name = ''
+              this.editIt()
+              this.getsignList()
+            }
+          })
         })
       },
-      rejectAduit(status) {
-        console.log(status)
-        var _this = this
-        // _this.des = { des: this.des}
-        console.log(_this.des)
-        PUBLIC.get('Active.actives.auditApp', { id: this.id, pay_status: status, des: this.des }, function(data) {
-          console.log(data)
+      delIt(a) {
+        PUBLIC.get('Configure.Configure.Addconfig', { type: 'problemType', key: a.key, value: a.value, on_status: '-1',statu: 1 }, (data) => {
+          this.getsignList()
         })
       },
       searchKey(e) {
@@ -218,7 +210,7 @@
     },
     mounted() {
       this.getsignList()
-      this.getTotal()
+      // this.getTotal()
     }
     // watch:{
     //   searchKey:function(){

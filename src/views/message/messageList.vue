@@ -1,9 +1,9 @@
 <template>
   <div class = 'messageList'>
     <div class = 'memberHead'>
-      <p class = 'firstLine'><span class='payWay'>消息类型：<selectKuang v-bind:selectData='msgType' @value='typeValue'></selectKuang></span><span class='phoneNum'>消息状态：<selectKuang  v-bind:selectData='payStatus' @value='stateValue'></selectKuang></span></p>
-      <p><span class='buttons'><router-link to="/message/message-send"><el-button type='warning'>发送消息</el-button></router-link></span>
-        <span><searchBox @searchKey='searchKey' v-bind:searchSelect='searchSelect'></searchBox></span></p>
+      <p class = 'firstLine'><span></span></p>
+      <p><span class='buttons'><router-link to="/message/message-send"><el-button type='success'>发送消息</el-button></router-link><router-link to="/message/feed-back"><el-button type='warning'>问题反馈</el-button></router-link></span>
+        <span class=" fr"><searchBox @searchKey='searchKey' v-bind:searchSelect='searchSelect'></searchBox></span></p>
     </div>
     <el-table
       ref='multipleTable'
@@ -12,14 +12,6 @@
       border
       style=' backgroundColor: #f5fafe'
       @selection-change='handleSelectionChange'>
-      <el-table-column
-        type='selection'>
-      </el-table-column>
-      <el-table-column
-        prop='id'
-        label='ID'>
-        <template></template>
-      </el-table-column>
       <el-table-column
         prop='code'
         label='会员名'>
@@ -260,6 +252,9 @@
       }
     },
     mounted() {
+      // PUBLIC.get('User.Problem.add',{problem_uid: 1,problem_img: '222',problem_type: 3, problem_ms: '1234546546'}, data => {
+      //   console.log(data)
+      // })
       this.getsignList()
       this.getTotal()
     }

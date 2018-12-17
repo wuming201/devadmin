@@ -35,7 +35,7 @@
             </el-option>
           </el-select>
         </p>
-        <p><el-button type="success" @click="addCode">生成</el-button><el-button type="info" @click="addSQ">取消</el-button></p>
+        <p><el-button type="success" @click="addCode">生成</el-button><el-button type="info" @click="cancel">取消</el-button></p>
       </div>
     </div>
   </div>
@@ -83,6 +83,9 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val
+    },
+    cancel(){
+      this.$router.go(-1)
     },
     addSQ() {
       this.showIt = !this.showIt
