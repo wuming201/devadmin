@@ -117,7 +117,7 @@
           },
           {
             icon: 'fa fa-list-alt',
-            name: '订单管理',
+            name: '业务管理',
             childname: [
               {
                 link: '/orders/serv-list',

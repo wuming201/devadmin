@@ -10,69 +10,69 @@
           <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
 
     </div>
-    <!--<el-table-->
-      <!--ref='multipleTable'-->
-      <!--:data='tableData3'-->
-      <!--tooltip-effect='dark'-->
-      <!--border-->
-      <!--style=' backgroundColor: #f5fafe'>-->
-      <!--<el-table-column-->
-        <!--prop='school_name'-->
-        <!--label='幼儿园'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='school_name'-->
-        <!--label='执教机构'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='tea_name'-->
-        <!--label='执教老师'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='school_name'-->
-        <!--label='合约'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='name_ja'-->
-        <!--label='教案'-->
-        <!--width='200'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='time'-->
-        <!--label='日期'-->
-        <!--width='300'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='sigintime'-->
-        <!--label='签到时间'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='pay_statu'-->
-        <!--label='状态'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='grade'-->
-        <!--label='评分'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='synthesize'-->
-        <!--label='评价'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='signUrl'-->
-        <!--label='院长签字'>-->
-        <!--<template slot-scope="scope">-->
-          <!--<span class="innerText"><img :src="scope.row.signUrl" alt=""></span>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
-    <!--</el-table>-->
+    <el-table
+      ref='multipleTable'
+      :data='tableData3'
+      tooltip-effect='dark'
+      border
+      style=' backgroundColor: #f5fafe'>
+      <el-table-column
+        prop='school_name'
+        label='幼儿园'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='school_name'
+        label='执教机构'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='tea_name'
+        label='执教老师'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='school_name'
+        label='合约'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='name_ja'
+        label='教案'
+        width='200'>
+      </el-table-column>
+      <el-table-column
+        prop='time'
+        label='日期'
+        width='300'>
+      </el-table-column>
+      <el-table-column
+        prop='sigintime'
+        label='签到时间'
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop='pay_statu'
+        label='状态'
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop='grade'
+        label='评分'
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop='synthesize'
+        label='评价'>
+      </el-table-column>
+      <el-table-column
+        prop='signUrl'
+        label='院长签字'>
+        <template slot-scope="scope">
+          <span class="innerText"><img :src="scope.row.signUrl" alt=""></span>
+        </template>
+      </el-table-column>
+    </el-table>
     <paginationBox :data='dataLength' :page='page' :pageSize="pagesize" @getCurrent='handleCurrentChange'></paginationBox>
     <div class="pass" v-show="showChange">
       <h3>查看信息 <i class="fa fa-close" @click="passIt"></i></h3>

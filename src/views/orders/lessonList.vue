@@ -1,11 +1,19 @@
 <template>
   <div class = 'allMember'>
     <div class = 'memberHead'>
-      <p class = 'firstLine'><span class='phoneNum'>课表状态：<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span>
-        <span class='regTime'>签约日期:<timeBox @value='regTime'></timeBox></span><span class='overTime'>结束日期:<timeBox @value='endTime'></timeBox></span></p>
+      <p class = 'firstLine'><span></span></p>
       <p><span class='buttons'>
         <!--<el-button type='primary'>全选</el-button><el-button type='danger'>批量冻结</el-button>-->
-        <router-link to='/member/add-member'><el-button type='warning'>批量导出</el-button></router-link></span>
+        <router-link to='/member/add-member'><el-button type='warning'>批量导出</el-button></router-link></span><span class='phoneNum'>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;课表状态：<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span>
+        <span class='regTime'>&emsp;&emsp;课表年份:
+          <el-date-picker
+            v-model="searchYear"
+            type="year"
+            placeholder="选择年"
+            value-format="yyyy"
+            @change="yearValue">
+          </el-date-picker>
+          <selectKuang v-bind:selectData='semesterStatus' @value='semesterValue' ></selectKuang></span>
         <span class='record'><searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
 
     </div>
@@ -15,56 +23,56 @@
       tooltip-effect='dark'
       border
       style=' backgroundColor: #f5fafe'>
-      <!--<el-table-column-->
-        <!--prop='yuansuo'-->
-        <!--label='幼儿园'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='jigou'-->
-        <!--label='执教机构'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='id'-->
-        <!--label='合约'-->
-        <!--width='150'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='year'-->
-        <!--label='课表年份'-->
-        <!--width='200'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='semester'-->
-        <!--label='学期'-->
-        <!--width='300'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='hourNum'-->
-        <!--label='课时数'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='weeks'-->
-        <!--label='授课周期'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='timeQuantum'-->
-        <!--label='授课时段'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='lessonsNum'-->
-        <!--label='课节数'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='tecId'-->
-        <!--label='执教老师'-->
-        <!--show-overflow-tooltip>-->
-      <!--</el-table-column>-->
+      <el-table-column
+        prop='yuansuo'
+        label='幼儿园'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='jigou'
+        label='执教机构'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='id'
+        label='合约'
+        width='150'>
+      </el-table-column>
+      <el-table-column
+        prop='year'
+        label='课表年份'
+        width='200'>
+      </el-table-column>
+      <el-table-column
+        prop='semester'
+        label='学期'
+        width='300'>
+      </el-table-column>
+      <el-table-column
+        prop='hourNum'
+        label='课时数'
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop='weeks'
+        label='授课周期'
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop='timeQuantum'
+        label='授课时段'
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop='lessonsNum'
+        label='课节数'
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop='tecId'
+        label='执教老师'
+        show-overflow-tooltip>
+      </el-table-column>
     </el-table>
     <paginationBox :data='dataLength' :page='page' :pageSize="pagesize" @getCurrent='handleCurrentChange'></paginationBox>
   </div>
@@ -89,7 +97,7 @@
         changeData: 1, //监控tid数据更新
         filename: '',
         page: 1,
-        pagesize: 40,
+        pagesize: '',
         dataLength: '',
         yesterdayAdd: '',
         todayAdd: '',
@@ -114,47 +122,36 @@
             value: '',
             label: '全部'
           }, {
-            value: 1,
-            label: '已验证'
+            value: 0,
+            label: '确认中'
           }, {
-            value: 0,
-            label: '未验证'
-          }
-        ],
-        relStatus: [
-          {
-            value: '',
-            label: '全部'
-          },
-          {
             value: 1,
-            label: '已验证'
-          },
-          {
-            value: 0,
-            label: '未验证'
+            label: '待开课'
+          }, {
+            value: 2,
+            label: '已开课'
+          }, {
+            value: -1,
+            label: '已撤回'
           }
         ],
-        userStatus: [
+        semesterStatus: [
           {
             value: '',
             label: '全部'
           },
           {
-            value: 318,
-            label: 'VIP用户'
+            value: '上半学期',
+            label: '上半学期'
           },
           {
-            value: 317,
-            label: '机构用户'
-          },
-          {
-            value: 316,
-            label: '特权用户'
+            value: '下半学期',
+            label: '下半学期'
           }
         ],
         selectArg: {},
-        adataaa: 1
+        adataaa: 1,
+        searchYear: ''
       }
     },
     created() {
@@ -234,18 +231,18 @@
         //   this.dataLength = data
         // })
         //昨天
-        var yester = PUBLIC.getYesterday()
-        var today = PUBLIC.getToday()
-        var now = PUBLIC.getNow()
+        // var yester = PUBLIC.getYesterday()
+        // var today = PUBLIC.getToday()
+        // var now = PUBLIC.getNow()
         // console.log(today, yester, now)
-        PUBLIC.get('User.User.usercount',{ 'regstr_time': yester, regend_time: today }, data => {
-          this.yesterdayAdd = data
-        })
-        PUBLIC.get('User.User.usercount',{ 'regstr_time': today, regend_time: now }, dataa => {
-          this.todayAdd = dataa
-        })
+        // PUBLIC.get('User.User.usercount',{ 'regstr_time': yester, regend_time: today }, data => {
+        //   this.yesterdayAdd = data
+        // })
+        // PUBLIC.get('User.User.usercount',{ 'regstr_time': today, regend_time: now }, dataa => {
+        //   this.todayAdd = dataa
+        // })
       },
-      getUserList: function(keyword) {
+      getUserList(keyword) {
         var _this = this
         this.keyword = keyword
         var args = { page: this.page }
@@ -257,41 +254,32 @@
         // console.log(args)
         this.keyword == this.keyword != undefined ? this.keyword : ''
         PUBLIC.get('Curriculum.listese.findList', args, (data) => {
+          this.tableData3=[]
           console.log(data)
-          for(let i in data) {
-            PUBLIC.get('User.Company.seltid',{ tid: data[i].tid}, v =>{
-              console.log(v)
-              if(v != false) {
-                data[i]['yuansuo'] = v.company_name
-              }
-              PUBLIC.get('User.Company.seltid',{ tid: data[i].oid}, v1 =>{
-                console.log(v1)
-                if(v1 != false) {
-                  data[i]['jigou'] = v1.company_name
+          // if(data != '') {
+            for(let i in data) {
+              PUBLIC.get('User.Company.seltid',{ tid: data[i].tid}, v =>{
+                console.log(v)
+                if(v != false) {
+                  data[i]['yuansuo'] = v.company_name
                 }
-                this.tableData3.push(data[i])
+                PUBLIC.get('User.Company.seltid',{ tid: data[i].oid}, v1 =>{
+                  console.log(v1)
+                  if(v1 != false) {
+                    data[i]['jigou'] = v1.company_name
+                  }
+                  this.tableData3.push(data[i])
+                })
               })
-            })
-          }
-        //   var newData = []
-        //   var demo = {
-        //     id:'Id',
-        //     user_status: 'user_status',
-        //     name:'name',
-        //     telphone:'telphone',
-        //     reg_time:'reg_time',
-        //     rel_status:'rel_status'
-        //   }
-        //   newData = PUBLIC.formatObj(demo,data)
-        //   for(var i=0;i<newData.length;i++){
-        //     _this.getUserGroup(newData[i].id,newData,i,newData)
-        //   }
-        //   _this.tableData3 = newData
-        //   // console.log(_this.tableData3)
-        // },function(data){
-        //   // console.log(data)
-        //   _this.dataLength=parseInt(data.data.num)
-        //   _this.pagesize=parseInt(data.data.pagenum)
+            }
+          // }else{
+          //   this.tableData3 = []
+          // }
+        },(res) => {
+          console.log(res)
+          this.dataLength = res.data.num
+          this.pagesize = res.data.pagnum
+          console.log(this.dataLength,this.pagesize)
         })
       },
       getUserGroup: function(id, relData, index, newData) {
@@ -333,45 +321,55 @@
       searchKey(e) {
         this.page = 1
         console.log(e[0])
-        this.selectArg[e[0]]=e[1]
+        if(this.selectArg[e[0]] == 'year' || this.selectArg[e[0]] == 'semester') {
+          this.selectArg[e[0]]=e[1]
+          var op = this.selectArg
+          // op[e[0]] = e[1]
+          console.log(op)
+          delete op.undefined
+          this.getUserList(op)
+        }else{
+          this.selectArg[e[0]]=e[1]
+          var op = this.selectArg
+          // op[e[0]] = e[1]
+          console.log(op)
+          delete op.undefined
+          this.getUserList(op)
+          this.cleanIt()
+        }
         // if(e!=undefined &&["id","telphone","name"].indexOf(e[0])){
         //   delete this.selectArg["id"]
         //   delete this.selectArg["telphone"]
         //   delete this.selectArg["name"]
         //   this.selectArg[e[0]]=e[1]
         // }
-        var op = this.selectArg
-        // op[e[0]] = e[1]
-        // console.log(op)
-        delete op.undefined
-        this.getUserList(op)
-        this.cleanIt()
       },
       phoneValue(e) {
+        this.selectArg['on_statu'] = e
+        let ee = this.selectArg
+        this.searchKey(ee)
+        let aaa = { on_statu: e } //获取搜索值
+        // this.getTotal(aaa)
+      },
+      semesterValue(e) {
         // console.log( this.selectArg)
-        this.selectArg['phone_status'] = e
+        this.selectArg['semester'] = e
         let ee = this.selectArg
         this.searchKey(ee)
-        let aaa = { phone_status: e } //获取搜索值
-        this.getTotal(aaa)
+        // let aaa = { year: e } //获取搜索值
+        // this.getTotal(aaa)
       },
-      relValue(e) {
-        this.selectArg['issming'] = e
+      yearValue(e) {
+        // console.log( this.selectArg)
+        this.selectArg['year'] = e
         let ee = this.selectArg
         this.searchKey(ee)
-        let aaa = { issming: e } //获取搜索值
-        this.getTotal(aaa)
-      },
-      userValue(e) {
-        this.selectArg['usertype'] = e
-        let ee = this.selectArg
-        this.searchKey(ee)
-        let aaa = { usertype: e } //获取搜索值
-        this.isUser = true
-        if(e == '') {
-          this.isUser = false
-        }
-        this.getTotal(aaa)
+        // let aaa = { usertype: e } //获取搜索值
+        // this.isUser = true
+        // if(e == '') {
+        //   this.isUser = false
+        // }
+        // this.getTotal(aaa)
       },
       regTime(e) {
         this.selectArg['regstr_time'] = e[0]
@@ -388,17 +386,7 @@
         this.searchKey(ee)
         let aaa = { daoqstr_time: e[0], daoqend_time: e[1] } //获取搜索值
         this.getTotal(aaa)
-      },
-    //  全选
-    //   getAll(a) {
-    //     console.log(a)
-    //     this.selectAllData = this.selectAllData.concat(a)
-    //     console.log(this.selectAllData)
-    //   },
-    //   getOne(e) {
-    //     console.log(e)
-    //     this.selectAllData = this.selectAllData.concat(e)
-    //   }
+      }
     },
     mounted() {
       var relName = this.$route.params.rel_name
@@ -434,12 +422,12 @@
             border-radius: 0;
           }
         }
-        .record{
-          float: right;
-          >span{
-            color: red;
-            padding-right: 20px;
-            font-weight: bold;
+        .phoneNum{
+          .selectKuang{
+            width: 124px;
+          }
+          .el-input{
+            width: 124px;
           }
         }
         .searchBox{
