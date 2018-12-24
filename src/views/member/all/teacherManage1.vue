@@ -66,16 +66,15 @@
         <template slot-scope="scope">
           <el-button @click="info(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button type="text" size="small" v-if="scope.row.pay_statu == 0" @click="check(scope.row)">审核</el-button>
+          <span v-if="scope.row.cert_type !=  1"><el-button type="text" size="small" v-if="scope.row.pay_statu == 0" @click="check(scope.row)">{{scope.row.cert_type}}</el-button></span>
           <el-button type="text" size="small" v-if="scope.row.pay_statu == 1" @click="check(scope.row)">已通过</el-button>
           <el-button type="text" size="small" v-if="scope.row.pay_statu == -1" @click="check(scope.row)">未通过</el-button>
-          <el-button type="text" size="small" v-if="scope.row.state==1"
-                     @click="teacherStatus(scope.row.id,0,scope.row)">离职
-          </el-button>
+          <!--<el-button type="text" size="small" v-if="scope.row.state==1"-->
+                     <!--@click="teacherStatus(scope.row.id,0,scope.row)">离职-->
+          <!--</el-button>-->
           <el-button type="text" size="small" v-else @click="teacherStatus(scope.row.id,1,scope.row)">在职</el-button>
         </template>
       </el-table-column>
-
     </el-table>
     <paginationBox :data='dataLength' :page='page' @getCurrent='handleCurrentChange'></paginationBox>
   </div>
@@ -305,7 +304,8 @@
             console.log(data.length)
             newData = PUBLIC.formatObj(demo,data)
 
-           this.tableData3 = JSON.parse(JSON.stringify(newData))
+            this.tableData3 = JSON.parse(JSON.stringify(newData))
+            console.log(this.tableData3)
             // PUBLIC.get('User.certificate.finds', {id: 82}, p => {
             //   console.log(p)
             // })

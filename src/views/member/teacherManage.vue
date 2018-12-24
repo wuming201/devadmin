@@ -55,13 +55,15 @@
       </el-table-column>
 
       <el-table-column
-        prop="statu"
+        prop="pay_statu"
         label="在职状态"
         show-overflow-tooltip>
         <template slot-scope="scope">
-          <span class="innerText" v-if="scope.row.state==1">在职</span>
-          <span class="innerText" v-else>离职</span>
-          <!-- <span class="innerText" v-else>不知道{{scope.row.state}}</span> -->
+          <!--<span class="innerText" v-if="scope.row.state==1">在职</span>-->
+          <!--<span class="innerText" v-else>离职</span>-->
+          <span type="text" size="small" v-if="scope.row.pay_statu == 0" @click="check(scope.row)">未审核</span>
+          <span type="text" size="small" v-if="scope.row.pay_statu == 1" @click="check(scope.row)">已通过</span>
+          <span type="text" size="small" v-if="scope.row.pay_statu == -1" @click="check(scope.row)">未通过</span>
         </template>
       </el-table-column>
       <!--<el-table-column-->
@@ -78,7 +80,7 @@
         <template slot-scope="scope">
           <el-button @click="info(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button type="text" size="small" v-if="scope.row.pay_statu == 0" @click="check(scope.row)">审核</el-button>
+          <el-button type="text" size="small" v-if="scope.row.pay_statu == 0 && scope.row.cert_type != '1'" @click="check(scope.row)">审核</el-button>
           <el-button type="text" size="small" v-if="scope.row.pay_statu == 1" @click="check(scope.row)">已通过</el-button>
           <el-button type="text" size="small" v-if="scope.row.pay_statu == -1" @click="check(scope.row)">未通过</el-button>
           <el-button type="text" size="small" v-if="scope.row.state==1"
@@ -306,7 +308,8 @@
             province: 'province',
             pay_statu: 'pay_statu',
             unit: 'unit',
-            rel_name: 'rel_name'
+            rel_name: 'rel_name',
+            cert_type:'cert_type'
           }
           newData = PUBLIC.formatObj(demo, data)
           if (data.length == 0) {
