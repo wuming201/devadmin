@@ -113,7 +113,7 @@
         })
       },
       cancelIt() {
-        this.$router.go(-1)
+        this.$router.push({name:'教师管理',query: { page: this.page }})
       }
     },
     mounted() {

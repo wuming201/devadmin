@@ -193,6 +193,7 @@
           console.log(data)
           this.uimg = data.identityUrl
           this.uid = data.uid
+          this.entryTime = data.entryTime
           this.stageName = data.stageName
           this.birth = data.dateBirth
           this.worknum = data.jobnumber
@@ -309,6 +310,7 @@
       saveTeacher() {
         console.log(this.unit)
         let datas = {
+          entryTime: this.entryTime,
           identityUrl: this.uimg,
           id: this.id,
           uid: this.uid,

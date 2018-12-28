@@ -6,7 +6,7 @@
       <!--<p><span><span class="title">合同编号:</span><span class="innerText">{{allData.contract_num}}</span></span><span><span class="title">合同文件:</span><span class="innerText">{{allData.contract_doc}}-->
       <p><span><span class="title">幼儿园地址:</span><span class="innerText">{{allData.company_adress}}</span></span><span><span class="title" style="color: #00a2d4">考勤地址列表</span></span></p>
         <!--<a :href="allData.contract_doc" download="">下载文件</a></span></span></p>-->
-      <p><span><span class="title">授权类目:</span><span class="innerText"><span v-for="item in shouquan" style="display: inline-block;margin-bottom: 4px">{{item}}&emsp;</span></span></span><el-button type="primary" @click="addSQ">新增授权</el-button></p>
+      <p><span><span class="title">授权类目:</span><span class="innerText"><span v-for="item in shouquan" style="display: inline-block;margin-bottom: 4px">{{item.class}}&emsp;</span></span></span><el-button type="primary" @click="addSQ">新增授权</el-button></p>
       <p><span><span class="title">认证状态:</span><span class="innerText"><span v-if="allData.company_statu == 0">未认证</span><span v-if="allData.company_statu == 1">普通认证</span><span v-if="allData.company_statu == 2">高级认证</span></span></span><span><span class="title">认证时间:</span><span class="innerText">{{allData.username}}</span></span></p>
       <p><span><span class="title">认证密钥 :</span><span class="innerText">{{allData.company_my}}</span></span></p>
       <p><span><span class="title">认证资料 :</span><img src="" alt=""></span></p>
@@ -22,7 +22,8 @@
           <el-date-picker
             v-model="end_time"
             type="date"
-            placeholder="选择日期">
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd">
           </el-date-picker>
         </p>
         <p>授权类目：
@@ -30,8 +31,8 @@
             <el-option
               v-for="item in options"
               :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :label="item.class"
+              :value="item.id">
             </el-option>
           </el-select>
         </p>
@@ -51,6 +52,7 @@ export default {
   },
   data() {
     return {
+      tid: '',
       showIt: false,
       allData: [],
       schoolInfo: [],
@@ -78,6 +80,12 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
+    getSQ() {
+      PUBLIC.get('Video.drama.classlist', {}, data => {
+        console.log(data)
+        this.options = data
+      })
+    },
     handleSizeChange(val) {
       this.pagesize = val
     },
@@ -88,32 +96,14 @@ export default {
       this.$router.go(-1)
     },
     addSQ() {
+      this.getSQ()
       this.showIt = !this.showIt
     },
     addCode() {
-      this.addTime = PUBLIC.getTime()
-      // this.use_state = 0
-      this.welCode=""
-      var chars = ['0','1', '2', '3', '4', '5', '6', '7', '8', '9','0']
-      for(var i = 0; i < 8; i ++) {
-        var code = Math.ceil(Math.random() * 10)
-        console.log(code)
-        console.log(this.welCode)
-        this.welCode += chars[code]
-      }
-      // return
-      let year = this.end_time.getFullYear();
-      let month = this.end_time.getMonth()+1;    //js从0开始取
-      let date1 = this.end_time.getDate();
-      let hour = this.end_time.getHours();
-      let minutes = this.end_time.getMinutes();
-      let second = this.end_time.getSeconds();
-      let endTime = year+ "-" +month+ "-" +date1+ " " +'0'+hour+ ":" + '0'+minutes + ":" +'0'+second
-      this.end_time = endTime
-      console.log(this.end_time)
-      var codes = { time: this.addTime, end_time: this.end_time, child_account: this.child_account }
-      this.codeGroup.push(codes)
-      this.showIt = !this.showIt
+      PUBLIC.get('Video.drama.addlistexa', {tid: this.tid,video_list_id: this.addName, list_time: this.end_time}, data => {
+        console.log(data)
+        this.showIt = !this.showIt
+      })
     },
     getSchoolInfo(id) {
       var _this=this
@@ -169,6 +159,9 @@ export default {
         // })
 
       })
+      PUBLIC.get('Video.drama.sellist',{ tid: id }, v=>{
+        this.shouquan = v
+      })
     },
     saveIt() {
       PUBLIC.get('User.Mechanism.Updatecode', {
@@ -197,9 +190,9 @@ export default {
   mounted() {
     DATAC.setConf(this)
     this.page = this.$route.params.page
-    var id = this.$route.params.id
+    this.tid  = this.$route.params.id
     // console.log(this)
-    this.getSchoolInfo(id)
+    this.getSchoolInfo(this.tid)
   }
 }
 </script>

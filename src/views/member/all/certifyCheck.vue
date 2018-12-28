@@ -12,9 +12,10 @@
       <p><span><span class="title">首次发证时间:</span><span class="innerText" v-if="newData.applyTime != null && newData.applyTime != ''">{{newData.applyTime.slice(0,10)}}</span><span v-else></span></span>
         <span><span class="title">证书编号:</span><span class="innerText"  v-if="newData.applyTime != null && newData.applyTime != ''">{{newData.applyTime.slice(0,10)}}</span><span v-else></span></span></p>
       <p><span><span class="title">联系手机:</span><span class="innerText">{{newData.tell}}</span></span><span><span class="title">处理状态:</span><span class="innerText" v-if="newData.pay_statu === '0'">审核中</span><span class="innerText" v-else-if="newData.pay_statu === '-1'">未通过</span><span class="innerText" v-else-if="newData.pay_statu === '1'">通过</span></span></p>
-      <p><span><span class="title">处理备注:</span><span class="innerText">{{newData.tell}}</span></span></p>
+      <p ><span><span class="title">处理备注:</span><span class="innerText">{{newData.tell}}</span></span></p>
     </div>
-    <p class="buttons"><el-button @click="passIt" passIt type="success" v-if="newData.pay_statu === '0'">通过</el-button><el-button type="danger" @click="rejectIt" v-if="newData.pay_statu === '0'">拒绝</el-button><el-button type="info" @click="cancel">取消</el-button></p>
+    <p class="buttons" v-if="newData.cert_type	 == 0"><el-button @click="passIt" passIt type="success" v-if="newData.pay_statu === '0'">通过</el-button><el-button type="danger" @click="rejectIt" v-if="newData.pay_statu === '0'">拒绝</el-button><el-button type="info" @click="cancel">取消</el-button></p>
+    <p class="buttons" v-else><el-button type="info" @click="cancel">返回</el-button></p>
     <div class="pass" v-show="showPass">
       <h3>信息编辑 <i class="fa fa-close" @click="passIt"></i></h3>
       <div class="inner">
@@ -72,6 +73,7 @@ export default {
       whyReject: '',
       whySuccess: '',
       stopTime: '',
+      page: '',
       admin: ''
     }
   },
@@ -150,20 +152,19 @@ export default {
       //   this.cerPic = data
         PUBLIC.get('User.certificate.applyFor', { pay_statu: 1, id: this.id, entryTime: this.newData.entryTime ,applicationRestult: this.whySuccess ,stopTime: stopTime.slice(0, 10), licenceNum: cerNum }, data1 => {
           console.log(data1)
-
-          this.$router.push({ name: '教师管理'})
+          this.$router.push({name:'教师管理',query: { page: this.page }})
         })
       // })
     },
     reject() {
       PUBLIC.get('User.certificate.applyFor',{ pay_statu: -1, id: this.id, applicationRestult: this.whyReject }, data => {
         console.log(data)
-
-        this.$router.push({ name: '教师管理'})
+        this.$router.push({name:'教师管理',query: { page: this.page }})
       })
     }
   },
   mounted() {
+    this.page = this.$route.params.page
     var id = this.$route.query.id
     this.id = id
     this.getInfo(id)

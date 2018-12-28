@@ -88,6 +88,7 @@ export default {
   },
   data() {
     return {
+      pagesize: '',
       list: null,
       listLoading: true,
       downloadLoading: false,
@@ -262,10 +263,10 @@ export default {
       //   // this.dataLength = data
       // })
     },
-    handleClick(row) {
+    handleClick(msg) {
       var _this = this
-      console.log(row.id)
-      _this.$router.push({ name: '机构详情', params: { id: row.id, page: this.page,type: 1 }})
+      console.log(msg)
+      _this.$router.push({ name: '机构详情', params: { id: msg.company_tid, page: this.page,type: 1 }})
     },
     edit(msg) {
       localStorage.setItem("pageInfo",JSON.stringify(this.keyword))
@@ -357,15 +358,15 @@ export default {
     // console.log(this.videoClassDict)
   },
   watch:{
-    videoClass:function(){
-      for(var n=0;n<this.videoClass.length;n++){
-      tmp[this.videoClass[n]["value"]]=this.videoClass[n]["label"]
-    }
-    console.log(tmp)
-    this.videoClassDict=tmp
-    console.log("11111111111111111111111111111111111111111111")
-    console.log(this.videoClassDict)
-    }
+    // videoClass:function(){
+    //   for(var n=0;n<this.videoClass.length;n++){
+    //   tmp[this.videoClass[n]["value"]]=this.videoClass[n]["label"]
+    // }
+    // console.log(tmp)
+    // this.videoClassDict=tmp
+    // console.log("11111111111111111111111111111111111111111111")
+    // console.log(this.videoClassDict)
+    // }
   }
 }
 </script>

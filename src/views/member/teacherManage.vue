@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="memberHead">
-      <p class="firstLine"><span class="phoneNum">电子证书：<selectKuang :selectData="eleCer"
+      <p class="firstLine"><span class="phoneNum">审核状态：<selectKuang :selectData="eleCer"
                                                                     @value="eleCerValue"></selectKuang></span>
         <!--<span class="phoneNum">执业登记：<selectKuang :selectData="inJob" @value="jobValue"></selectKuang></span>-->
         <!--<span class="phoneNum">视频制作：<selectKuang :selectData="videoProducing" @value="produceValue"></selectKuang></span>-->
@@ -56,14 +56,15 @@
 
       <el-table-column
         prop="pay_statu"
-        label="在职状态"
+        label="认证状态"
         show-overflow-tooltip>
         <template slot-scope="scope">
-          <!--<span class="innerText" v-if="scope.row.state==1">在职</span>-->
-          <!--<span class="innerText" v-else>离职</span>-->
-          <span type="text" size="small" v-if="scope.row.pay_statu == 0" @click="check(scope.row)">未审核</span>
-          <span type="text" size="small" v-if="scope.row.pay_statu == 1" @click="check(scope.row)">已通过</span>
-          <span type="text" size="small" v-if="scope.row.pay_statu == -1" @click="check(scope.row)">未通过</span>
+          <span v-if="scope.row.pay_statu == 0">审核中</span>
+          <span v-if="scope.row.pay_statu == 1" >已通过</span>
+          <span v-if="scope.row.pay_statu == -1">未通过</span>
+          <span v-if="scope.row.pay_statu == 2">吊销</span>
+          <!--<span v-if="scope.row.state==1" >离职-->
+          <!--</span>-->
         </template>
       </el-table-column>
       <!--<el-table-column-->
@@ -80,13 +81,13 @@
         <template slot-scope="scope">
           <el-button @click="info(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button type="text" size="small" v-if="scope.row.pay_statu == 0 && scope.row.cert_type != '1'" @click="check(scope.row)">审核</el-button>
+          <el-button type="text" size="small" v-if="scope.row.pay_statu == 0 && scope.row.cert_type != '1' && scope.row.cert_type == 0" @click="check(scope.row)">审核</el-button>
           <el-button type="text" size="small" v-if="scope.row.pay_statu == 1" @click="check(scope.row)">已通过</el-button>
           <el-button type="text" size="small" v-if="scope.row.pay_statu == -1" @click="check(scope.row)">未通过</el-button>
-          <el-button type="text" size="small" v-if="scope.row.state==1"
-                     @click="teacherStatus(scope.row.id,0,scope.row)">离职
-          </el-button>
-          <el-button type="text" size="small" v-else @click="teacherStatus(scope.row.id,1,scope.row)">在职</el-button>
+          <!--<el-button type="text" size="small" v-if="scope.row.state==1"-->
+                     <!--@click="teacherStatus(scope.row.id,0,scope.row)">离职-->
+          <!--</el-button>-->
+          <!--<el-button type="text" size="small" v-else @click="teacherStatus(scope.row.id,1,scope.row)">在职</el-button>-->
         </template>
       </el-table-column>
 
@@ -122,22 +123,18 @@
           {
             value: '',
             label: '全部'
-          },
-          {
-            value: '4',
-            label: '未申领'
           }, {
-            value: '1',
+            value: '0',
             label: '审核中'
           }, {
-            value: '2',
+            value: '1',
             label: '审核通过'
           }, {
             value: '-1',
             label: '未通过'
           }, {
-            value: '3',
-            label: '到期'
+            value: '2',
+            label: '吊销'
           }
         ],
         searchSelect: [
@@ -221,7 +218,7 @@
       },
       check(row) {
         console.log(row)
-        this.$router.push({name: '教师审核', query: {id: row.id}})
+        this.$router.push({name: '教师审核', query: {id: row.id, page: this.page}})
       },
       info(row) {
         this.$router.push({name: '教师详情', query: {page: this.page, id: row.id}})

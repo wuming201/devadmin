@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="memberHead">
-      <p class="firstLine"><span class="phoneNum">电子证书：<selectKuang :selectData="eleCer"
+      <p class="firstLine"><span class="phoneNum">审核状态：<selectKuang :selectData="eleCer"
                                                                     @value="eleCerValue"></selectKuang></span>
         <span class="phoneNum">执业登记：<selectKuang :selectData="inJob" @value="jobValue"></selectKuang></span>
         <span class="phoneNum">视频制作：<selectKuang :selectData="videoProducing" @value="produceValue"></selectKuang></span>
@@ -107,22 +107,18 @@
           {
             value: '',
             label: '全部'
-          },
-          {
-            value: '4',
-            label: '未申领'
           }, {
-            value: '1',
+            value: '0',
             label: '审核中'
           }, {
-            value: '2',
+            value: '1',
             label: '审核通过'
           }, {
             value: '-1',
             label: '未通过'
           }, {
-            value: '3',
-            label: '到期'
+            value: '2',
+            label: '吊销'
           }
         ],
         searchSelect: [

@@ -289,8 +289,11 @@
               console.log(this.tableData3)
             })
           }
-
-       })
+       }, res => {
+          console.log(res)
+          this.dataLength = Number(res.data.num)
+          this.pagesize = res.data.pagenum
+        })
       },
       cleanIt() {
         var op = this.selectArg

@@ -21,7 +21,11 @@
       <p><span><span class="title">身份证号:</span><span class="innerText">{{person.rel_code}}</span></span><span><span class="title">艺名:</span><span class="innerText">{{stageName}}</span></span></p>
       <p><span><span class="title">工号:</span><span class="innerText">{{worknum}}</span></span><span><span class="title">入职时间:</span><span class="innerText">{{entryTime}}</span></span></p>
       <!--<p><span><span class="title">视频制作:</span><span class="innerText">{{videoProducing}}</span></span></p>-->
-      <p class="cerPic"><span><span class="title">证书照片:</span><img :src="mycer" alt=""></span></p>
+      <p class="cerPic"><span><span class="title">证书照片:</span><img :src="mycer" alt=""></span><span><span class="title">在职状态:</span>
+        <span class="personInfo" v-if="state == 1">在职</span>
+        <span class="personInfo" v-if="state == 0">离职职</span>
+      </span></p>
+      <!--<p class="addP"></p>-->
       <p class="addP"><span><span class="title">个人简介:</span><span class="personInfo">{{message}}</span></span></p>
       <p class="addP"><span><span class="title">其他证书:</span><span class="pics" v-html="otherCer"></span></span></p>
       <p class="addP"><span><span class="title">个人相册:</span><span class="pics" v-html="morepic"></span></span></p>
@@ -42,6 +46,7 @@ export default {
   },
   data() {
     return {
+      state: '', //入职状态
       uimg: '', //头像
       cers: [],            //证书
       addcer: '',
@@ -123,6 +128,7 @@ export default {
           this.province=data.province
           this.mycer=data.mycer
           this.unit=data.unit
+          this.state=data.state
           this.stopTime = data.stopTime?data.stopTime.slice(0, 10):""
           console.log(this.stopTime)
           if(data.certificates !== null) {
