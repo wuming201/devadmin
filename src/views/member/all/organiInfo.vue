@@ -52,6 +52,7 @@
     },
     data() {
       return {
+        options: [],
         tid: '',
         showIt: false,
         allData: [],
@@ -108,8 +109,10 @@
         PUBLIC.get('User.Company.seltid', { tid: id }, (data) => {
           console.log(data)
           this.allData = data
-          this.picList = data.company_xc.split(',')
-          console.log(this.picList)
+          if(data.company_xc != '' && data.company_xc != null) {
+            this.picList = data.company_xc.split(',')
+            console.log(this.picList)
+          }
         })
         PUBLIC.get('Video.drama.sellist',{ tid: id }, v=>{
           this.shouquan = v

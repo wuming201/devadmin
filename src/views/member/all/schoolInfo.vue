@@ -5,14 +5,13 @@
       <p><span><span class="title">负责人:</span><span class="innerText">{{allData.company_user}}</span></span><span><span class="title">联系电话:</span><span class="innerText">{{allData.company_phone}}</span></span></p>
       <!--<p><span><span class="title">合同编号:</span><span class="innerText">{{allData.contract_num}}</span></span><span><span class="title">合同文件:</span><span class="innerText">{{allData.contract_doc}}-->
       <p><span><span class="title">幼儿园地址:</span><span class="innerText">{{allData.company_adress}}</span></span><span><span class="title" style="color: #00a2d4">考勤地址列表</span></span></p>
-        <!--<a :href="allData.contract_doc" download="">下载文件</a></span></span></p>-->
+      <p><span><span class="title">子账号个数:</span><span class="childCount"><el-input v-model="childCounts"></el-input></span></span><span><span class="childCounts" style="color: #00a2d4" @click="saveChildCount">保存</span></span></p>
       <p><span><span class="title">授权类目:</span><span class="innerText"><span v-for="item in shouquan" style="display: inline-block;margin-bottom: 4px">{{item.class}}&emsp;</span></span></span><el-button type="primary" @click="addSQ">新增授权</el-button></p>
       <p><span><span class="title">认证状态:</span><span class="innerText"><span v-if="allData.company_statu == 0">未认证</span><span v-if="allData.company_statu == 1">普通认证</span><span v-if="allData.company_statu == 2">高级认证</span></span></span><span><span class="title">认证时间:</span><span class="innerText">{{allData.username}}</span></span></p>
       <p><span><span class="title">认证密钥 :</span><span class="innerText">{{allData.company_my}}</span></span></p>
       <p><span><span class="title">认证资料 :</span><img src="" alt=""></span></p>
       <p class="jianjie"><span><span class="title">园所简介 :</span><span class="text">{{allData.company_jj}}</span></span></p>
-      <p><span><span class="title">园所相册 :</span><img v-for="item in JSON.parse(allData.company_xc)" :src="item" alt=""></span></p>
-
+      <p class="pics"><span><span class="title">园所相册 :</span><img v-if="allData.company_xc != null && allData.company_xc != ''" v-for="item in picList" :src="item" alt=""></span></p>
     </div>
     <div class="generateBox" v-show="showIt">
       <h3>信息编辑 <i class="fa fa-close" @click="addSQ"></i></h3>
@@ -52,6 +51,9 @@ export default {
   },
   data() {
     return {
+      options: [],
+      picList: [],
+      childCounts: '',//子账号个数
       tid: '',
       showIt: false,
       allData: [],
@@ -77,6 +79,9 @@ export default {
     }
   },
   methods: {
+    saveChildCount() {
+
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
@@ -111,53 +116,10 @@ export default {
       PUBLIC.get('User.Company.seltid', { tid: id }, (data) => {
         console.log(data)
         this.allData = data
-        // var newData = [];
-        // var demo = {
-        //   name: 'name',
-        //   username:'username',
-        //   rec_status: 'rec_status',
-        //   user_phone: 'user_phone',
-        //   contract_num: 'contract_num',
-        //   contract_doc: 'contract_doc',
-        //   auth_dir: 'auth_dir',
-        //   use_state: 'use_state',
-        //   subaccount_num: 'subaccount_num',
-        //   generate_time: 'generate_time',
-        //   end_time: 'end_time',
-        //   time: 'time',
-        //   code: 'code',
-        //   on_statu:"on_statu",
-        //   id:"id"
-        // }
-        // newData =  PUBLIC.formatObj(demo, data)
-        // this.schoolInfo = newData
-        // this.schoolGroup = this.schoolInfo
-        // // console.log(this.allData)
-        // //拉取历史授权码信息
-        // PUBLIC.get("User.Mechanism.selhiscode",{fromid:id},function(data){
-        //   var tmp=[]
-        //   for(var n=0;n<data.length;n++){
-        //     if(data[n].code!=newData.code){
-        //       tmp.push(data[n])
-        //     }
-        //   }
-        //   _this.codeHis=tmp
-        // })
-        // var shouquan = this.schoolInfo.auth_dir.split(',')
-        // PUBLIC.get('Video.drama.classlist', data => {
-        //   console.log(data)
-        //   console.log(shouquan)
-        //   for (var i in data) {
-        //     // console.log(data[i].id)
-        //     for (var a in shouquan) {
-        //       if (data[i].id === shouquan[a]) {
-        //         this.shouquan.push(data[i].class)
-        //       }
-        //     }
-        //     console.log(this.shouquan)
-        //   }
-        // })
-
+        if(data.company_xc != '' && data.company_xc != null) {
+          this.picList = data.company_xc.split(',')
+          console.log(this.picList)
+        }
       })
       PUBLIC.get('Video.drama.sellist',{ tid: id }, v=>{
         this.shouquan = v
@@ -224,6 +186,12 @@ export default {
         >span:first-of-type{
           margin-right: 70px;
         }
+        .childCount{
+          .el-input__inner{
+            width: 150px;
+            /*background-color: transparent;*/
+          }
+        }
       }
       .jianjie{
         .text{
@@ -259,6 +227,19 @@ export default {
         .el-button{
           width: 200px;
           margin-bottom: 55px;
+        }
+      }
+
+      .pics{
+        >span{
+          .title{
+            vertical-align: top;
+          }
+          img{
+            width: 220px;
+            height: 150px;
+            margin-right: 20px;
+          }
         }
       }
       /*p:last-of-type {*/
