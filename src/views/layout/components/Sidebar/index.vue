@@ -2,7 +2,7 @@
   <div class="sidebar">
     <ul class="sideList">
       <li class="cursor" v-for=" (items, index) in list" @click="openLi(items,index)">
-        <i :class="items.icon"></i>{{items.name}} <span><i class="fa fa-caret-up"></i></span>
+        <i :class="items.icon"></i>{{items.name}} <span><i class="fa fa-caret-up" ref="icon"></i></span>
         <ul :class="items.active" @click.stop="bba">
           <router-link v-for="item in items.childname" :to="item.link" @click="cleanPageInfo">
             <li>{{item.name}}</li>
@@ -22,6 +22,7 @@
     components: { SidebarItem },
     data() {
       return {
+        rotate:'0deg',
         path: '',
         list: [
           {
@@ -264,8 +265,15 @@
         if (a.active != undefined && a.active != '') {
           console.log('oooooooo')
           a['active'] = ''
-        }
-        else {
+          this.$refs.icon[b].style.transform = 'rotate(0deg)'
+        } else {
+          // console.log(this.rotate)
+          // this.rotate = '180deg'
+          let icon = 'icon' + b
+          // console.log(this.rotate)
+          console.log(icon)
+          console.log(this.$refs.icon[b])
+          this.$refs.icon[b].style.transform = 'rotate(180deg)'
           console.log(']]]]]]]]]]]]]]]]]]')
           a['active'] = 'active'
         }
