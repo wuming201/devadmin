@@ -490,7 +490,7 @@
                 var filenames=file.file.name.split(".")
                 // console.log(filenames)
                 var hou=filenames.length>1?"."+filenames[filenames.length-1]:""
-                var ran=parseInt(Math.random()*1000000) 
+                var ran=parseInt(Math.random()*1000000)
                 var fname = Date.now() +"s"+ ran+hou
                 file.file.name=fname
                 //这里可以通过data对象添加POST参数
@@ -517,8 +517,9 @@
                         //     'type': responseText.split(" ")[1].split(".")[1],
                         //     // 'original':json.original
                         // });
+                      console.log(responseText.split(" ")[1])
                         _this.fileList.push({
-                            'url': "https://file.yusj.vip/r/"+responseText.split(" ")[1],
+                            'url': responseText.split(" ")[1],
                             'type': responseText.split(" ")[1].split(".")[1],
                             // 'original':json.original
                         });

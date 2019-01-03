@@ -108,8 +108,8 @@
         changeData: 1, //监控tid数据更新
         filename: '',
         page: 1,
-        pagesize: 40,
-        dataLength: 400,
+        pagesize: 0,
+        dataLength: 0,
         yesterdayAdd: '',
         todayAdd: '',
         selectAll: [],

@@ -6817,14 +6817,14 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
         //  * editor.getActionUrl('scrawl'); //返回 "/ueditor/php/controller.php?action=uplaodscrawl"
         //  * editor.getActionUrl('imageManager'); //返回 "/ueditor/php/controller.php?action=listimage"
             obj['config']=''
-            obj['image']='https://file.yusj.vip/u/'
-            obj['imageManager']='https://file.yusj.vip/u/'
-            obj['scrawl']='https://file.yusj.vip/u/'
+            obj['image']='https://pic.kkip.cn/index.php/'
+            obj['imageManager']='https://pic.kkip.cn/index.php/'
+            obj['scrawl']='https://pic.kkip.cn/index.php/'
             // "serverUrl"
-                // 'image':"https://file.yusj.vip/u/",
-                // 'imageManager':"https://file.yusj.vip/u/",
-                // 'scrawl':"https://file.yusj.vip/u/",
-            
+                // 'image':"https://pic.kkip.cn/index.php/",
+                // 'imageManager':"https://pic.kkip.cn/index.php/",
+                // 'scrawl':"https://pic.kkip.cn/index.php/",
+
             utils.extend(this.options, obj, true);
         },
         getOpt:function(key){
@@ -7338,9 +7338,9 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             var me = this;
 
             me.fireEvent('beforesetcontent', html);
-            var root = UE.htmlparser(html);
-            me.filterInputRule(root);
-            html = root.toHtml();
+            // var root = UE.htmlparser(html);
+            // me.filterInputRule(root);
+            // html = root.toHtml();
 
             me.body.innerHTML = (isAppendTo ? me.body.innerHTML : '') + html;
 
@@ -12647,7 +12647,7 @@ UE.plugins['paragraph'] = function() {
                         } );
                     }
                     tmpRange.setEndAfter( tmpNode );
-                    
+
                     para = range.document.createElement( style );
                     if(attrs){
                         domUtils.setAttributes(para,attrs);
@@ -12659,7 +12659,7 @@ UE.plugins['paragraph'] = function() {
                     //需要内容占位
                     if(domUtils.isEmptyNode(para)){
                         domUtils.fillChar(range.document,para);
-                        
+
                     }
 
                     tmpRange.insertNode( para );
@@ -12783,7 +12783,7 @@ UE.plugins['paragraph'] = function() {
 
         },
         doDirectionality = function(range,editor,forward){
-            
+
             var bookmark,
                 filterFn = function( node ) {
                     return   node.nodeType == 1 ? !domUtils.isBookmarkNode(node) : !domUtils.isWhitespace(node);
@@ -17740,7 +17740,7 @@ UE.plugins['video'] = function (){
             for(var i=0,vi,len = videoObjs.length;i<len;i++){
                 vi = videoObjs[i];
                 cl = (type == 'upload' ? 'edui-upload-video video-js vjs-default-skin':'edui-faked-video');
-                html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'image'));
+              html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'video'));
             }
             me.execCommand("inserthtml",html.join(""),true);
             var rng = this.selection.getRange();
@@ -22696,7 +22696,7 @@ UE.plugins['formatmatch'] = function(){
      });
 
     function addList(type,evt){
-        
+
         if(browser.webkit){
             var target = evt.target.tagName == 'IMG' ? evt.target : null;
         }
@@ -22762,7 +22762,7 @@ UE.plugins['formatmatch'] = function(){
 
     me.commands['formatmatch'] = {
         execCommand : function( cmdName ) {
-          
+
             if(flag){
                 flag = 0;
                 list = [];
@@ -22771,7 +22771,7 @@ UE.plugins['formatmatch'] = function(){
             }
 
 
-              
+
             var range = me.selection.getRange();
             img = range.getClosedNode();
             if(!img || img.tagName != 'IMG'){
@@ -24482,7 +24482,7 @@ UE.plugin.register('simpleupload', function (){
                 console.log(input)
                 console.log(input.value)
                 // document.getElementById(inputId).files[0]
-                
+
                 var loadingId = 'loading_' + (+new Date()).toString(36);
                 var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
 
@@ -24549,25 +24549,23 @@ UE.plugin.register('simpleupload', function (){
                 var filenames=input.value.split(".")
                 console.log(filenames)
                 var hou=filenames.length>1?"."+filenames[filenames.length-1]:""
-                var ran=parseInt(Math.random()*1000000) 
+                var ran=parseInt(Math.random()*1000000)
                 var fname = Date.now() +"s"+ ran+hou
                 var formdata1 = new FormData();// 创建form对象
                 formdata1.append('file', input.files[0], fname);
                 var config = {
-                    headers: {'Content-Type': 'multipart/form-data'},
-                    // onUploadProgress:function(progressEvent){
-                    //     var complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
-                    //     // this.progress = complete
-                    //     _this.toa("文件上传中: "+complete)
-                    // }
+                  headers: { 'Content-Type': 'multipart/form-data' },
                   };  //添加请求头
-                  console.log(fname)
-                  axios.post(CONFIG.fileHost + "u/" + fname, formdata1, config)
+                  console.log(fname,formdata1,config, CONFIG.fileHost)
+                  axios.post(CONFIG.fileHost +'/'+ fname, formdata1, config)
                     .then(function (res) {
-                      // console.log(res.data)
+                      console.log(res.data)
                       resT = res.data.split(" ")
                       console.log(resT)
-                      callback("https://file.yusj.vip/r/" + resT[1])
+                      let a = resT[1].split('"')
+                      console.log(a)
+                      callback(a[1])
+                      // callback("https://pic.kkip.cn/index.php/" + resT[1])
                     //   fn(resT[1] ? CONFIG.fileHost + "r/" + resT[1] : "")
                     })
                     .catch(function (error) {
@@ -25209,7 +25207,7 @@ UE.ui = baidu.editor.ui = {};
         domUtils = baidu.editor.dom.domUtils,
         UIBase = baidu.editor.ui.UIBase,
         uiUtils = baidu.editor.ui.uiUtils;
-    
+
     var Mask = baidu.editor.ui.Mask = function (options){
         this.initOptions(options);
         this.initUIBase();
@@ -25505,7 +25503,7 @@ UE.ui = baidu.editor.ui = {};
         }
     };
     utils.inherits(Popup, UIBase);
-    
+
     domUtils.on( document, 'mousedown', function ( evt ) {
         var el = evt.target || evt.srcElement;
         closeAllPopup( evt,el );
@@ -25601,7 +25599,7 @@ UE.ui = baidu.editor.ui = {};
     var utils = baidu.editor.utils,
         uiUtils = baidu.editor.ui.uiUtils,
         UIBase = baidu.editor.ui.UIBase;
-    
+
     var TablePicker = baidu.editor.ui.TablePicker = function (options){
         this.initOptions(options);
         this.initTablePicker();
@@ -25685,7 +25683,7 @@ UE.ui = baidu.editor.ui = {};
     var browser = baidu.editor.browser,
         domUtils = baidu.editor.dom.domUtils,
         uiUtils = baidu.editor.ui.uiUtils;
-    
+
     var TPL_STATEFUL = 'onmousedown="$$.Stateful_onMouseDown(event, this);"' +
         ' onmouseup="$$.Stateful_onMouseUp(event, this);"' +
         ( browser.ie ? (
@@ -25694,7 +25692,7 @@ UE.ui = baidu.editor.ui = {};
         : (
         ' onmouseover="$$.Stateful_onMouseOver(event, this);"' +
         ' onmouseout="$$.Stateful_onMouseOut(event, this);"' ));
-    
+
     baidu.editor.ui.Stateful = {
         alwalysHoverable: false,
         target:null,//目标元素和this指向dom不一样
@@ -27319,7 +27317,7 @@ UE.ui = baidu.editor.ui = {};
         setValue : function(value){
             this._value = value;
         }
-        
+
     };
     utils.inherits(MenuButton, SplitButton);
 })();

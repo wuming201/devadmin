@@ -23,7 +23,7 @@ var
 	readyList,
 
 	// A central reference to the root jQuery(document)
-	rootjQuery,
+	rootjQuery,g
 
 	// Support: IE<10
 	// For `typeof xmlNode.method` instead of `xmlNode.method !== undefined`

@@ -305,6 +305,10 @@
               })
             })
           }
+        },function (res) {
+          console.log(res.data)
+          _this.dataLength = Number(res.data.num)
+          _this.pagesize = Number(res.data.pagenum)
         })
       },
       getUserGroup: function(id, relData, index, newData) {

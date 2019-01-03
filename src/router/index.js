@@ -269,7 +269,7 @@ export const asyncRouterMap = [
         path: 'agreements',
         component: () =>
           import ('@/views/message/agreements'),
-        name: '平台协议',
+        name: '平台协议及手册',
         meta: {title: 'agreements'}
       },
       {

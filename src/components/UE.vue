@@ -36,6 +36,11 @@
         return this.editor.getContent()
       }
     },
+    // watch:{
+    //   editor() {
+    //     console.log(encodeURIComponent(this.$refs.ue.getUEContent()))
+    //   }
+    // },
     destroyed() {
       this.editor.destroy();
     }

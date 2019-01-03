@@ -706,6 +706,7 @@
                             url = actionUrl;
                             console.log("上传之前")
                         uploader.option('server', url);
+                            console.log(url)
                         console.log("上传参数")
                         setState('uploading', files);
                         console.log("上传之后")
@@ -720,11 +721,12 @@
                 console.log(file)
                 //文件名编码
                 var filenames=file.file.name.split(".")
-                // console.log(filenames)
+                console.log(filenames)
                 var hou=filenames.length>1?"."+filenames[filenames.length-1]:""
-                var ran=parseInt(Math.random()*1000000) 
+                var ran=parseInt(Math.random()*1000000)
                 var fname = Date.now() +"s"+ ran+hou
                 file.file.name=fname
+              console.log(fname)
                 //这里可以通过data对象添加POST参数
                 console.log("header头添加")
                 // header['X_Requested_With'] = 'XMLHttpRequest';
@@ -742,22 +744,29 @@
 
             uploader.on('uploadSuccess', function (file, ret) {
                 var $file = $('#' + file.id);
+                console.log($file)
                 console.log("上传返回位置")
-                console.log(ret)
+                console.log(file)
+                // console.log(ret)
+              console.log('视频点1')
                 try {
                     var responseText = (ret._raw || ret)
                         // json = utils.str2json(responseText);
                     // if (json.state == 'SUCCESS') {
                     if(responseText!=""){
-                        console.log()
+                      console.log('视频点2')
+                      let a = responseText.split(" ")[1].split('"')
                         uploadVideoList.push({
-                            'url': "https://file.yusj.vip/r/"+responseText.split(" ")[1],
+                            // 'url': "https://pic.kkip.cn/index.php/"+a[1],
+                            'url': a[1],
+
                             'type': responseText.split(" ")[1].split(".")[1],
                             // 'original':json.original
                         });
                         console.log(uploadVideoList)
                         console.log({
-                            'url': "https://file.yusj.vip/r/"+responseText.split(" ")[1],
+                            // 'url': "https://pic.kkip.cn/index.php/"+a[1],
+                            'url': a[1],
                             'type': responseText.split(" ")[1].split(".")[1],
                             // 'original':json.original
                         })

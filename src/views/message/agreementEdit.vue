@@ -3,13 +3,14 @@
     <div class="memberInfo">
       <p><span><span class="title">协议类型:</span>
         <span class="innerText">
-          <el-select v-model="articleType" placeholder="请选择">
-            <el-option
-              v-for="item in type"
-              :label="item.name"
-              :value="item.name">
-            </el-option>
-          </el-select>
+          <!--<el-select v-model="articleType" placeholder="请选择">-->
+            <!--<el-option-->
+              <!--v-for="item in type"-->
+              <!--:label="item.name"-->
+              <!--:value="item.name">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+          <el-input v-model="articleType" placeholder="请输入内容"></el-input>
         </span>
       </span></p>
       <p><span class="mr0"><span class="title">协议标题:</span><span class="innerText"><el-input v-model="newTitle" placeholder="请输入内容"></el-input></span></span></p>
@@ -34,6 +35,7 @@
     },
     data() {
       return {
+        key: '',
         showPass: false,
         showReject: false,
         defaultMsg: '',
@@ -85,7 +87,10 @@
       getType(a) {
         PUBLIC.get("Configure.Configure.Selone", { type: 'agreement',key:a }, (data) => {
           console.log(data.value)
-          let arr = JSON.parse(data.value)
+          // let arr = JSON.parse(data.value)
+          console.log( eval("(" + data.value + ")"))
+          let arr = eval("(" + data.value + ")")
+          this.articleType = data.key
           this.newTitle = arr.title
           this.defaultMsg = arr.content
           console.log(this.newTitle,this.defaultMsg)
@@ -104,11 +109,13 @@
       },
       sendArt() {
         var _this = this
-        console.log(this.writer)
-        console.log( { writer: this.writer, title: this.newTitle, body: this.$refs.ue.getUEContent(), type: this.articleType, desc: this.desc, on_statu: this.isShow })
-        PUBLIC.post('Article.articles.uparticle', { writer: this.writer, title: this.newTitle, body: encodeURIComponent(this.$refs.ue.getUEContent()), type: this.articleType, desc: this.desc, on_statu: this.isShow }, function(data) {
+        let value = "{'title': '" +this.newTitle + "','content':'" + encodeURIComponent(this.$refs.ue.getUEContent()) + "'}"
+        console.log(value)
+        let arg = {type:'agreement', key: this.key, value: value}
+        // console.log( { writer: this.writer, title: this.newTitle, body: encodeURIComponent(this.$refs.ue.getUEContent()), type: this.articleType, desc: this.desc, on_statu: this.isShow })
+        PUBLIC.get('Configure.Configure.Addconfig', arg, function(data) {
           console.log(data)
-          _this.$router.push({ name: '文章列表'})
+          _this.$router.push({ name: '平台协议及手册'})
         })
       }
       // sendArt() {
@@ -119,12 +126,16 @@
       // }
     },
     mounted() {
-      let key = this.$route.query
-      console.log(key)
-      this.getType(key)
+      this.key = this.$route.query
+      // console.log(key)
+      this.getType(this.key)
       // this.getArt()
     },
     watch:{
+      newBody() {
+        console.log('aaaaa')
+        console.log(this.newBody)
+      },
       defaultMsg(){
         let str = this.defaultMsg
         this.defaultMsg = str

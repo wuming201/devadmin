@@ -58,8 +58,8 @@
         changeData: 1, //监控tid数据更新
         filename: '',
         page: 1,
-        pagesize: 40,
-        dataLength: 400,
+        pagesize: 0,
+        dataLength:0,
         yesterdayAdd: '',
         todayAdd: '',
         selectAll: [],
@@ -159,6 +159,7 @@
         })
       },
       getUserList: function(keyword) {
+        this.tableData3 = []
         var _this = this
         this.keyword = keyword
         var args = { page: this.page,type: 3, }
@@ -185,7 +186,9 @@
             })
           }
         },function (res) {
-          _this.dataLength = res.num
+          console.log(res.data)
+          _this.dataLength = Number(res.data.num)
+          _this.pagesize = Number(res.data.pagenum)
         })
       },
       // getUserGroup: function(id, relData, index, newData) {

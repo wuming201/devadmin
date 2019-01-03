@@ -11,44 +11,43 @@
       tooltip-effect='dark'
       border
       style=' backgroundColor: #f5fafe'>
-      <!--<el-table-column-->
-        <!--type='selection'>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-        <!--prop='id'-->
-        <!--label='ID'>-->
-        <!--<template></template>-->
-      <!--</el-table-column>-->
       <el-table-column
-        prop='rel_name'
+        prop='hrel_name'
         label='会员名'>
         <template slot-scope="scope">
           <span class="innerText">{{scope.row.to_uid==-1?"所有人":scope.row.code}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop='problem_img'
-        label='消息内容'
+        prop='problem_type'
+        label='问题类型'
         show-overflow-tooltip>
-        <template slot-scope="scope">
-          <img :src="scope.row.problem_img" alt="">
-        </template>
+        <!--<template slot-scope="scope">-->
+          <!--<img :src="scope.row.problem_img" alt="">-->
+        <!--</template>-->
       </el-table-column>
       <el-table-column
-        prop='problem_type'
-        label='消息类型'>
+        prop='problem_content'
+        label='反馈内容'>
       </el-table-column>
       <el-table-column
         prop='problem_time'
         label='发送时间'>
       </el-table-column>
       <el-table-column
-        prop='read_res'
-        label='已读状态'>
+        prop='problem_htime'
+        label='回复时间'>
+      </el-table-column>
+      <el-table-column
+        prop='problem_huid'
+        label='处理人'>
+      </el-table-column>
+      <el-table-column
+        prop='problem_ishu'
+        label='操作'>
         <template slot-scope="scope">
-          <span class="innerText" v-if="scope.row.read_res === '0'">未读</span>
-          <span class="innerText" v-else-if="scope.row.read_res === '1'">已读</span>
-          <span class="innerText" v-else></span>
+          <el-button type="text" class="innerText" v-if="scope.row.problem_ishu == 0" @click="toreplay(scope.row.id,2)">回复</el-button>
+          <el-button type="text" class="innerText" v-else @click="toreplay(scope.row.id,1)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -88,10 +87,12 @@
 
 <script>
   import { searchBox, selectKuang, timeBox, paginationBox } from '../../components/index'
+  import ElButton from "element-ui/packages/button/src/button";
 
   export default {
     name: 'allMember',
     components: {
+      ElButton,
       searchBox,
       selectKuang,
       timeBox,
@@ -155,7 +156,9 @@
       }
     },
     methods: {
-
+      toreplay(a,b) {
+        this.$router.push({name: '问题回复',query:{id:a, code:b} })
+      },
       checkInfo() {
         this.showBox = !this.showBox
       },
@@ -187,8 +190,9 @@
         }
         console.log(args)
         keyword == keyword != undefined ? keyword : ''
-        PUBLIC.get('User.Problem.selall', args, function(data) {
+        PUBLIC.get('User.Problem.selall', args, (data) => {
           console.log(data)
+          this.mListData = data
         })
       },
       passAduit(status) {

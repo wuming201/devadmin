@@ -1,19 +1,19 @@
 <template>
   <div class="addMember clearfix">
     <div class="memberInfo">
-      <p><span><span class="title">会员ID:</span><span class="innerText">{{person.telphone}}</span></span><span><span class="title">问题类型:</span><span class="innerText">{{person.rel_name}}</span></span></p>
-      <p class="cerPic"><span><span class="title">问题截图:</span><img :src="mycer" alt=""></span></p>
-      <p class="addP"><span><span class="title">问题描述:</span><span class="personInfo">{{message}}</span></span></p>
-      <p class="addP"><span><span class="title">回复内容:</span><span class="personInfo">{{message}}</span></span></p>
-      <p><span><span class="title">处理人:</span><span class="innerText">是是是</span></span></p>
+      <p><span><span class="title">会员ID:</span><span class="innerText">{{info.problem_uid}}</span></span><span><span class="title">问题类型:</span><span class="innerText">{{info.problem_type}}</span></span></p>
+      <p class="cerPic"><span><span class="title">问题截图:</span><img :src="info.problem_img" alt=""></span></p>
+      <p class="addP"><span><span class="title">问题描述:</span><span class="personInfo">{{info.problem_ms}}</span></span></p>
+      <p class="addP"><span><span class="title">回复内容:</span><span class="personInfo">{{info.problem_content}}</span></span></p>
+      <p><span><span class="title">处理人:</span><span class="innerText">{{chuliren}}</span></span></p>
       <p>
-        <el-button type="primary" @click="replay">回复</el-button><el-button type="info" @click="quit">取消</el-button></p>
+        <el-button type="primary" @click="replay"  v-if="code == 2" >回复</el-button><el-button type="info" @click="quit">取消</el-button></p>
     </div>
     <div class="replay" v-show="replayBox">
       <h3>问题回复 <i class="fa fa-close" @click="replay"></i></h3>
       <div class="inner">
         <p></p>
-        <p>处理人：张三</p>
+        <p>处理人：{{hfr}}</p>
         <p>回复内容：
           <el-input
             type="textarea"
@@ -34,6 +34,10 @@
     name: 'addMember',
     data() {
       return {
+        chuliren: '',
+        hfuid:'',
+        hfr: '',
+        info: {},
         replayBox: false, //头像
         cers: [],            //证书
         replayText: '',
@@ -53,6 +57,7 @@
         uid: '',
         id: '',
         page: 0,
+        code: '',
         multipleSelection: [],
         person: '',
         territory: '',
@@ -94,26 +99,38 @@
       },
       getInfo(id) {
         var _this=this
-        PUBLIC.get('User.certificate.finds',{ id: id }, data =>{
+        PUBLIC.get('User.Problem.sel',{ id: id }, data =>{
+          console.log(data)
+          this.info = data
+          PUBLIC.get('User.User.Userone', {uid: this.info.problem_huid}, v=>{
+            this.chuliren = v.rel_name
+          })
         })
       },
-      quit:function(){
-        this.$router.push({name:'教师管理',query: { page: this.page }})
+      quit(){
+        this.$router.push({name:'消息反馈',query: { page: this.page }})
       },
       replay(){
         this.replayBox = !this.replayBox
         console.log(this.replayBox)
       },
       save() {
-        console.log('aaaa')
+        PUBLIC.get('User.Problem.upd', {id: this.id, problem_content: this.replayText, problem_huid: this.hfuid}, data=> {
+          console.log(data)
+          this.quit()
+        })
       }
     },
     mounted() {
+      this.hfuid = JSON.parse(localStorage.userInfo).Id
+      this.hfr = JSON.parse(localStorage.userInfo).rel_name
+      console.log(this.hfr)
       var id=this.$route.query.id
       this.id = this.$route.query.id
       this.page = this.$route.query.page
-      console.log()
-      console.log(id)
+      this.code = this.$route.query.code
+      console.log(this.code)
+      console.log(this.id)
       this.getInfo(id)
     }
   }

@@ -31,9 +31,9 @@
         UEDITOR_HOME_URL: URL
 
         // 服务器统一请求接口路径
-        , serverUrl:"https://file.yusj.vip/u"
+        , serverUrl:"https://pic.kkip.cn/index.php"
 
-        ,fileHost:'https://file.yusj.vip/u'
+        ,fileHost:'https://pic.kkip.cn/index.php'
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
         , toolbars: [[
