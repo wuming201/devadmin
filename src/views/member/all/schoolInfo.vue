@@ -4,8 +4,17 @@
       <p><span><span class="title">幼儿园名称:</span><span class="innerText">{{allData.company_name}}</span></span><span><span class="title">创建者ID:</span><span class="innerText">{{allData.company_uid}}</span></span></p>
       <p><span><span class="title">负责人:</span><span class="innerText">{{allData.company_user}}</span></span><span><span class="title">联系电话:</span><span class="innerText">{{allData.company_phone}}</span></span></p>
       <!--<p><span><span class="title">合同编号:</span><span class="innerText">{{allData.contract_num}}</span></span><span><span class="title">合同文件:</span><span class="innerText">{{allData.contract_doc}}-->
-      <p><span><span class="title">幼儿园地址:</span><span class="innerText">{{allData.company_adress}}</span></span><span><span class="title" style="color: #00a2d4">考勤地址列表</span></span></p>
-      <p><span><span class="title">子账号个数:</span><span class="childCount"><el-input v-model="childCounts"></el-input></span></span><span><span class="childCounts" style="color: #00a2d4" @click="saveChildCount">保存</span></span></p>
+      <p class="jigou"><span><span class="title">幼儿园地址:</span><span class="innerText">{{allData.company_adress}}</span></span>
+        <span>
+          <span class="title" style="color: #00a2d4;cursor: pointer;" @click="showGPS">考勤地址列表</span>
+          <ul class="gpsBox" v-show="kanGPS">
+            <li>aaaaa</li>
+            <li>aaaaa</li>
+          </ul>
+        </span>
+      </p>
+
+      <p><span><span class="title">子账号个数:</span><span class="childCount"><el-input v-model="childCounts"></el-input></span></span><span><span class="childCounts" style="color: #00a2d4;cursor: pointer;" @click="saveChildCount">保存</span></span></p>
       <p><span><span class="title">授权类目:</span><span class="innerText"><span v-for="item in shouquan" style="display: inline-block;margin-bottom: 4px">{{item.class}}&emsp;</span></span></span><el-button type="primary" @click="addSQ">新增授权</el-button></p>
       <p><span><span class="title">认证状态:</span><span class="innerText"><span v-if="allData.company_statu == 0">未认证</span><span v-if="allData.company_statu == 1">普通认证</span><span v-if="allData.company_statu == 2">高级认证</span></span></span><span><span class="title">认证时间:</span><span class="innerText">{{allData.username}}</span></span></p>
       <p><span><span class="title">认证密钥 :</span><span class="innerText">{{allData.company_my}}</span></span></p>
@@ -51,6 +60,8 @@ export default {
   },
   data() {
     return {
+      kanGPS: true,
+      gpsList: [],
       options: [],
       picList: [],
       childCounts: '',//子账号个数
@@ -79,8 +90,13 @@ export default {
     }
   },
   methods: {
+    showGPS() {
+      this.kanGPS = !this.kanGPS
+    },
     saveChildCount() {
-
+      PUBLIC.get('User.Company.updsubnum', {tid: this.tid,num: this.childCounts}, data => {
+        console.log(data)
+      })
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -116,13 +132,17 @@ export default {
       PUBLIC.get('User.Company.seltid', { tid: id }, (data) => {
         console.log(data)
         this.allData = data
+        this.childCounts = data.subaccount_num
         if(data.company_xc != '' && data.company_xc != null) {
           this.picList = data.company_xc.split(',')
           console.log(this.picList)
         }
       })
-      PUBLIC.get('Video.drama.sellist',{ tid: id }, v=>{
+      PUBLIC.get('Video.drama.sellistexa',{ tid: id }, v=>{
         this.shouquan = v
+      })
+      PUBLIC.get('Schedule.workese.findAddress', {tid: this.tid,}, res => {
+        console.log(res)
       })
     },
     saveIt() {
@@ -190,6 +210,24 @@ export default {
           .el-input__inner{
             width: 150px;
             /*background-color: transparent;*/
+          }
+        }
+      }
+      .jigou{
+        position: relative;
+        .gpsBox{
+          border: 1px solid ;
+          border-bottom: 0px solid ;
+          background-color: #fff;
+          position: absolute;
+          top: 0px;
+          right: -140px;
+          li{
+            border-bottom: 1px solid ;
+            line-height: 30px;
+            height: 30px;
+            text-align: center;
+            width: 400px;
           }
         }
       }

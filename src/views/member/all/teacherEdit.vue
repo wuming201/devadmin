@@ -310,32 +310,25 @@
       saveTeacher() {
         console.log(this.unit)
         let datas = {
-          entryTime: this.entryTime,
-          identityUrl: this.uimg,
+          // identityUrl: this.uimg,
           id: this.id,
-          uid: this.uid,
           stageName: this.stageName,
           dateBirth: this.birth,
           jobnumber: this.worknum,
-          stopTime: this.stopTime,
-          region: this.region,//区域
-          province: this.province,
-          unit: this.unit,
+          // stopTime: this.stopTime,
+          territory: this.region,//区域
+          // province: this.province,
+          unit:this.unit,
           grade: this.grands,
-          cernum: this.cernum,
+          licenceNum: this.cernum,
           state: this.user_status,
-          statu: '1',
           videoProducing: this.videoProducing,
           message: this.message,
           certificates: this.cers,
           personalAlbum: this.pics,
-          linkman: '',
-          tell: '',
-          spell: '',
-          // unit: '',
           showHome: this.kkip
         }
-        PUBLIC.get('User.certificate.applyFor', datas, data => {
+        PUBLIC.get('User.certificate.update', datas, data =>{
           console.log(data)
           this.$router.push({name: '教师管理', query: {page: this.page}})
         })

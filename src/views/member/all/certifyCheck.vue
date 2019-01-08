@@ -116,13 +116,27 @@ export default {
       })
     },
     success() {
-      console.log(this.stopTime)
-      let years = this.stopTime.getFullYear()
-      let months = this.stopTime.getMonth()+1    //js从0开始取
-      let date1s = this.stopTime.getDate()
-      let stopTime = years+ "-" +months+ "-" +date1s
-      console.log(this.person.rel_code.slice(13, 18))
-
+      let stopTime = ''
+      if(this.stopTime == null || this.stopTime == '') {
+        alert('请选择停止日期！')
+      } else if(JSON.stringify(this.stopTime).indexOf('T') != -1) {
+        let years = this.stopTime.getFullYear()
+        let months = this.stopTime.getMonth()+1    //js从0开始取
+        let date1s = this.stopTime.getDate()
+        stopTime = years+ "-" +months+ "-" +date1s
+        console.log(stopTime)
+      }else{
+        stopTime = this.stopTime
+      }
+      console.log(this.newData.applyTime)
+      let applyTime = ''
+      if( this.newData.applyTime != null && this.newData.applyTime != '') {
+        console.log('aaa')
+        applyTime =  this.newData.applyTime.slice(0,10)
+      }else{
+        console.log('ooo')
+        applyTime = ''
+      }
       //生成证书号码
       let cerNum1 = this.person.rel_code.slice(13, 18)
       let cerNum2 = this.person.rel_code.slice(0, 2)
@@ -150,7 +164,7 @@ export default {
       //   }
       //   console.log(dataa)
       //   this.cerPic = data
-        PUBLIC.get('User.certificate.applyFor', { pay_statu: 1, id: this.id, entryTime: this.newData.entryTime ,applicationRestult: this.whySuccess ,stopTime: stopTime.slice(0, 10), licenceNum: cerNum }, data1 => {
+      PUBLIC.get('User.certificate.applyFor', { applyTime: applyTime, pay_statu: 1, id: this.id, entryTime: this.newData.entryTime ,applicationRestult: this.whySuccess ,stopTime: stopTime, licenceNum: cerNum }, data1 => {
           console.log(data1)
           this.$router.push({name:'教师管理',query: { page: this.page }})
         })
