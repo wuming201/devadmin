@@ -22,7 +22,7 @@ export function logout() {
 
 export function getUserInfo(token) {
   return request({
-    url: 'http://test.yusj.vip/index.php?s=User.User.selecttoken&searchToken='+getToken(),
+    url: 'http://api.yusj.vip/index.php?s=User.User.selecttoken&searchToken='+getToken(),
     method: 'get',
     params: { token }
   })

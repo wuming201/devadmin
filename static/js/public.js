@@ -5,7 +5,8 @@
 CONFIG = {
   host: 'http://psbapi.yusj.vip/',
   // host: "https://test.yusj.vip/",
-  fileHost: "https://pic.kkip.cn/index.php"
+  // fileHost: "https://pic.kkip.cn/index.php",
+  fileHost: "http://file.yusj.vip/files.php",
 }
 
 PUBLIC = {
@@ -357,9 +358,10 @@ PUBLIC = {
     // console.log(fname)
     axios.post(CONFIG.fileHost, formdata1, configs)
       .then(function(res) {
-        resT = res.data.split(" ");
+        console.log(res.data.url)
+        resT = res.data.url;
         console.log(resT);
-        fn(resT[1] ? JSON.parse(resT[1]) : "");
+        fn(resT);
       })
       .catch(function(error) {
         if (error.response) {
