@@ -56,7 +56,8 @@
         show-overflow-tooltip>
         <template slot-scope="scope">
           <span class="innerText" v-if="scope.row.company_statu == 0">未认证</span>
-          <span class="innerText" v-else-if="scope.row.company_statu == 1">已认证</span>
+          <span class="innerText" v-else-if="scope.row.company_statu == 1">普通认证</span>
+          <span class="innerText" v-else-if="scope.row.company_statu == 2">高级认证</span>
           <span class="innerText" v-else></span>
         </template>
       </el-table-column>

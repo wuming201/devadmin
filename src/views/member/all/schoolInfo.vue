@@ -8,8 +8,7 @@
         <span>
           <span class="title" style="color: #00a2d4;cursor: pointer;" @click="showGPS">考勤地址列表</span>
           <ul class="gpsBox" v-show="kanGPS">
-            <li>aaaaa</li>
-            <li>aaaaa</li>
+            <li v-for="item in gpsList">{{item.add}}</li>
           </ul>
         </span>
       </p>
@@ -60,7 +59,7 @@ export default {
   },
   data() {
     return {
-      kanGPS: true,
+      kanGPS: false,
       gpsList: [],
       options: [],
       picList: [],
@@ -94,8 +93,12 @@ export default {
       this.kanGPS = !this.kanGPS
     },
     saveChildCount() {
-      PUBLIC.get('User.Company.updsubnum', {tid: this.tid,num: this.childCounts}, data => {
+      PUBLIC.get('User.Company.updsubnum', {tid: this.tid,num: Number(this.childCounts) + 1}, data => {
         console.log(data)
+        this.$message({
+          message: '子账号个数修改成功！',
+          type: 'success'
+        });
       })
     },
     handleSelectionChange(val) {
@@ -121,7 +124,7 @@ export default {
       this.showIt = !this.showIt
     },
     addCode() {
-      PUBLIC.get('Video.drama.addlistexa', {tid: this.tid,video_list_id: this.addName, list_time: this.end_time}, data => {
+      PUBLIC.get('Video.drama.addlistexa', {tid: this.tid,video_list_id: this.addName, list_time: this.end_time, uid: this.allData.company_uid}, data => {
         console.log(data)
         this.showIt = !this.showIt
       })
@@ -132,7 +135,11 @@ export default {
       PUBLIC.get('User.Company.seltid', { tid: id }, (data) => {
         console.log(data)
         this.allData = data
-        this.childCounts = data.subaccount_num
+        if(data.subaccount_num != null && data.subaccount_num != 0) {
+          this.childCounts = Number(data.subaccount_num) - 1
+        }else{
+          this.childCounts = ''
+        }
         if(data.company_xc != '' && data.company_xc != null) {
           this.picList = data.company_xc.split(',')
           console.log(this.picList)
@@ -143,6 +150,7 @@ export default {
       })
       PUBLIC.get('Schedule.workese.findAddress', {tid: this.tid,}, res => {
         console.log(res)
+        this.gpsList = res
       })
     },
     saveIt() {
@@ -207,27 +215,29 @@ export default {
           margin-right: 70px;
         }
         .childCount{
-          .el-input__inner{
+          .el-input{
             width: 150px;
-            /*background-color: transparent;*/
+
           }
+          /*.el-input__inner{*/
+          /*}*/
         }
       }
       .jigou{
         position: relative;
         .gpsBox{
-          border: 1px solid ;
-          border-bottom: 0px solid ;
+          border: 1px solid #ccc;
+          border-bottom: 0px solid #ccc;
           background-color: #fff;
           position: absolute;
           top: 0px;
-          right: -140px;
+          right: -225px;
           li{
-            border-bottom: 1px solid ;
-            line-height: 30px;
-            height: 30px;
+            border-bottom: 1px solid #ccc;
+            line-height: 40px;
+            height: 40px;
             text-align: center;
-            width: 400px;
+            width: 500px;
           }
         }
       }
@@ -316,7 +326,7 @@ export default {
         p{
           padding-bottom: 30px;
           .el-input{
-            width: 200px;
+            width: 150px;
           }
         }
         p:last-of-type{

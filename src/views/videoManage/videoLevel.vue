@@ -53,8 +53,8 @@
       <h3>信息编辑 <i class='fa fa-close' @click='changeVideo'></i></h3>
       <div class='inner'>
         <p>视频级别：  {{changeLevel.name}}</p>
-        <p>视频角标：<img v-bind:src='changeLevel.img' alt=''><el-button type='primary' @click='upImg("img")'>替换图片</el-button></p>
-        <p>视频图标：<img v-bind:src='changeLevel.jimg' alt=''><el-button type='primary'  @click='upImg("jimg")'>替换图片</el-button></p>
+        <p>视频图标：<img v-bind:src='changeLevel.img' alt=''><el-button type='primary' @click='upImg("img")'>替换图片</el-button></p>
+        <p>视频角标：<img v-bind:src='changeLevel.jimg' alt=''><el-button type='primary'  @click='upImg("jimg")'>替换图片</el-button></p>
         <p><el-button type='success' @click='upLevel' >提交</el-button><el-button type='info' @click="closeBox">取消</el-button></p>
         <el-input type='file' id='upimgs' v-on:change='upFile' hidden></el-input>
       </div>

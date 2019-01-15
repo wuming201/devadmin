@@ -30,7 +30,7 @@
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="stageName"
+        prop="conpName"
         label="公司">
       </el-table-column>
       <el-table-column
@@ -38,15 +38,15 @@
         label="工号">
       </el-table-column>
       <el-table-column
-        prop="grade"
+        prop="cert_name"
         label="证书名称"
         show-overflow-tooltip>
-        <template slot-scope="scope">
-          <span class="innerText" v-if="scope.row.grade === '1'">初级</span>
-          <span class="innerText" v-else-if="scope.row.grade === '2'">中级</span>
-          <span class="innerText" v-else-if="scope.row.grade === '3'">高级</span>
-          <span class="innerText" v-else></span>
-        </template>
+        <!--<template slot-scope="scope">-->
+          <!--<span class="innerText" v-if="scope.row.grade === '1'">初级</span>-->
+          <!--<span class="innerText" v-else-if="scope.row.grade === '2'">中级</span>-->
+          <!--<span class="innerText" v-else-if="scope.row.grade === '3'">高级</span>-->
+          <!--<span class="innerText" v-else></span>-->
+        <!--</template>-->
       </el-table-column>
       <el-table-column
         prop="licenceNum"
@@ -292,6 +292,8 @@
           var newData = []
           var demo = {
             id: 'id',
+            cert_name: 'cert_name',
+            cert_tid: 'cert_tid',
             territory: 'territory',
             jobnumber: 'jobnumber',
             stageName: 'stageName',
@@ -313,14 +315,19 @@
             console.log("空数据")
             _this.tableData3 = []
           } else {
-            console.log("有数据")
+            // console.log("有数据")
             newData = PUBLIC.formatObj(demo,data)
-
-           this.tableData3 = JSON.parse(JSON.stringify(newData))
-            console.log(this.tableData3)
-            for(let i in this.tableData3) {
-              PUBLIC.get('User.Appuser.getsteacher', {name: this.tableData3[i].rel_name}, v=> {
-                console.log(v)
+            let aaa = JSON.parse(JSON.stringify(newData))
+            // console.log(aaa)
+            let arr = []
+            for(let i in aaa) {
+              PUBLIC.get('User.Appuser.selcompany', {tid: aaa[i].cert_tid}, v=> {
+                // console.log(v)
+                aaa[i]['conpName'] = v.company_name
+                arr = aaa[i]
+                // if(i == this.tableData3.length - 1) {
+                  this.tableData3.push(arr)
+                // }
               })
             }
           }

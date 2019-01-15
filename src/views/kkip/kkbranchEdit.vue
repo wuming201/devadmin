@@ -82,8 +82,19 @@
           this.branchOld = data.key
           console.log(this.datas)
           this.region = newData.region
-          this.checkedAuthorize = newData.authorize
-          console.log(this.checkedAuthorize)
+          // this.checkedAuthorize = newData.authorize
+          PUBLIC.get('Video.drama.seltqlistexa', {uid: this.mid}, v=> {
+            console.log(v[0])
+            let arr = []
+            for(let i in v[0]) {
+              // console.log()
+              arr.push(v[0][i].video_list_id)
+              if(i == v[0].length -1){
+                this.checkedAuthorize = arr
+                console.log(this.checkedAuthorize)
+              }
+            }
+          })
         })
       },
       edit(row) {
@@ -97,13 +108,11 @@
         })
       },
       saveEdit() {
-        // this.datas.region = this.region
         var _this = this
         console.log(this.phone)
         if (/^1[3|4|5|6|7|8|9][0-9]{9}$/.test(this.phone) != false) {
           PUBLIC.get("Configure.Configure.isseluser", {
             uid: this.mid,
-            // telphone: this.phone
           },  (data1) => {
             for (var n = 0; n < data1.length; n++) {
               if (data1[n].id != _this.id) {
@@ -139,6 +148,9 @@
               on_status: 1,
               statu: 1
             }, (data) => {
+              PUBLIC.get('Video.drama.addtqlistexa', {uid: _this.mid, video_list_id: _this.checkedAuthorize }, v=> {
+                console.log(v)
+              })
               console.log("编辑成功")
               _this.$message({
                 message: '保存成功！',

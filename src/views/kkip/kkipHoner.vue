@@ -64,7 +64,7 @@
                           type="textarea"
                           v-model="successDesc"
                           :rows="3"
-                          placeholder="请输入通过原因！">
+                          placeholder="请输入荣誉介绍">
                         </el-input>
         </p>
         <p>首页显示：<el-radio v-model="editStatus" label="1">显示</el-radio><el-radio v-model="editStatus" label="2">隐藏</el-radio></p>
@@ -80,7 +80,7 @@
             type="textarea"
             v-model="successDesc"
             :rows="3"
-            placeholder="请输入通过原因！">
+            placeholder="请输入荣誉介绍">
         </el-input>
         </p>
         <p>首页显示：<el-radio v-model="editStatus" label="1">显示</el-radio><el-radio v-model="editStatus" label="2">隐藏</el-radio></p>
@@ -232,9 +232,9 @@
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 
-  .el-textarea__inner::-webkit-input-placeholder {
-    color: red;
-  }
+  /*.el-textarea__inner::-webkit-input-placeholder {*/
+    /*color: red;*/
+  /*}*/
   .kkipHoner{
     color: #333333;
     .memberHead{
@@ -285,7 +285,8 @@
     .el-table{
       .cell{
         img{
-          height: 100px;
+          max-height: 100px;
+          width: 150px;
         }
       }
       .warning-row {

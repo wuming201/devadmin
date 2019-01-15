@@ -122,6 +122,7 @@
     },
     data() {
       return {
+        on_status: '',
         list: null,
         listLoading: true,
         downloadLoading: false,
@@ -220,6 +221,7 @@
         this.changeTitle=e.title
         this.changeImg = e.img
         this.changeDesc = e.desc
+        this.on_status = e.on_status
         console.log(this.changeClass)
       },
       classSelect(e) {
@@ -333,7 +335,7 @@
       },
       changeDrama:function(){
         var _this=this
-        PUBLIC.get("Video.drama.updrama",{id:this.changeId,title:this.changeTitle,img:this.changeImg,on_status:1, info: this.changeDesc},function(data){
+        PUBLIC.get("Video.drama.updrama",{id:this.changeId,title:this.changeTitle,img:this.changeImg,on_status: this.on_status, info: this.changeDesc},function(data){
           console.log(data)
           PUBLIC.get("Video.drama.uplistdrama",{class_id:_this.changeClass,drama_id:_this.changeId,status:1,type:"update"},function(data){
             console.log(data)

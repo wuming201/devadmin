@@ -1,13 +1,14 @@
 <template>
   <div class="compInfo">
     <div class="memberInfo">
-      <p><span><span class="title">单位类型:</span><span class="innerText"><span v-if="compInfo.user_type == 0">幼儿园</span><span v-else>执教机构</span></span></span><span><span class="title">单位名称:</span><span class="innerText">{{compInfo.company_name}}</span></span></p>
+      <p><span><span class="title">单位类型:</span><span class="innerText"><span v-if="compInfo.user_type == 0">执教机构</span><span v-else>幼儿园</span></span></span><span><span class="title">单位名称:</span><span class="innerText">{{compInfo.company_name}}</span></span></p>
 
       <p><span><span class="title">单位简称:</span><span class="innerText">{{compInfo.company_jc}}</span></span><span><span class="title">单位地址</span><span class="innerText">{{compInfo.adress}}</span></span></p>
       <p><span><span class="title">负责人:</span><span class="innerText">{{compInfo.company_user}}</span></span><span><span class="title">联系电话:</span><span class="innerText">{{compInfo.company_mall}}</span></span></p>
       <p><span><span class="title">创建者实名:</span><span class="innerText">{{compInfo.shenq_name}}</span></span><span><span class="title">身份证号码:</span><span class="innerText">{{compInfo.name}}</span></span></p>
       <p><span><span class="title">认证密钥 :</span><span class="innerText">{{compInfo.username}}</span></span></p>
-      <p class="rzzl"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['khxk']" alt=""></span></p>
+      <p v-if="compInfo.user_type == 0" class="rzzl"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['khxk']" alt=""></span></p>
+      <p v-else class="rzzl"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['byxk']" alt=""></span></p>
       <p><el-button type="info" @click="cancelIt">返回</el-button></p>
     </div>
   </div>
@@ -57,7 +58,7 @@
         PUBLIC.get('User.Examine.selinfo', { id: id }, (data) => {
           console.log(data)
           this.compInfo = data
-          console.log(JSON.parse(this.compInfo.user_zl)['yyzz'])
+          console.log(this.compInfo.user_zl)
           // var newData = [];
           // var demo = {
           //   name: 'name',
@@ -113,7 +114,7 @@
         })
       },
       cancelIt() {
-        this.$router.push({name:'教师管理',query: { page: this.page }})
+        this.$router.push({name:'园所审核',query: { page: this.page }})
       }
     },
     mounted() {

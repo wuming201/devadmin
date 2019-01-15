@@ -3,10 +3,8 @@
 // import Cookies from "js-cookie";
 
 CONFIG = {
-  host: 'http://psbapi.yusj.vip/',
-  // host: "https://test.yusj.vip/",
-  // fileHost: "https://pic.kkip.cn/index.php",
-  fileHost: "http://file.yusj.vip/files.php",
+  host: 'http://psbapi.kkip.cn/',
+  fileHost: 'http://file.kkip.cn/files.php',
 }
 
 PUBLIC = {
@@ -321,6 +319,7 @@ PUBLIC = {
   },
   // 上传文件至文件服务器
   postFile: function(inputId, fn) {
+    // console.log(inputId, fn)
     fn = fn ? fn : function(a) {
       return a
     }
@@ -330,10 +329,13 @@ PUBLIC = {
     var fname = this.comFileName(file.name)
     var upLen = 0
     var lastUpTime = 0
-    formdata1.append('file', file, fname); // 通过append向form对象添加数据,可以通过append继续添加数据
-
+    // console.log(file,formdata1,fname)
+    formdata1.append('filename', file, fname); // 通过append向form对象添加数据,可以通过append继续添加数据
     //或formdata1.append('img',file);
-    // console.log("test join post file")
+    console.log(formdata1)
+    console.log(file)
+    console.log(fname)
+
     var configs = {
       headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: function(progressEvent) {
@@ -342,20 +344,16 @@ PUBLIC = {
           return
         }
         lastUpTime = thisUpTime
-        // console.log("已有进度：" + upLen)
         if (progressEvent.loaded > upLen) {
-          // console.log("确认上传进度：" + progressEvent.loaded)
-          var complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
-          // this.progress = complete
-          // console.log("文件上传中: " + complete)
-          _this.toa("文件上传中: " + complete)
-          // console.log("文件上传中2: " + complete)
+          // var complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
+          // _this.toa("文件上传中: " + complete)
           upLen = progressEvent.loaded
         }
 
       }
     }; //添加请求头
-    // console.log(fname)
+    console.log(configs)
+    console.log(CONFIG.fileHost)
     axios.post(CONFIG.fileHost, formdata1, configs)
       .then(function(res) {
         console.log(res.data.url)
@@ -364,6 +362,7 @@ PUBLIC = {
         fn(resT);
       })
       .catch(function(error) {
+        console.log(error)
         if (error.response) {
           //存在请求，但是服务器的返回一个状态码
           //他们都在2xx之外

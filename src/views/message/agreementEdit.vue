@@ -105,7 +105,6 @@
       },
       typeValue(e) {
         this.articleType = e
-        console.log(this.articleType)
       },
       sendArt() {
         var _this = this
@@ -113,7 +112,7 @@
         console.log(value)
         let arg = {type:'agreement', key: this.key, value: value}
         // console.log( { writer: this.writer, title: this.newTitle, body: encodeURIComponent(this.$refs.ue.getUEContent()), type: this.articleType, desc: this.desc, on_statu: this.isShow })
-        PUBLIC.get('Configure.Configure.Addconfig', arg, function(data) {
+        PUBLIC.post('Configure.Configure.Addconfig', arg, function(data) {
           console.log(data)
           _this.$router.push({ name: '平台协议及手册'})
         })

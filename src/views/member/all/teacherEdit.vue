@@ -39,10 +39,11 @@
 
 
       <p><span><span class="title">用户手机:</span><span class="innerText">{{person.telphone}}</span></span><span><span
-        class="title">公司名称:</span><span class="innerText">{{person.rel_name}}</span></span></p>
-      <p><span><span class="title">证书类型:</span><span class="innerText"></span></span><span><span
-        class="title">证书名称:</span><span class="innerText"><span v-if="grands == 1">国际注册幼儿体智能初级教师</span><span
-        v-else-if="grands == 2">国际注册幼儿体智能中级教师</span><span v-else-if="grands == 3">国际注册幼儿体智能初级教师</span></span></span></p>
+        class="title">公司名称:</span><span class="innerText">{{compName}}</span></span></p>
+      <p><span><span class="title">证书类型:</span><span class="innerText"><span v-if="certsData.cert_type == 0">平台证书</span><span v-else>企业证书</span></span></span>
+        <span><span class="title">证书名称:</span><span class="innerText">{{certsData.cert_name}}</span></span></p>
+        <!--<span class="innerText"><span v-if="grands == 1">国际注册幼儿体智能初级教师</span><span v-else-if="grands == 2">国际注册幼儿体智能中级教师</span><span v-else-if="grands == 3">国际注册幼儿体智能初级教师</span>-->
+
       <p>
         <span>
           <span class="title">证书编号:</span>
@@ -52,9 +53,9 @@
         <span><span class="title">有效期:</span><span class="innerText">{{stopTime}}</span></span>
       </p>
       <p><span><span class="title">真实姓名:</span><span class="innerText">{{person.rel_name}}</span></span><span><span
-        class="title">证书状态:</span><span class="innerText">{{user_status}}</span></span></p>
+        class="title">证书状态:</span><span class="innerText"><span v-if="certsData.pay_statu == 0">未审核</span><span v-else-if="certsData.pay_statu == 1">通过</span><span v-else-if="certsData.pay_statu == -1">未通过</span><span v-else-if="certsData.pay_statu == 2">已吊销</span></span></span></p>
       <p><span><span class="title">身份证号:</span><span class="innerText">{{person.rel_code}}</span></span><span><span
-        class="title">艺名:</span><span class="innerText">{{stageName}}</span></span></p>
+        class="title">艺名:</span><span class="innerText">{{certsData.stageName}}</span></span></p>
       <p>
         <span><span class="title">工号:</span><span class="innerText">{{worknum}}</span></span><span>
         <span class="title">视频制作:</span><span class="innerText">
@@ -76,8 +77,7 @@
         type="textarea"
         :rows="4"
         placeholder="请输入内容"
-        v-model="message">
-</el-input></span></span></p>
+        v-model="message"></el-input></span></span></p>
 
       <p class="addP"><span><span class="title">其他证书:</span>
         <span class="pics"><span class="picBox" v-for="(item,index) in cers"><img :src="item" alt=""><img
@@ -93,8 +93,8 @@
         <span><el-button type="primary" @click="upImg()">添加照片</el-button></span></span>
         <el-input type='file' id='upimgs' v-on:change='upFile' hidden></el-input>
       </p>
-      <p><span><span class="title">kkip首页:</span><span class="innerText"><el-radio v-model="kkip" label="1">是</el-radio><el-radio
-        v-model="kkip" label="2">否</el-radio></span></span></p>
+      <p><span><span class="title">kkip首页:</span><span class="innerText"><el-radio v-model="showHome" label="1">是</el-radio><el-radio
+        v-model="showHome" label="0">否</el-radio></span></span></p>
       <p>
         <el-button type="primary" @click="saveTeacher">保存</el-button>
         <el-button type="info" @click="quit">取消</el-button>
@@ -113,6 +113,7 @@
     },
     data() {
       return {
+        certsData: {},
         producer: [
           {
             value: '1',
@@ -169,7 +170,7 @@
         person: '',
         user_status: '',
         videoProducing: '',
-        kkip: '1',
+        showHome: '',
         birth: '',
         addPic: '',
         message: '',
@@ -179,7 +180,8 @@
         uid: '',
         id: '',
         stopTime: '',
-        page: 0
+        page: 0,
+        compName: ''
       }
     },
     methods: {
@@ -190,17 +192,24 @@
         var _this = this
         this.id = id
         PUBLIC.get('User.certificate.finds', {id: id}, data => {
+          let tid = data.cert_tid != null ? data.cert_tid : ''
+          PUBLIC.get('User.Appuser.selcompany',{ tid: tid }, v => {
+            console.log(v)
+            this.compName = v.company_name
+          })
           console.log(data)
+          this.certsData = data
           this.uimg = data.identityUrl
           this.uid = data.uid
           this.entryTime = data.entryTime
-          this.stageName = data.stageName
+          this.showHome = data.showHome
+          console.log(this.showHome)
           this.birth = data.dateBirth
           this.worknum = data.jobnumber
           this.grands = data.grade
           this.cernum = data.licenceNum
           this.state = data.state
-          this.stopTime = data.stopTime
+          this.stopTime = data.stopTime.slice(0,10)
           this.videoProducing = data.videoProducing
           this.message = data.message
           this.territory = data.territory ? data.territory.split(',') : []
@@ -310,25 +319,33 @@
       saveTeacher() {
         console.log(this.unit)
         let datas = {
-          // identityUrl: this.uimg,
-          id: this.id,
-          stageName: this.stageName,
-          dateBirth: this.birth,
-          jobnumber: this.worknum,
-          // stopTime: this.stopTime,
-          territory: this.region,//区域
-          // province: this.province,
-          unit:this.unit,
+          id: this.certsData.id,
+          applyTime: this.certsData.applyTime,
+          identityUrl: this.certsData.identityUrl,
+          entryTime: this.certsData.entryTime,
+          applicationRestult: this.certsData.applicationRestult,
+          pay_statu: this.certsData.pay_statu,
+          statu: this.certsData.statu,
+          linkman: this.certsData.linkman,
+          tell: this.certsData.tell,
+          spell: this.certsData.spell,
+          stageName: this.certsData.stageName,
+          dateBirth: this.certsData.dateBirth,
+          jobnumber: this.certsData.jobnumber,
+          stopTime: this.stopTime,
+          territory: this.certsData.region,//区域
+          province: this.province,
+          unit:this.certsData.unit,
           grade: this.grands,
           licenceNum: this.cernum,
-          state: this.user_status,
+          state: this.certsData.state,
           videoProducing: this.videoProducing,
           message: this.message,
           certificates: this.cers,
           personalAlbum: this.pics,
-          showHome: this.kkip
+          showHome: this.showHome
         }
-        PUBLIC.get('User.certificate.update', datas, data =>{
+        PUBLIC.get('User.certificate.applyFor', datas, data =>{
           console.log(data)
           this.$router.push({name: '教师管理', query: {page: this.page}})
         })

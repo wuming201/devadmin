@@ -6,24 +6,26 @@
       </div>
     </div>
     <div class="memberInfo">
-      <p><span><span class="title">用户手机:</span><span class="innerText">{{person.telphone}}</span></span><span><span class="title">公司名称:</span><span class="innerText">{{person.rel_name}}</span></span></p>
-      <!--<p><span><span class="title">出生日期:</span><span class="innerText">{{birth}}</span></span></p>-->
-      <!--<p><span><span class="title">区域:</span><span class="innerText">{{region}}</span></span><span><span class="title">分会:</span><span class="innerText">{{unit}}</span></span></p>-->
-      <p><span><span class="title">证书类型:</span><span class="innerText">{{grands}}</span></span><span><span class="title">证书名称:</span><span class="innerText">{{grands}}</span></span></p>
+      <p><span><span class="title">用户手机:</span><span class="innerText">{{person.telphone}}</span></span><span><span class="title">公司名称:</span><span class="innerText">{{compName}}</span></span></p>
+      <p><span><span class="title">证书类型:</span><span class="innerText"><span v-if="certsData.cert_type == 0">平台证书</span><span v-else>企业证书</span></span></span>
+        <span><span class="title">证书名称:</span><span class="innerText">{{certsData.cert_name}}</span></span></p>
       <p>
         <span>
           <span class="title">证书编号:</span>
-          <span class="innerText">{{cernum}}</span>
+          <span class="innerText">{{cernum}}
+          </span>
         </span>
         <span><span class="title">有效期:</span><span class="innerText">{{stopTime}}</span></span>
       </p>
-      <p><span><span class="title">真实姓名:</span><span class="innerText">{{person.rel_name}}</span></span><span><span class="title">证书状态:</span><span class="innerText">{{user_status}}</span></span></p>
-      <p><span><span class="title">身份证号:</span><span class="innerText">{{person.rel_code}}</span></span><span><span class="title">艺名:</span><span class="innerText">{{stageName}}</span></span></p>
+      <p><span><span class="title">真实姓名:</span><span class="innerText">{{person.rel_name}}</span></span><span><span
+        class="title">证书状态:</span><span class="innerText"><span v-if="certsData.pay_statu == 0">未审核</span><span v-else-if="certsData.pay_statu == 1">通过</span><span v-else-if="certsData.pay_statu == -1">未通过</span><span v-else-if="certsData.pay_statu == 2">已吊销</span></span></span></p>
+      <p><span><span class="title">身份证号:</span><span class="innerText">{{person.rel_code}}</span></span><span><span
+        class="title">艺名:</span><span class="innerText">{{certsData.stageName}}</span></span></p>
       <p><span><span class="title">工号:</span><span class="innerText">{{worknum}}</span></span><span><span class="title">入职时间:</span><span class="innerText">{{entryTime}}</span></span></p>
       <!--<p><span><span class="title">视频制作:</span><span class="innerText">{{videoProducing}}</span></span></p>-->
       <p class="cerPic"><span><span class="title">证书照片:</span><img :src="mycer" alt=""></span><span><span class="title">在职状态:</span>
         <span class="personInfo" v-if="state == 1">在职</span>
-        <span class="personInfo" v-if="state == 0">离职职</span>
+        <span class="personInfo" v-if="state == 0">离职</span>
       </span></p>
       <!--<p class="addP"></p>-->
       <p class="addP"><span><span class="title">个人简介:</span><span class="personInfo">{{message}}</span></span></p>
@@ -70,7 +72,7 @@ export default {
       person: '',
       territory: '',
       showHome: '',
-      cerData: '',
+      certsData: '',
       cerPic: '',
       stopTime: '',
       entryTime: '',
@@ -89,6 +91,7 @@ export default {
         "0":"未审核",
         "-1":"无效",
       },
+      compName: '',
     }
   },
   methods: {
@@ -108,8 +111,13 @@ export default {
     getInfo(id) {
       var _this=this
       PUBLIC.get('User.certificate.finds',{ id: id }, data =>{
+        let tid = data.cert_tid != null ? data.cert_tid : ''
+        PUBLIC.get('User.Appuser.selcompany',{ tid: tid }, v => {
+          console.log(v)
+          this.compName = v.company_name
+        })
         if(data != false) {
-          this.cerData = data
+          this.certsData = data
           this.uimg = data.identityUrl
           this.uid = data.uid
           this.id = data.id
