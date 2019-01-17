@@ -316,18 +316,21 @@
             _this.tableData3 = []
           } else {
             // console.log("有数据")
-            newData = PUBLIC.formatObj(demo,data)
+            // newData = PUBLIC.formatObj(demo,data)
+            // console.log(newData)
             let aaa = JSON.parse(JSON.stringify(newData))
-            // console.log(aaa)
+            console.log(aaa)
             let arr = []
-            for(let i in aaa) {
+            for(let i = 0; i <= aaa.length; i++) {
               PUBLIC.get('User.Appuser.selcompany', {tid: aaa[i].cert_tid}, v=> {
-                // console.log(v)
+                console.log(v)
                 aaa[i]['conpName'] = v.company_name
-                arr = aaa[i]
-                // if(i == this.tableData3.length - 1) {
-                  this.tableData3.push(arr)
-                // }
+                // arr = aaa[i]
+                console.log(i,aaa.length - 1)
+                this.tableData3.push(aaa[i])
+                if(i == aaa.length - 1) {
+                  this.tableData3 = aaa
+                }
               })
             }
           }

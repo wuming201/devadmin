@@ -119,22 +119,19 @@ export default {
       let stopTime = ''
       if(this.stopTime == null || this.stopTime == '') {
         alert('请选择停止日期！')
+        return
       } else if(JSON.stringify(this.stopTime).indexOf('T') != -1) {
         let years = this.stopTime.getFullYear()
         let months = this.stopTime.getMonth()+1    //js从0开始取
         let date1s = this.stopTime.getDate()
         stopTime = years+ "-" +months+ "-" +date1s
-        console.log(stopTime)
       }else{
         stopTime = this.stopTime
       }
-      console.log(this.newData.applyTime)
       let applyTime = ''
       if( this.newData.applyTime != null && this.newData.applyTime != '') {
-        console.log('aaa')
         applyTime =  this.newData.applyTime.slice(0,10)
       }else{
-        console.log('ooo')
         applyTime = ''
       }
       //生成证书号码
@@ -148,22 +145,6 @@ export default {
         var cerLevel = 'G'
       }
       let cerNum = cerLevel + cerNum1.split('').reverse().join('') + cerNum2
-      console.log(cerNum)
-      // PUBLIC.get('User.User.Watermark', dataa, data => {
-      //   let dataa = {
-      //     level: this.grands,
-      //     name: this.person.rel_name,
-      //     pyname: this.cerData.spell,
-      //     idnum: this.person.rel_code,
-      //     cernum: this.cernum,
-      //     pushtime: this.cerData.applyTime.slice(0, 10),
-      //     yxtime:  this.cerData.applyTime.slice(0, 10)+ '  TO  ' + this.cerData.stopTime.slice(0, 10),
-      //     photo: this.cerData.identityUrl,
-      //     islizhi: this.user_status,
-      //     stopTime: this.stopTime.slice(0, 10)
-      //   }
-      //   console.log(dataa)
-      //   this.cerPic = data
       PUBLIC.get('User.certificate.applyFor', { applyTime: applyTime, pay_statu: 1, id: this.id, entryTime: this.newData.entryTime ,applicationRestult: this.whySuccess ,stopTime: stopTime, licenceNum: cerNum }, data1 => {
           console.log(data1)
           this.$router.push({name:'教师管理',query: { page: this.page }})
@@ -172,7 +153,6 @@ export default {
     },
     reject() {
       PUBLIC.get('User.certificate.applyFor',{ pay_statu: -1, id: this.id, applicationRestult: this.whyReject }, data => {
-        console.log(data)
         this.$router.push({name:'教师管理',query: { page: this.page }})
       })
     }
