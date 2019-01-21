@@ -299,7 +299,7 @@
             stageName: 'stageName',
             grade: 'grade',
             videoProducing: 'videoProducing',
-            certificates: 'mycer',
+            certificates: 'certificates',
             licenceNum: 'licenceNum',
             statu: 'statu',
             state: "state",
@@ -321,12 +321,13 @@
             let aaa = JSON.parse(JSON.stringify(newData))
             console.log(aaa)
             let arr = []
-            for(let i = 0; i <= aaa.length; i++) {
-              PUBLIC.get('User.Appuser.selcompany', {tid: aaa[i].cert_tid}, v=> {
-                console.log(v)
+            for(let i = 0; i < aaa.length; i++) {
+              console.log(aaa[i])
+              PUBLIC.get('User.Appuser.selcompany', { tid: aaa[i].cert_tid }, v => {
+                // console.log(v)
                 aaa[i]['conpName'] = v.company_name
                 // arr = aaa[i]
-                console.log(i,aaa.length - 1)
+                // console.log(i,aaa.length - 1)
                 this.tableData3.push(aaa[i])
                 if(i == aaa.length - 1) {
                   this.tableData3 = aaa
