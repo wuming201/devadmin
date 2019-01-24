@@ -276,7 +276,7 @@ export default {
     getUserList(keyword) {
       this.keyword = keyword
       var _this=this
-      var args = { page: this.page,type: 0 }
+      var args = { page: this.page,type: 'jg' }
       for(var k in keyword){
         args[k]=keyword[k]
       }
@@ -311,7 +311,7 @@ export default {
       console.log(11111111111)
       console.log(e)
       this.page=1
-      if(["company_name","company_user","codcompany_phonee"].indexOf(e[0])){
+      if(["company_name","company_user","codcompany_phone"].indexOf(e[0])){
         delete this.selectArg["company_name"]
         delete this.selectArg["company_user"]
         delete this.selectArg["company_phone"]

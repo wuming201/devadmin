@@ -101,8 +101,8 @@
                                                                             style="color: green">已实名</span><span v-else
                                                                                                                  style="color: red">未实名</span></span></span>
       </p>
-      <p><span><span class="title">绑定手机号:</span><span class="innerText"><el-input v-model="utelphone"
-                                                                                  placeholder="请输入内容"></el-input></span></span>
+      <p><span><span class="title">绑定手机号:</span><span class="innerText"><el-input v-model="utelphone" placeholder="请输入内容"></el-input></span></span>
+        <span><span class="title">绑定手机号:</span><span class="innerText"><el-checkbox v-model="level3" style="font-size: 15px">集团用户</el-checkbox></span></span>
       </p>
       <p><span><span class="title">会员身份:</span><span class="innerText">
         <el-select v-model="ugroups" placeholder="请选择">
@@ -175,6 +175,7 @@
         ugetMoney: "",
         code: '',
         endTime: '',
+        level3: false,
         pickerOptions1: {
           disabledDate(time) {
             return time.getTime() < Date.now()
@@ -217,6 +218,9 @@
         PUBLIC.get('User.User.Userone', {uid: id}, (data) => {
           console.log(data)
           _this.allpersonData = data
+          if(data.level == '3') {
+            this.level3 = true
+          }
           data.level = parseInt(data.level)
           PUBLIC.merObj(_this, data, {
             uid: "Id",
@@ -340,19 +344,29 @@
       //
       // }
       setUser() {
-        console.log("cccccccc")
-        console.log(this.uendTime, this.ugroups)
+        let arg = {
+          uid: this.uid,
+          name: this.uname,
+          telphone: this.utelphone,
+          header_img: this.uimg,
+          level: ''
+        }
+        if(this.level3 == true) {
+          arg.level = 3
+        }else if(this.allpersonData.rel_status == '1') {
+          arg.level = 2
+        }else if(this.allpersonData.telphone != '') {
+          arg.level = 1
+        }else{
+          arg.level = 0
+        }
+        console.log(arg.level)
         var _this = this
         // console.log
         if(this.password!="********"){
           PUBLIC.get("User.User.updateadminpwd",{uid:this.uid,password:this.password},function(){})
         }
-        PUBLIC.get("User.User.updateuser", {
-          uid: this.uid,
-          name: this.uname,
-          telphone: this.utelphone,
-          header_img: this.uimg
-        }, (data) => {
+        PUBLIC.get("User.User.updateuser", arg, (data) => {
           var bigUid = this.uid
           var stime = PUBLIC.getTime()
           console.log(this.ugroups, this.oldugroups)
@@ -444,8 +458,8 @@
       this.getMemberInfo(id)
     },
     watch: {
-      ugroups() {
-        console.log(this.ugroups)
+      level3() {
+        console.log(this.level3)
       },
       uendTime() {
         console.log(this.uendTime)

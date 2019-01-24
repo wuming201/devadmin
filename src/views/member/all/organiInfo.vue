@@ -1,5 +1,5 @@
 <template>
-  <div class="schoolInfo">
+  <div class="orangeInfo">
     <div class="memberInfo">
       <p><span><span class="title">机构名称:</span><span class="innerText">{{allData.company_name}}</span></span><span><span class="title">创建者ID:</span><span class="innerText">{{allData.company_uid}}</span></span></p>
       <p><span><span class="title">负责人:</span><span class="innerText">{{allData.company_user}}</span></span><span><span class="title">联系电话:</span><span class="innerText">{{allData.company_phone}}</span></span></p>
@@ -56,7 +56,7 @@
   import { selectKuang } from '../../../components/index'
 
   export default {
-    name: 'schoolInfo',
+    name: 'orangeInfo',
     components: {
       selectKuang
     },
@@ -195,7 +195,7 @@
   }
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-  .schoolInfo{
+  .orangeInfo{
     padding: 120px 430px;
     .memberInfo{
       font-size: 14px;
@@ -285,8 +285,11 @@
       }
       .pics{
         >span{
+          width: 800px;
+          margin-left: 100px;
           .title{
             vertical-align: top;
+            margin-left: -100px;
           }
           img{
             width: 220px;

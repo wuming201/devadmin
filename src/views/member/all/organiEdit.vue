@@ -11,13 +11,16 @@
       <p class="address"><span><span class="title">机构地址:</span><el-input class="city" placeholder="城市"
                                                                           v-model="city" disabled></el-input><el-input
         class="info" placeholder="详细地址" v-model="adress" disabled></el-input></span></p>
-      <!--<p class="duoxuan"><span><span class="title">授权类目:</span>-->
-      <!--<span>-->
-      <!--<el-checkbox-group v-model="checkedAuthorize">-->
-      <!--<el-checkbox v-for="authorize in videoClass" :label="authorize.value" :key="authorize.value">{{authorize.label}}</el-checkbox>-->
-      <!--</el-checkbox-group>-->
-      <!--</span>-->
-      <!--</span></p>-->
+      <p class="name">
+        <span>
+          <span class="title">企业类型:</span>
+            <el-radio-group v-model="compType" :disabled="jinyong">
+              <el-radio label="0">执教机构</el-radio>
+              <el-radio label="3">分子公司</el-radio>
+              <el-radio label="4">分会及代理商</el-radio>
+            </el-radio-group>
+        </span>
+      </p>
       <p>
         <el-button type="success" @click="upSchoolInfo">保存</el-button>
         <el-button type="info" @click="quit">取消</el-button>
@@ -31,6 +34,8 @@
     name: 'schoolEdit',
     data() {
       return {
+        jinyong: false,
+        compType: 1, //企业类型
         showIt: false,
         multipleSelection: [],
         isIndeterminate: true,
@@ -45,7 +50,9 @@
         company_statu: '',
         company_user: '',
         company_uid: '',
+        company_phone: '',
         company_jc: '',
+        sname: '',
         adress: '',
         city: ''
       }
@@ -55,7 +62,10 @@
         this.showIt = !this.showIt
       },
       getSchoolInfo(id) {
-        PUBLIC.get('User.Company.seltid', {tid: id, page: '1'}, (data) => {
+        PUBLIC.get('User.Company.seltid', { tid: id, page: '1' }, (data) => {
+          if (data.company_type === '2') {
+            this.jinyong = true
+          }
           this.allData = data
           this.sname = data.company_name
           this.company_statu = data.company_statu
@@ -64,17 +74,27 @@
           this.company_uid = data.company_uid
           this.company_jc = data.company_jc
           this.city = data.city
+          this.compType = data.company_type
+          console.log(this.compType)
           this.adress = data.company_adress
         })
       },
       upSchoolInfo() {
         var _this = this
         PUBLIC.get('User.Appuser.updateqy', {
-          tid: this.id,
-          mall: this.company_phone,
-          user: this.company_user,
-          name: this.sname,
-          name_jc: this.company_jc,
+          tid: this.id,//
+          type: this.compType,//
+          name: this.sname,//
+          name_jc: this.company_jc,//
+          mall: this.company_phone,//
+          user: this.company_user,//
+          city: this.allData.city,
+          adress: this.allData.company_adress,
+          logo: this.allData.company_logo,
+          gps: this.allData.company_gps,
+          jianje: this.allData.company_jj,
+          xiangce: this.allData.company_xc,
+          rzzl: this.allData.company_zj
         }, function (data) {
           if (data != false) {
             _this.$router.push({name: '机构资料', query: {page: _this.page}})
@@ -137,6 +157,9 @@
       this.getRegionList()
     },
     watch: {
+      compType() {
+        console.log(this.compType)
+      },
       checkedAuthorize() {
         console.log(this.checkedAuthorize)
       }

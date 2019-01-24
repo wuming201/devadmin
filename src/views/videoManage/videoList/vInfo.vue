@@ -60,7 +60,8 @@
         downGroupStatus: {
           "8": [false, ""],
           "9": [false, ""],
-          "10": [false, ""]
+          "10": [false, ""],
+          "11": [false, ""]
         },
         vinfo: {},
         classname: '',
@@ -150,6 +151,7 @@
         PUBLIC.get("Video.drama.demotion", {select: JSON.stringify({res_id: id}), type: "select"}, function (data) {
           console.log(data)
           for (var n = 0; n < data.length; n++) {
+            console.log(data[n].level)
             _this.downGroupStatus[data[n].level][0] = true
             _this.downGroupStatus[data[n].level][1] = data[n].time
           }

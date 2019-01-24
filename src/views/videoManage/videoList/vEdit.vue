@@ -372,7 +372,7 @@
           // tags: '['+this.vtags+']',
           tags:JSON.stringify(this.vtags),
           // up_time:this.vonTime,
-          on_status: -1,
+          on_status: this.on_status,
           con_status:this.oneShot,
           money:this.onePrice,
           desc: JSON.stringify(desc),
@@ -501,6 +501,7 @@
           _this.vdrama = data.drama_id
           _this.oldVdrama = data.drama_id
           _this.vmeizi = data.url
+          _this.on_status = data.on_status
           _this.url_type = data.url_type
           var desc = JSON.parse(data.desc ? data.desc : "{}")
           console.log(desc)
