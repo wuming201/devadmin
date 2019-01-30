@@ -14,7 +14,9 @@
             @change="yearValue">
           </el-date-picker>
           <selectKuang v-bind:selectData='semesterStatus' @value='semesterValue' ></selectKuang></span>
-        <span class='record'><searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
+        <span class='record'>
+          <!--<searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox>-->
+        </span></p>
 
     </div>
     <el-table
@@ -108,13 +110,13 @@
         searchSelect: [
           {
             value: 'telphone',
-            label: '手机号'
+            label: '执教机构'
           }, {
             value: 'name',
-            label: '当前昵称'
+            label: '幼儿园'
           }, {
             value: 'id',
-            label: '用户ID'
+            label: '合约编号'
           }
         ],
         phoneStatus: [

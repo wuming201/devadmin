@@ -20,6 +20,13 @@
       <h3>信息编辑 <i class="fa fa-close" @click="passIt"></i></h3>
       <div class="inner">
         <p>&emsp;处理人：  {{admin}}</p>
+        <p>发证时间：
+          <el-date-picker
+            v-model="fazhengTime"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd">
+          </el-date-picker></p>
         <p>到期时间：
           <el-date-picker
             v-model="stopTime"
@@ -70,6 +77,7 @@ export default {
       newData: [],
       person: [],
       id: '',
+      fazhengTime: '',
       whyReject: '',
       whySuccess: '',
       stopTime: '',
@@ -101,6 +109,8 @@ export default {
           this.stopTime=data.stopTime
         }
         this.newData = data
+        this.fazhengTime = data.applyTime != null ? data.applyTime : ''
+        console.log(this.fazhengTime)
         PUBLIC.get("Configure.Configure.Selone",{type:"branch",key:data.unit},function(data){
           if(data){
             data=JSON.parse(data.value)
@@ -117,6 +127,7 @@ export default {
     },
     success() {
       let stopTime = ''
+      // let fazhengTime = ''
       if(this.stopTime == null || this.stopTime == '') {
         alert('请选择停止日期！')
         return
@@ -128,12 +139,14 @@ export default {
       }else{
         stopTime = this.stopTime
       }
-      let applyTime = ''
-      if( this.newData.applyTime != null && this.newData.applyTime != '') {
-        applyTime =  this.newData.applyTime.slice(0,10)
-      }else{
-        applyTime = ''
-      }
+      // console.log(stopTime,this.fazhengTime)
+      // return
+      // let applyTime = ''
+      // if( this.newData.applyTime != null && this.newData.applyTime != '') {
+      //   applyTime =  this.newData.applyTime.slice(0,10)
+      // }else{
+      //   applyTime = ''
+      // }
       //生成证书号码
       let cerNum1 = this.person.rel_code.slice(13, 18)
       let cerNum2 = this.person.rel_code.slice(0, 2)
@@ -145,7 +158,7 @@ export default {
         var cerLevel = 'G'
       }
       let cerNum = cerLevel + cerNum1.split('').reverse().join('') + cerNum2
-      PUBLIC.get('User.certificate.applyFor', { applyTime: applyTime, pay_statu: 1, id: this.id, entryTime: this.newData.entryTime ,applicationRestult: this.whySuccess ,stopTime: stopTime, licenceNum: cerNum }, data1 => {
+      PUBLIC.get('User.certificate.applyFor', { applyTime: this.fazhengTime, pay_statu: 1, id: this.id, entryTime: this.newData.entryTime ,applicationRestult: this.whySuccess ,stopTime: stopTime, licenceNum: cerNum }, data1 => {
           console.log(data1)
           this.$router.push({name:'教师管理',query: { page: this.page }})
         })

@@ -2,12 +2,14 @@
   <div class = 'allMember'>
     <div class = 'memberHead'>
       <p class = 'firstLine'><span class='phoneNum'>合约状态：<selectKuang v-bind:selectData='phoneStatus' @value='phoneValue' ></selectKuang></span>
-        <span class='regTime'>签约日期:<timeBox @value='regTime'></timeBox></span><span class='overTime'>结束日期:<timeBox @value='endTime'></timeBox></span></p>
+        <!--<span class='regTime'>签约日期:<timeBox @value='regTime'></timeBox></span>-->
+        <span class='overTime'>结束日期:<timeBox @value='endTime'></timeBox></span></p>
       <p><span class='buttons'>
         <!--<el-button type='primary'>全选</el-button><el-button type='danger'>批量冻结</el-button>-->
         <router-link to='/member/add-member'><el-button type='warning'>增加用户</el-button></router-link></span>
         <span class='record'>总记录：<span>{{dataLength}}</span>昨日新增：<span>{{yesterdayAdd}}</span>今日新增：<span>{{todayAdd}}</span>
-          <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
+          <!--<searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox>-->
+        </span></p>
 
     </div>
     <el-table
@@ -110,13 +112,13 @@
         searchSelect: [
           {
             value: 'telphone',
-            label: '手机号'
+            label: '执教机构'
           }, {
             value: 'name',
-            label: '当前昵称'
+            label: '幼儿园'
           }, {
             value: 'id',
-            label: '用户ID'
+            label: '合约编号'
           }
         ],
         phoneStatus: [
@@ -265,6 +267,7 @@
         })
       },
       getUserList: function(keyword) {
+        this.tableData3 = []
         var _this = this
         this.keyword = keyword
         var args = { page: this.page }
@@ -366,10 +369,10 @@
       },
       phoneValue(e) {
         // console.log( this.selectArg)
-        this.selectArg['phone_status'] = e
+        this.selectArg['on_statu'] = e
         let ee = this.selectArg
         this.searchKey(ee)
-        let aaa = { phone_status: e } //获取搜索值
+        let aaa = { on_statu: e } //获取搜索值
         this.getTotal(aaa)
       },
       relValue(e) {
@@ -391,19 +394,19 @@
         this.getTotal(aaa)
       },
       regTime(e) {
-        this.selectArg['regstr_time'] = e[0]
-        this.selectArg['regend_time'] = e[1]
+        this.selectArg['start_time'] = e[0]
+        this.selectArg['end_time'] = e[1]
         let ee = this.selectArg
         this.searchKey(ee)
         let aaa = { regstr_time: e[0], regend_time: e[1] } //获取搜索值
         this.getTotal(aaa)
       },
       endTime(e) {
-        this.selectArg['daoqstr_time'] = e[0]
-        this.selectArg['daoqend_time'] = e[1]
+        this.selectArg['start_time'] = e[0]
+        this.selectArg['end_time'] = e[1]
         let ee = this.selectArg
         this.searchKey(ee)
-        let aaa = { daoqstr_time: e[0], daoqend_time: e[1] } //获取搜索值
+        let aaa = { regstr_time: e[0], regend_time: e[1] } //获取搜索值
         this.getTotal(aaa)
       },
     //  全选

@@ -10,13 +10,12 @@
       :data='mListData'
       tooltip-effect='dark'
       border
-      style=' backgroundColor: #f5fafe'
-      @selection-change='handleSelectionChange'>
+      style=' backgroundColor: #f5fafe'>
       <el-table-column
-        prop='code'
+        prop='rel_name'
         label='会员名'>
         <template slot-scope="scope">
-          <span class="innerText">{{scope.row.to_uid==-1?"所有人":scope.row.code}}</span>
+          <span class="innerText">{{scope.row.to_uid==-1?"所有人":scope.row.rel_name}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -104,11 +103,8 @@
         multipleSelection: [],
         searchSelect: [
           {
-            value: 'uid',
-            label: '用户ID'
-          }, {
-            value: 'code',
-            label: '手机号'
+            value: 'rel_name',
+            label: '会员名'
           }],
         msgType: [
           {
@@ -178,23 +174,32 @@
         console.log(args)
         keyword == keyword != undefined ? keyword : ''
         PUBLIC.get('Push.Push.Seltsls', args, function(data) {
-          console.log(data)
-          var demo = {
-            id: 'id',
-            uid: 'uid',
-            type: 'type',
-            types: 'types',
-            to_uid: 'to_uid',
-            value: 'value',
-            time: 'time',
-            statu: 'statu',
-            code: 'code',
-            read_res: 'read_res',
-            res: 'res'
-          }
-          var newData = PUBLIC.formatObj(demo, data)
-          _this.mListData = newData
-          console.log(newData)
+          _this.mListData = data
+          // for(let i in data) {
+          //   PUBLIC.get('User.User.Userone',{uid: data[i].to_uid}, v=>{
+          //     // console.log(v)
+          //     data[i]['rel_name'] = v.name
+          //     _this.mListData.push(data[i])
+          //     console.log(_this.mListData)
+          //   })
+          // }
+          // console.log(data)
+          // var demo = {
+          //   id: 'id',
+          //   uid: 'uid',
+          //   type: 'type',
+          //   types: 'types',
+          //   to_uid: 'to_uid',
+          //   value: 'value',
+          //   time: 'time',
+          //   statu: 'statu',
+          //   code: 'code',
+          //   read_res: 'read_res',
+          //   res: 'res'
+          // }
+          // var newData = PUBLIC.formatObj(demo, data)
+          // _this.mListData = newData
+          // console.log(newData)
         },function(data){
           // console.log(data)
           _this.dataLength=parseInt(data.data.num)
@@ -256,7 +261,7 @@
       //   console.log(data)
       // })
       this.getsignList()
-      this.getTotal()
+      // this.getTotal()
     }
     // watch:{
     //   searchKey:function(){

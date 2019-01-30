@@ -71,15 +71,18 @@
         var _this = this
         PUBLIC.get('User.Appuser.updateqy', {
           tid: this.id,
-          mall: this.company_phone,
-          user: this.company_user,
-          // user_phone: this.company_user,
-          // contract_num: this.schoolInfo.contract_num,
-          // user: this.user,
+          type: this.allData.company_type,
           name: this.sname,
           name_jc: this.company_jc,
-          // city: this.city,
-          // type: 1
+          mall: this.company_phone,
+          user: this.company_user,
+          city: this.allData.city,
+          adress: this.allData.company_adress,
+          logo: this.allData.company_logo,
+          gps: this.allData.company_gps,
+          jianje: this.allData.company_jj,
+          xiangce: this.allData.company_xc,
+          rzzl: this.allData.company_zj
         }, function (data) {
 
           // this.quit()

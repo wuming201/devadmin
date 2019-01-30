@@ -7,7 +7,8 @@
         <el-button type='success'>批量导出</el-button><router-link to='/orders/reviewList'><el-button type='warning'>课评汇总</el-button></router-link>
         <router-link to='/orders/changeLesson'><el-button type='danger'>调课记录</el-button></router-link></span>
         <span class='record'>总记录：<span>{{dataLength}}</span>昨日新增：<span>{{yesterdayAdd}}</span>今日新增：<span>{{todayAdd}}</span>
-          <searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox></span></p>
+          <!--<searchBox @searchKey='searchKey' @cleanIt='cleanIt' v-bind:searchSelect='searchSelect'></searchBox>-->
+        </span></p>
 
     </div>
     <el-table
@@ -69,7 +70,7 @@
         prop='signUrl'
         label='院长签字'>
         <template slot-scope="scope">
-          <span class="innerText"><img :src="scope.row.signUrl" alt=""></span>
+          <span class="innerText"><img :src="scope.row.signUrl" alt="" style="height: 44px"></span>
         </template>
       </el-table-column>
     </el-table>
@@ -133,11 +134,23 @@
             value: '',
             label: '全部'
           }, {
-            value: 1,
-            label: '已验证'
-          }, {
             value: 0,
-            label: '未验证'
+            label: '未评分'
+          }, {
+            value: 1,
+            label: '一星'
+          }, {
+            value: 2,
+            label: '二星'
+          }, {
+            value: 3,
+            label: '三星'
+          }, {
+            value: 4,
+            label: '四星'
+          }, {
+            value: 5,
+            label: '五星'
           }
         ],
         relStatus: [
@@ -319,11 +332,10 @@
         this.cleanIt()
       },
       phoneValue(e) {
-        // console.log( this.selectArg)
-        this.selectArg['phone_status'] = e
+        this.selectArg['grade'] = e
         let ee = this.selectArg
         this.searchKey(ee)
-        let aaa = { phone_status: e } //获取搜索值
+        let aaa = { grade: e } //获取搜索值
         this.getTotal(aaa)
       },
       relValue(e) {
@@ -353,11 +365,11 @@
         this.getTotal(aaa)
       },
       endTime(e) {
-        this.selectArg['daoqstr_time'] = e[0]
-        this.selectArg['daoqend_time'] = e[1]
+        this.selectArg['startTime'] = e[0]
+        this.selectArg['endTime'] = e[1]
         let ee = this.selectArg
         this.searchKey(ee)
-        let aaa = { daoqstr_time: e[0], daoqend_time: e[1] } //获取搜索值
+        let aaa = { startTime: e[0], endTime: e[1] } //获取搜索值
         this.getTotal(aaa)
       },
     //  全选
