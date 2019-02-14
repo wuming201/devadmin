@@ -10,7 +10,7 @@
           v-model="company_user"></el-input></span></span></p>
       <p class="address"><span><span class="title">机构地址:</span><el-input class="city" placeholder="城市"
                                                                           v-model="city" disabled></el-input><el-input
-        class="info" placeholder="详细地址" v-model="adress" disabled></el-input></span></p>
+        class="infos" placeholder="详细地址" v-model="adress" disabled></el-input></span></p>
       <p class="name">
         <span>
           <span class="title">企业类型:</span>
@@ -209,7 +209,7 @@
         .city {
           width: 120px;
         }
-        .info {
+        .infos {
           width: 435px;
         }
       }

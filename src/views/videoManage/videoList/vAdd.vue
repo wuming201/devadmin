@@ -45,7 +45,9 @@
             <el-date-picker
               v-model='vonTime'
               type='date'
-              placeholder='选择日期'>
+              value-format="yyyy-MM-dd"
+              placeholder='选择日期'
+              @>
             </el-date-picker>
           </span>
         </span>
@@ -163,16 +165,22 @@
         radio: '1',
         up: '1',
         downTime: '',
-        oneShot: '',
-        freeDown: '',
+        // oneShot: '',
+        // freeDown: '',
         showTeacher: '',
         createTeacher: ' ',
-        vbanquan: '幼体联官方',
+        vbanquan: '0',
         fdSelect: '',
-        options: [{
-          value: '育视界',
-          label: '育视界'
-        }],
+        options: [
+          {
+            value: '0',
+            label: '育视界'
+          },
+          {
+            value: '1',
+            label: '派师圈'
+          }
+        ],
         userGroup:[
           {
             label:"vip会员",
@@ -268,36 +276,35 @@
           con_status:this.oneShot,
           money:this.onePrice,
           desc: JSON.stringify(desc),
-
+          copyright: this.vbanquan
         }
 
 
         console.log(datas)
-        PUBLIC.get('Video.drama.uploading',datas,function(data){
+        PUBLIC.get('Video.drama.uploading',datas,(data)=>{
           console.log(data)
           var actNum=0
-          PUBLIC.get("Video.drama.demotion",{select:JSON.stringify({level:_this.vlevel,time:_this.vonTime,res_id:data,on_status:1,type:"1"}),type:"insert"},function(data1){})
-          for(var k in _this.downGroupStatus){
-            console.log("1111111111111111111111111")
-            console.log(k)
-           console.log(_this.downGroupStatus[k])
-            if(_this.downGroupStatus[k][0]==true){
-              var on_status=1
-              }else{
-                var on_status=-1
-              }
-               actNum+=1
-
-              PUBLIC.get("Video.drama.demotion",{select:JSON.stringify({level:k,time:_this.downGroupStatus[k][1],res_id:data,on_status:on_status,type:"-1"}),type:"insert"},function(data1){
-                actNum-=1
-                if(actNum==0){
-                  _this.freeDownAct(data)
-                }
-
-            })
-
-          }
-
+          // PUBLIC.get("Video.drama.demotion",{select:JSON.stringify({level:_this.vlevel,time:_this.vonTime + ' 00:00:00',res_id:data,on_status:1,type:"1"}),type:"insert"},function(data1){})
+          // for(var k in _this.downGroupStatus){
+          //   console.log("1111111111111111111111111")
+          //   console.log(k)
+          //  console.log(_this.downGroupStatus[k])
+          //   if(_this.downGroupStatus[k][0]==true){
+          //     var on_status=1
+          //     }else{
+          //       var on_status=-1
+          //     }
+          //      actNum+=1
+          //     PUBLIC.get("Video.drama.demotion",{select:JSON.stringify({level:k,time:_this.downGroupStatus[k][1],res_id:data,on_status:on_status,type:"-1"}),type:"insert"},function(data1){
+          //       actNum-=1
+          //       if(actNum==0){
+          //         _this.freeDownAct(data)
+          //       }
+          //
+          //   })
+          //
+          // }
+          this.$router.push({name:'视频列表',query: { page: this.page }})
 
         })
       },

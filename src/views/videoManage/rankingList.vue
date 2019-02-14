@@ -89,12 +89,12 @@
       <h3>信息编辑 <i class="fa fa-close" @click="closeEdit"></i></h3>
       <div class="inner">
         <p>视频分类：
-          <el-select v-model="changeClass">
+          <el-select v-model="changeClass" value-key="value" @change="changeClassId">
             <el-option
               v-for="item in classList"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item">
             </el-option>
           </el-select>
         </p>
@@ -166,7 +166,9 @@
         ],
         value0: '',  //默认上架状态
         value1: '',  //默认所属剧集
-        videoClass:[]
+        videoClass:[],
+        classIsChange: false,
+        oldClassId: ''
       }
     },
     created() {
@@ -210,12 +212,14 @@
           }
         })
       },
+      changeClassId() {
+        this.classIsChange = true
+      },
       changeRinking(e) {
         // this.classList =
+        this.oldClassId = e.class
         console.log(e)
-        this.changeClass = e.class
-        console.log(this.rankChange)
-        console.log(e)
+        this.changeClass = e.className
         this.rankChange = !this.rankChange
         this.changeId=e.id
         this.changeTitle=e.title
@@ -322,6 +326,7 @@
       },
       setNewClass:function(e){
         this.newClass=e
+        console.log(e)
       },
       createDrama:function() {
         var _this=this
@@ -337,11 +342,22 @@
         var _this=this
         PUBLIC.get("Video.drama.updrama",{id:this.changeId,title:this.changeTitle,img:this.changeImg,on_status: this.on_status, info: this.changeDesc},function(data){
           console.log(data)
-          PUBLIC.get("Video.drama.uplistdrama",{class_id:_this.changeClass,drama_id:_this.changeId,status:1,type:"update"},function(data){
-            console.log(data)
-             _this.getRankList()
-             _this.rankChange=!_this.rankChange
-          })
+          if(_this.classIsChange == true) {
+            console.log(_this.changeClass,_this.changeClass.value)
+            PUBLIC.get("Video.drama.uplistdrama",{class_id:_this.changeClass.value, drama_id:_this.changeId,status:1,type:"update"},function(data){
+              _this.classIsChange = false
+              console.log(data)
+              _this.getRankList()
+              _this.rankChange=!_this.rankChange
+            })
+          }else{
+            console.log(_this.oldClassId)
+            PUBLIC.get("Video.drama.uplistdrama",{class_id:_this.oldClassId,drama_id:_this.changeId,status:1,type:"update"},function(data){
+              console.log(data)
+              _this.getRankList()
+              _this.rankChange=!_this.rankChange
+            })
+          }
         })
       },
       closeEdit(){

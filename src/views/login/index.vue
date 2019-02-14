@@ -6,7 +6,7 @@
           <img src="../layout/components/logo.png" alt="">
         </div>
       </div>
-      <a class="linkTo fr" href="https://www.yusj.vip/" target="_blank"><span>访问网站</span></a>
+      <a class="linkTo fr" href="http://www.yusj.vip/" target="_blank"><span>访问网站</span></a>
     </div>
     <div class="content">
       <el-form class="login-form" autoComplete="on" label-position="left">

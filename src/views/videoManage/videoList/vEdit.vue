@@ -203,10 +203,15 @@
         vfile: '',
         up: '1',
         input: "",
-        options: [{
-          value: '育视界',
+        options: [
+          {
+          value: '0',
           label: '育视界'
-        }],
+        },
+          {
+            value: '1',
+            label: '派师圈'
+          }],
         userGroup: [
           {
             label: "vip会员",
@@ -333,6 +338,7 @@
         console.log(this.page)
       },
       save: function () {
+        console.log(this.copyright)
         if (this.showCWrong.length > 0 || this.showSWrong.length > 0) {
           this.$alert('创作老师或示范老师输入有误，请重新输入', '错误', {
             confirmButtonText: '确定',
@@ -358,8 +364,7 @@
           "oneMoney": this.onePrice,
           "oneStatus": this.oneShot
         }
-        console.log(desc)
-        var data = {
+        var args = {
           id: this.vid,
           title: this.vtitle,
           img: this.vimg,
@@ -376,9 +381,10 @@
           con_status:this.oneShot,
           money:this.onePrice,
           desc: JSON.stringify(desc),
-
+          copyright: this.copyright
         }
-        PUBLIC.get("Video.drama.upvideo", data, (data) => {
+        console.log(args)
+        PUBLIC.get("Video.drama.upvideo", args, (data) => {
           console.log(data)
           var actNum = 0
           if (_this.up_time != _this.oldUpTime) {

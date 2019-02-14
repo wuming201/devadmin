@@ -43,6 +43,12 @@
         prop="copyright"
         label="视频版权"
         width="80">
+        <template slot-scope="scope">
+          <span class="innerText" v-if="scope.row.copyright === '0'">育视界</span>
+          <span class="innerText" v-else-if="scope.row.copyright === '1'">派师圈</span>
+          <span class="innerText" v-else-if="scope.row.copyright === '派师圈'">派师圈</span>
+          <span class="innerText" v-else-if="scope.row.copyright === '育视界'">育视界</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="level"

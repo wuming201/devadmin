@@ -33,9 +33,6 @@
                 link: '/member/all-member',
                 name: '会员总览'
               }, {
-                link: '/member/vip-member',
-                name: 'VIP会员'
-              }, {
                 link: '/member/extension',
                 name: '会员推广'
               }, {
