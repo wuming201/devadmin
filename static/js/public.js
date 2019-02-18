@@ -3,7 +3,8 @@
 // import Cookies from "js-cookie";
 
 CONFIG = {
-  host: "http://formapi.kkip.cn/",
+  // host: "http://formapi.kkip.cn/",
+  host: "http://psbapi.kkip.cn/",
   fileHost: 'http://file.kkip.cn/files.php',
 }
 

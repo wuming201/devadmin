@@ -24,7 +24,7 @@
       .cursor{
         cursor: pointer;
       }
-      li{
+      >li{
         width: 200px;
         line-height: 50px;
         border-bottom: #000 1px solid;
@@ -48,12 +48,14 @@
           list-style: none;
           padding: 10px 0;
           border-top: #000 1px solid;
-          li{
-            text-align: center;
-            font-size: 14px;
-            line-height: 16px;
-            font-weight: normal;
-            border: none;
+          a{
+            li{
+              text-align: center;
+              font-size: 14px;
+              line-height: 16px;
+              font-weight: normal;
+              border: none;
+            }
           }
         }
         .active {

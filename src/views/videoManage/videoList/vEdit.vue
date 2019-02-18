@@ -73,36 +73,15 @@
           </el-select>
         </span></span>
       </p>
-      <!--<p>-->
-      <!--<span><span class='title'>创作老师:</span><span class='innerText'>-->
-      <!--<el-select v-model='createTeacher' multiple placeholder='请选择'>-->
-      <!--<el-option-->
-      <!--v-for='item in teacherLists'-->
-      <!--:key='item.value'-->
-      <!--:label='item.label'-->
-      <!--:value='item.value'>-->
-      <!--</el-option>-->
-      <!--</el-select>-->
-      <!--</span></span>-->
-      <!--<span><span class="title">示范老师:</span>-->
-      <!--<span class="innerText">-->
-      <!--&lt;!&ndash; <el-input v-model="showTeacher"></el-input> &ndash;&gt;-->
-      <!--<el-select v-model="showTeacher" multiple placeholder="请选择">-->
-      <!--<el-option-->
-      <!--v-for="item in teacherLists"-->
-      <!--:key="item.value"-->
-      <!--:label="item.label"-->
-      <!--:value="item.value">-->
-      <!--</el-option>-->
-      <!--</el-select>-->
-      <!--</span></span>-->
-      <!--</p>-->
       <p>
         <span><span class='title'>创作老师:</span><span class='innerText'>
-          <el-input @blur.prevent="checkCTeacher(createTeacher)" v-model="createTeacher"></el-input><span class="warning" v-if="showCWrong.length >0">未检索到{{showCWrong}}老师</span><span class="tishi" v-else>请输入创作教师名字,多个名字请以中文逗号隔开</span>
+          <el-input @blur.prevent="checkCTeacher(createTeacher)" v-model="createTeacher"></el-input><span
+          class="warning" v-if="showCWrong.length >0">未检索到{{showCWrong}}老师</span><span class="tishi" v-else>请输入创作教师名字,多个名字请以中文逗号隔开</span>
         </span></span>
         <span><span class="title">示范老师:</span><span class="innerText">
-          <el-input @blur.prevent="checkSTeacher(showTeacher)" v-model="showTeacher"></el-input><span class="warning" v-if="showSWrong.length >0">未检索到{{showSWrong}}老师</span><span class="tishi" v-else>请输入示范教师名字,多个名字请以中文逗号隔开</span>
+          <el-input @blur.prevent="checkSTeacher(showTeacher)" v-model="showTeacher"></el-input><span class="warning"
+                                                                                                      v-if="showSWrong.length >0">未检索到{{showSWrong}}老师</span><span
+          class="tishi" v-else>请输入示范教师名字,多个名字请以中文逗号隔开</span>
         </span></span>
       </p>
       <p>
@@ -119,48 +98,48 @@
       </p>
 
 
-      <p class='isUp '><span class='title'>降级时间:</span><span class='innerText'><span><el-checkbox
-        v-model='downGroupStatus[10][0]' label='10' :disabled="downGroupStatus[10][2]==false">机构视频</el-checkbox>
-        <!-- <el-input placeholder='请输入内容'></el-input> -->
-      <el-date-picker
-        v-model='downGroupStatus[10][1]'
-        type='date'
-        placeholder='选择日期' :disabled="downGroupStatus[10][0]==false">
-            </el-date-picker>
-        <!-- {{downGroupStatus[10][1]}} -->
-        </span><span><el-checkbox v-model='downGroupStatus[9][0]' label='9' :disabled="downGroupStatus[9][2]==false">VIP视频</el-checkbox>
-        <!-- <el-input v-model='input' placeholder='请输入内容'></el-input> -->
-        <el-date-picker
-          v-model='downGroupStatus[9][1]'
-          type='date'
-          placeholder='选择日期' :disabled="downGroupStatus[9][0]==false">
-            </el-date-picker>
-        </span><span><el-checkbox v-model='downGroupStatus[8][0]' label='8' :disabled="downGroupStatus[8][2]==false">普通视频</el-checkbox>
-        <!-- <el-input v-model='input' placeholder='请输入内容'></el-input> -->
-        <el-date-picker
-          v-model='downGroupStatus[8][1]'
-          type='date'
-          placeholder='选择日期' :disabled="downGroupStatus[8][0]==false">
-            </el-date-picker>
-        </span></span></p>
-      <p class='oneDemand'><span class='title'>单次点播:</span><span class='innerText'><span><el-radio v-model='oneShot'
-                                                                                                   label='1'>支持</el-radio><el-radio
-        v-model='oneShot' label='-1'>不支持</el-radio>
-        <el-input v-if="oneShot==1" v-model="onePrice" placeholder='请输入内容'></el-input><span
-          v-if="oneShot==1">元/人次</span></span></span></p>
-      <p class='freeDown'><span class='title'>免费下载:</span><span class='innerText'><span><el-radio v-model='freeDown'
-                                                                                                  label='1'>提供</el-radio><el-radio
-        v-model='freeDown' label='-1'>不提供</el-radio>
-        <el-select v-model='freeDownList' multiple placeholder='请选择' v-if="freeDown==1">
-          <el-option
-            v-for='item in userGroup'
-            :key='item.value'
-            :label='item.label'
-            :value='item.value'>
-          </el-option>
-        </el-select>
-      </span></span></p>
-      <p class='upFile'><span class='title'>视频链接:</span>{{vfile}}<span><el-button type='primary' @click='upFile()'>上传文件</el-button></span></p>
+      <p class='isUp '><span class='title'>降级时间:</span>
+        <span class='innerText'>
+          <span>
+            <el-checkbox v-model='downGroupStatus[10][0]' label='10' :disabled="downGroupStatus[10][2]==false">机构视频</el-checkbox>
+            <el-date-picker v-model='downGroupStatus[10][1]' type='date' placeholder='选择日期' :disabled="downGroupStatus[10][0]==false"></el-date-picker>
+          </span>
+          <span>
+            <el-checkbox v-model='downGroupStatus[9][0]' label='9' :disabled="downGroupStatus[9][2]==false">VIP视频</el-checkbox>
+            <el-date-picker v-model='downGroupStatus[9][1]' type='date' placeholder='选择日期' :disabled="downGroupStatus[9][0]==false"></el-date-picker>
+          </span>
+          <span><el-checkbox v-model='downGroupStatus[8][0]' label='8' :disabled="downGroupStatus[8][2]==false">普通视频</el-checkbox>
+          <el-date-picker
+            v-model='downGroupStatus[8][1]'
+            type='date'
+            placeholder='选择日期' :disabled="downGroupStatus[8][0]==false">
+              </el-date-picker>
+          </span>
+        </span>
+      </p>
+      <p class='oneDemand'><span class='title'>单次点播:</span>
+        <span class='innerText'>
+          <span><el-radio v-model='oneShot' label='-1'>不支持</el-radio><el-radio v-model='oneShot' label='1'>支持</el-radio>
+          <el-input v-if="oneShot==1" v-model="onePrice" ref="onePrice" placeholder='请输入大于0的数字！' type="number" style="-webkit-appearance: none" @blur="checkPrice"></el-input><span v-if="oneShot==1">元/人次</span>
+          </span>
+        </span>
+      </p>
+      <p class='freeDown'><span class='title'>资源下载:</span>
+        <span class='innerText'>
+          <span>
+            <el-radio v-model='freeDown' label='-1'>不提供</el-radio><el-radio v-model='freeDown' label='1'>提供</el-radio>
+            <el-select v-model='freeDownList' multiple placeholder='请选择' v-if="freeDown==1">
+              <el-option
+                v-for='item in userGroup'
+                :key='item.value'
+                :label='item.label'
+                :value='item.value'>
+              </el-option>
+            </el-select>
+          </span>
+        </span>
+      </p>
+      <p class='upFile' :style="'display:'+ hideup "><span class='title'>资源文件:</span>{{vfile}}<span><el-button type='primary' @click='upFile()'>上传文件</el-button></span></p>
       <el-input type='file' id='upimgs' v-on:change='upImgs' hidden></el-input>
       <el-input type='file' id='upFile' v-on:change='upFiles' hidden></el-input>
       <p>
@@ -196,6 +175,8 @@
     },
     data() {
       return {
+        // priceWrong: false,
+        hideup: 'none',
         showCWrong: [],
         showSWrong: [],
         wrongTeacher: '',
@@ -205,9 +186,9 @@
         input: "",
         options: [
           {
-          value: '0',
-          label: '育视界'
-        },
+            value: '0',
+            label: '育视界'
+          },
           {
             value: '1',
             label: '派师圈'
@@ -256,11 +237,13 @@
         vinfo: "",
         value5: "",
         vmeizi: "",
-        oneShot: "-1",
-        freeDown: "-1",
+        oneShot: '-1',
+        freeDown: '-1',
         copyright: "",
-        freeDownList:[],
-        page: 0
+        freeDownList: [],
+        page: 0,
+        url_type: '',
+        onePrice: ''
       }
     },
     created() {
@@ -268,73 +251,81 @@
       console.log(this)
     },
     methods: {
+      checkPrice() {
+        if(this.onePrice <= 0) {
+          this.priceWrong = true
+          this.$refs.onePrice.focus()
+          this.onePrice = ''
+        }else{
+          this.onePrice = Number(this.onePrice)
+        }
+      },
       //检查是否有相对应的老师
       checkCTeacher(a) {
-        if(a == '') {
+        if (a == '') {
           this.createTeacheruid = ''
         }
         let ct = a.split("，")
         console.log(ct)
         console.log(this.teacherLists)
-        let wrong =JSON.parse(JSON.stringify(ct))
+        let wrong = JSON.parse(JSON.stringify(ct))
         let right = []
-        let wrongList=[]
+        let wrongList = []
         console.log(wrong)
         console.log(this.teacherDict)
-        for(var n=0;n<wrong.length;n++){
-          if(wrong[n]==undefined || wrong[n]==null || wrong[n]==""){
+        for (var n = 0; n < wrong.length; n++) {
+          if (wrong[n] == undefined || wrong[n] == null || wrong[n] == "") {
             continue
           }
 
-          if(this.teacherDict[wrong[n]]==undefined){
+          if (this.teacherDict[wrong[n]] == undefined) {
             wrongList.push(wrong[n])
-          }else{
+          } else {
             right.push(this.teacherDict[wrong[n]][0])
           }
         }
-
-          this.showCWrong = wrongList
-          this.createTeacheruid = right
-          console.log(this.createTeacheruid)
+        this.showCWrong = wrongList
+        this.createTeacheruid = right
+        console.log(this.createTeacheruid)
       },
       checkSTeacher(a) {
-        if(a == '') {
+        if (a == '') {
           this.showTeacheruid = ''
         }
         let ct = a.split("，")
         console.log(ct)
         console.log(this.teacherLists)
-        let wrong =JSON.parse(JSON.stringify(ct))
+        let wrong = JSON.parse(JSON.stringify(ct))
         let right = []
-        let wrongList=[]
+        let wrongList = []
         console.log(wrong)
         console.log(this.teacherDict)
-        for(var n=0;n<wrong.length;n++){
-          if(wrong[n]==undefined || wrong[n]==null || wrong[n]==""){
+        for (var n = 0; n < wrong.length; n++) {
+          if (wrong[n] == undefined || wrong[n] == null || wrong[n] == "") {
             continue
           }
-          if(this.teacherDict[wrong[n]]==undefined){
+          if (this.teacherDict[wrong[n]] == undefined) {
             wrongList.push(wrong[n])
-          }else{
+          } else {
             right.push(this.teacherDict[wrong[n]][0])
           }
         }
-          this.showSWrong = wrongList
-          this.showTeacheruid = right
+        this.showSWrong = wrongList
+        this.showTeacheruid = right
       },
       autoDesc() {
         console.log(this.videoTag)
 
         this.vinfo = '欢迎加入育视界幼儿律动视频点播平台，' +
           this.vtitle + '是专门针对 '
-          // for(var n=0;n<this.vtags.length;n++){
-            this.vinfo +=this.vtags
-          // }
-          // this.vinfo=this.vinfo.substring(0,this.vinfo.length-1)
-           this.vinfo+= ' 制作的参考视频，如果您喜欢的话，请收藏视频或者为我们点赞哦~'
+        // for(var n=0;n<this.vtags.length;n++){
+        this.vinfo += this.vtags
+        // }
+        // this.vinfo=this.vinfo.substring(0,this.vinfo.length-1)
+        this.vinfo += ' 制作的参考视频，如果您喜欢的话，请收藏视频或者为我们点赞哦~'
       },
       quit() {
-        this.$router.push({name:'视频列表',query: { page: this.page }})
+        this.$router.push({name: '视频列表', query: {page: this.page}})
         console.log(this.page)
       },
       save: function () {
@@ -351,6 +342,20 @@
           });
           return
         }
+        if(this.freeDown != -1){
+          if(this.freeDownList.length == 0 || this.vfile == ''){
+            this.$alert('请上传资源文件', '', {
+              confirmButtonText: '确定',
+            });
+            return
+          }
+        }else{
+          if(this.copyright == '0' || this.copyright == '育视界') {
+            this.copyright = '0'
+          }else{
+            this.copyright = '1'
+          }
+        }
         var _this = this
         // var ta=this.vtags.split(",")
         // ta=JSON.stringify(ta)
@@ -364,6 +369,11 @@
           "oneMoney": this.onePrice,
           "oneStatus": this.oneShot
         }
+        if (this.vmeizi.indexOf('mda-') == -1) {
+          this.url_type = 'aliyun'
+        } else {
+          this.url_type = 'baidu'
+        }
         var args = {
           id: this.vid,
           title: this.vtitle,
@@ -371,15 +381,15 @@
           info: this.vinfo,
           url: this.vmeizi,
           videofile: this.vfile,
-          url_type: 'baidu',
+          url_type: this.url_type,
           level: this.vlevel,
           drama_id: this.vdrama,
           // tags: '['+this.vtags+']',
-          tags:JSON.stringify(this.vtags),
+          tags: JSON.stringify(this.vtags),
           // up_time:this.vonTime,
           on_status: this.on_status,
-          con_status:this.oneShot,
-          money:this.onePrice,
+          con_status: this.oneShot,
+          money: this.onePrice,
           desc: JSON.stringify(desc),
           copyright: this.copyright
         }
@@ -428,7 +438,7 @@
             })
 
           }
-          this.$router.push({name:'视频列表',query: { page: this.page }})
+          this.$router.push({name: '视频列表', query: {page: this.page}})
         })
       },
       upImg(tab) {
@@ -453,7 +463,7 @@
         var _this = this
         var tab = this.upFileFor
         console.log('触发上传')
-        PUBLIC.postFile('upFile', function(url) {
+        PUBLIC.postFile('upFile', function (url) {
           console.log(url)
           _this.vfile = url
 
@@ -464,16 +474,16 @@
         var _this = this
         _this.vid = id
         var relData
-        PUBLIC.get("User.certificate.certificateList", {videoProducing: 1,pay_statu:1}, (data) => {
+        PUBLIC.get("User.certificate.certificateList", {videoProducing: 1, pay_statu: 1}, (data) => {
           var demo = {
             value: "uid",
             label: "stageName"
           }
           relData = PUBLIC.formatObj(demo, data)
           _this.teacherLists = relData
-          _this.teacherDict={}
-          for(var n=0;n<relData.length;n++){
-            _this.teacherDict[relData[n]["label"]]=_this.teacherDict[relData[n]["label"]]==undefined?[relData[n]["value"]]:_this.teacherDict[relData[n]["label"]].push(relData[n]["value"])
+          _this.teacherDict = {}
+          for (var n = 0; n < relData.length; n++) {
+            _this.teacherDict[relData[n]["label"]] = _this.teacherDict[relData[n]["label"]] == undefined ? [relData[n]["value"]] : _this.teacherDict[relData[n]["label"]].push(relData[n]["value"])
           }
           console.log(_this.teacherDict)
         })
@@ -497,11 +507,10 @@
           _this.desc = data.desc
           _this.vlevel = data.level
           _this.vfile = data.videofile
-          if(data.tag == ''){
+          if (data.tag == '') {
             _this.vtags = []
-          }else{
+          } else {
             _this.vtags = data.tag
-            console.log(_this.vtags)
           }
           _this.vimg = data.img
           _this.vdrama = data.drama_id
@@ -510,36 +519,31 @@
           _this.on_status = data.on_status
           _this.url_type = data.url_type
           var desc = JSON.parse(data.desc ? data.desc : "{}")
-          console.log(desc)
           _this.createTeacheruid = desc["createTeacher"]
           _this.showTeacheruid = desc["showTeacher"]
           _this.copyright = desc["copyright"]
-          _this.oneShot = desc["oneStatus"]
-          _this.onePrice = desc["oneMoney"]
-          _this.freeDownList = desc["freeDownList"]?desc["freeDownList"]:[]
+          _this.oneShot = String(desc["oneStatus"])
+          _this.onePrice = desc["oneMoney"]==0?'':this.onePrice
+          _this.freeDownList = desc["freeDownList"] ? desc["freeDownList"] : []
           _this.on_status = data.on_status
-          console.log(_this.freeDownList)
           if (_this.freeDownList != undefined) {
             if (_this.freeDownList.length > 0) {
               _this.freeDown = 1
             }
           }
-          console.log(_this.createTeacheruid)
-
+          console.log(_this.oneShot,_this.freeDown)
           for (var i = 0; i < relData.length; i++) {
             if (this.createTeacheruid != undefined) {
               for (var n = 0; n < _this.createTeacheruid.length; n++) {
                 if (_this.createTeacheruid[n] == relData[i].value) {
-                  _this.createTeacher+=relData[i].label+"，"
-                  console.log(_this.createTeacher)
+                  _this.createTeacher += relData[i].label + "，"
                 }
               }
             }
             if (this.showTeacheruid != undefined) {
               for (var n = 0; n < _this.showTeacheruid.length; n++) {
                 if (_this.showTeacheruid[n] == relData[i].value) {
-                  _this.showTeacher+=relData[i].label+"，"
-                  console.log(_this.showTeacher)
+                  _this.showTeacher += relData[i].label + "，"
                 }
               }
             }
@@ -629,6 +633,26 @@
       },
     },
     watch: {
+      onePrice() {
+        console.log(this.onePrice)
+      },
+      freeDownList() {
+        console.log(this.freeDownList)
+        if(this.freeDownList.length > 0) {
+          this.hideup = 'block'
+        }else{
+          this.hideup = 'none'
+        }
+      },
+      freeDown() {
+        if(this.freeDown == -1) {
+          this.hideup = 'none'
+        }else if(this.freeDown != -1 && this.freeDownList.length > 0){
+          this.hideup = 'block'
+        }else{
+          this.hideup = 'none'
+        }
+      },
       vclass: function () {
         var _this = this
         PUBLIC.get('Video.drama.showdrama', {class_id: _this.vclass}, function (data) {
@@ -647,12 +671,6 @@
           }
         })
       },
-      vtags() {
-        console.log(this.vtags)
-      },
-      createTeacher() {
-        console.log(this.createTeacher)
-      },
       vlevel() {
         var _this = this
         var level = this.vlevel
@@ -668,6 +686,7 @@
         }
         console.log(this.downGroupStatus)
         this.downGroupStatus = JSON.parse(JSON.stringify(this.downGroupStatus))
+        console.log(this.copyright)
       }
     },
     mounted() {
@@ -806,7 +825,7 @@
         }
       }
     }
-    #upFile{
+    #upFile {
       display: none;
     }
 

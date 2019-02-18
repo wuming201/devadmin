@@ -279,6 +279,7 @@
       bba(a) {
         console.log(this.path)
         console.log(a.srcElement.baseURI.split('#')[1])
+        // return
         if (a.srcElement.baseURI.split('#')[1] == this.path) {
           console.log('aaaaaa')
           this.$router.go(0)

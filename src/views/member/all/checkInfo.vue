@@ -6,9 +6,9 @@
       <p><span><span class="title">单位简称:</span><span class="innerText">{{compInfo.company_jc}}</span></span><span><span class="title">单位地址</span><span class="innerText">{{compInfo.adress}}</span></span></p>
       <p><span><span class="title">负责人:</span><span class="innerText">{{compInfo.company_user}}</span></span><span><span class="title">联系电话:</span><span class="innerText">{{compInfo.company_mall}}</span></span></p>
       <p><span><span class="title">创建者实名:</span><span class="innerText">{{compInfo.shenq_name}}</span></span><span><span class="title">身份证号码:</span><span class="innerText">{{compInfo.name}}</span></span></p>
-      <p><span><span class="title">认证密钥 :</span><span class="innerText">{{compInfo.username}}</span></span></p>
-      <p v-if="compInfo.user_type == 0" class="rzzl"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['khxk']" alt=""></span></p>
-      <p v-else class="rzzl"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['byxk']" alt=""></span></p>
+      <p v-if="compInfo.user_type == 1" class="rzzl"><span><span class="title">认证资料 :</span><img :src="yyzz" alt=""><img :src="byxk" alt=""></span></p>
+      <p v-else class="rzzl"><span><span class="title">认证资料 :</span><img :src="yyzz" alt=""><img :src="khxk" alt=""></span></p>
+      <p><span><span class="title">审核备注 :</span><span class="innerText">{{compInfo.user_beizhu}}</span></span></p>
       <p><el-button type="info" @click="cancelIt">返回</el-button></p>
     </div>
   </div>
@@ -42,6 +42,9 @@
         use_state: '',
         multipleSelection: [],
         codeHis:[],
+        yyzz: '',
+        byxk: '',
+        khxk: '',
       }
     },
     methods: {
@@ -58,7 +61,10 @@
         PUBLIC.get('User.Examine.selinfo', { id: id }, (data) => {
           console.log(data)
           this.compInfo = data
-          console.log(this.compInfo.user_zl)
+          this.byxk=JSON.parse(this.compInfo.user_zl)['byxk'] != undefined?JSON.parse(this.compInfo.user_zl)['byxk']: ''
+          this.khxk=JSON.parse(this.compInfo.user_zl)['khxk'] != undefined?JSON.parse(this.compInfo.user_zl)['khxk']: ''
+          this.yyzz=JSON.parse(this.compInfo.user_zl)['yyzz']
+          console.log(this.yyzz,this.byxk,this.khxk)
           // var newData = [];
           // var demo = {
           //   name: 'name',

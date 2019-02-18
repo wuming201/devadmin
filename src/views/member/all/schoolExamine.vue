@@ -9,8 +9,8 @@
       <!--<a :href="compInfo.contract_doc" download="">下载文件</a></span></span></p>-->
       <p><span><span class="title">创建者实名:</span><span class="innerText">{{compInfo.shenq_name}}</span></span><span><span class="title">身份证号码:</span><span class="innerText">{{compInfo.idNum}}</span></span></p>
       <p><span><span class="title">认证密钥 :</span><span class="innerText">{{compInfo.username}}</span></span></p>
-      <p class="rzzl" v-if="this.compInfo.user_type == 0"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['khxk']" alt=""></span></p>
-      <p class="rzzl" v-if="this.compInfo.user_type == 1"><span><span class="title">认证资料 :</span><img :src="JSON.parse(this.compInfo.user_zl)['yyzz']" alt=""><img :src="JSON.parse(this.compInfo.user_zl)['byxk']" alt=""></span></p>
+      <p class="rzzl" v-if="this.compInfo.user_type == 1"><span><span class="title">认证资料 :</span><img :src="yyzz" alt=""><img :src="byxk" alt=""></span></p>
+      <p class="rzzl" v-else><span><span class="title">认证资料 :</span><img :src="yyzz" alt=""><img :src="khxk" alt=""></span></p>
       <!--<p class="rzzl"><span><span class="title">认证资料 :</span><img :src="this.compInfo.user_zl.split(',')[0]" alt=""><img :src="this.compInfo.user_zl.split(',')[1]" alt=""></span></p>-->
       <p><el-button type="success" @click="passIt">通过</el-button><el-button type="danger" @click="rejectIt">拒绝</el-button><el-button type="info" @click="cancelIt">取消</el-button></p>
 
@@ -58,6 +58,9 @@
     },
     data() {
       return {
+        yyzz: '',
+        byxk: '',
+        khxk: '',
         id: '',
         showIt: false,
         showPass: false,
@@ -148,7 +151,12 @@
           PUBLIC.get('User.User.Userone', {uid: uid}, v => {
             data['idNum'] = v.rel_code
             this.compInfo = data
-            console.log(this.compInfo.user_zl.split(','))
+            console.log(JSON.parse(this.compInfo.user_zl)['yyzz'])
+            this.byxk=JSON.parse(this.compInfo.user_zl)['byxk'] != undefined?JSON.parse(this.compInfo.user_zl)['byxk']: ''
+            this.khxk=JSON.parse(this.compInfo.user_zl)['khxk'] != undefined?JSON.parse(this.compInfo.user_zl)['khxk']: ''
+            this.yyzz=JSON.parse(this.compInfo.user_zl)['yyzz']
+            console.log(this.yyzz,this.byxk,this.khxk)
+
           })
         })
       },

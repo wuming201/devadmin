@@ -134,8 +134,9 @@
               placeholder='选择日期' :disabled="downGroupStatus[8][0]==false">
             </el-date-picker>
         </span></span></p>
-      <p class='oneDemand' ><span class='title'>单次点播:</span><span class='innerText'><span><el-radio v-model='oneShot' label='1'>支持</el-radio><el-radio v-model='oneShot' label='-1'>不支持</el-radio><el-input  v-if="oneShot==1" v-model="onePrice" placeholder='请输入内容'></el-input><span v-if="oneShot==1">元/人次</span></span></span></p>
-      <p class='freeDown' ><span class='title'>免费下载:</span><span class='innerText'><span><el-radio v-model='freeDown' label='1'>提供</el-radio><el-radio v-model='freeDown' label='-1'>不提供</el-radio>
+      <p class='oneDemand' ><span class='title'>单次点播:</span><span class='innerText'><span><el-radio v-model='oneShot' label='-1'>不支持</el-radio><el-radio v-model='oneShot' label='1'>支持</el-radio>
+        <el-input  v-if="oneShot==1" v-model="onePrice" ref="onePrice" placeholder='请输入大于0的数字！' type="number" @blur="checkPrice"></el-input><span v-if="oneShot==1">元/人次</span></span></span></p>
+      <p class='freeDown' ><span class='title'>资源下载:</span><span class='innerText'><span><el-radio v-model='freeDown' label='-1'>不提供</el-radio><el-radio v-model='freeDown' label='1'>提供</el-radio>
         <el-select v-model='freeDownList' multiple placeholder='请选择' v-if="freeDown==1">
           <el-option
             v-for='item in userGroup'
@@ -145,7 +146,7 @@
           </el-option>
         </el-select>
       </span></span></p>
-       <p class='upFile'><span class='title'>视频链接:</span>{{vfile}}<span><el-button type='primary' @click='upFile()'>上传文件</el-button></span></p>
+       <p class='upFile' :style="'display:'+ hideup "><span class='title'>资源文件:</span>{{vfile}}<span><el-button type='primary' @click='upFile()'>上传文件</el-button></span></p>
       <el-input type='file' id='upimgs' v-on:change='upImgs' hidden></el-input>
       <el-input type='file' id='upFile' v-on:change='upFiles' hidden></el-input>
       <p><el-button type='success' @click='save'>保存</el-button><el-button type='info' @click='quit'>取消</el-button></p>
@@ -229,13 +230,24 @@
         vtagsLabel: [],
       //  buyaode
         input: '',
-        onePrice:0,
-        oneShot:-1,
-        freeDown:-1,
-        freeDownList:[]
+        onePrice: '',
+        oneShot: '-1',
+        freeDown: '-1',
+        freeDownList:[],
+        url_type: '',
+        hideup: 'none',
       }
     },
     methods: {
+      checkPrice() {
+        if(this.onePrice <= 0) {
+          // this.priceWrong = true
+          this.$refs.onePrice.focus()
+          this.onePrice = ''
+        }else{
+          this.onePrice = Number(this.onePrice)
+        }
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
@@ -260,13 +272,26 @@
           // datas["freeDown"]=this.freeDownList
         }
         var desc = { 'showTeacher': this.showTeacher, 'createTeacher': this.createTeacher,"copyright":this.vbanquan,"freeDownList":this.freeDownList,"oneMoney":this.onePrice,"oneStatus":this.oneShot}
+        if(this.vmeizi.indexOf('mda-') == -1) {
+          this.url_type = 'aliyun'
+        }else{
+          this.url_type = 'baidu'
+        }
+        if(this.freeDown != -1){
+          if(this.freeDownList.length == 0 || this.vfile == ''){
+            this.$alert('请上传资源文件', '', {
+              confirmButtonText: '确定',
+            });
+            return
+          }
+        }
         var datas={
           title: this.vtitle,
           img: this.vimg,
           info: this.vinfo,
           url: this.vmeizi,
           videofile: this.vfile,
-          url_type: 'baidu',
+          url_type: this.url_type,
           level: this.vlevel,
           drama_id: this.vdrama,
           // tags: '['+this.vtags+']',
@@ -342,7 +367,6 @@
       upFile(tab) {
         this.upFileFor = tab
         document.getElementById('upFile').click();
-        console.log(this.vfile)
       },
       upFiles() {
         var _this = this
@@ -372,6 +396,21 @@
       }
     },
     watch: {
+
+      freeDownList() {
+        if(this.freeDownList.length > 0) {
+          this.hideup = 'block'
+        }
+      },
+      freeDown() {
+        if(this.freeDown == -1) {
+          this.hideup = 'none'
+        }else if(this.freeDown != -1 && this.freeDownList.length > 0){
+          this.hideup = 'block'
+        }else{
+          this.hideup = 'none'
+        }
+      },
       vclass() {
         var _this = this
         PUBLIC.get('Video.drama.showdrama', { class_id: _this.vclass }, function(data){

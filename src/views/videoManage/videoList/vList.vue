@@ -5,7 +5,7 @@
         <span class="phoneNum">视频分类：<selectKuang :selectData="classData" @value="selectClass" ></selectKuang></span><span class="phoneNum">所属剧集：<selectKuang :selectData="dramaData" @value="selectDrama" ></selectKuang></span>
       </p>
       <p><span class="buttons"><router-link to="/videoManage/video-list/add"><el-button type="danger">添加视频</el-button></router-link></span>
-        <span class="record">总记录：<span>1234</span>昨日新增：<span>42</span>今日新增：<span>255</span><searchBox @searchKey='searchBox' v-bind:searchSelect='searchSelect' :holder="'视频名称'" ></searchBox></span></p>
+        <searchBox @searchKey='searchBox' v-bind:searchSelect='searchSelect' :holder="'视频名称'" ></searchBox></span></p>
     </div>
     <el-table
       ref="multipleTable"
