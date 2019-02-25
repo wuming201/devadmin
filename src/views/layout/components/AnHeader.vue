@@ -40,11 +40,19 @@
     },
     methods: {
       getInfo() {
-        PUBLIC.get('User.User.adminselenter',{uid: this.uid}, (data) => {
-          console.log(data)
-          this.lastLog = data[0].time
-          this.ip = data[0].ip
-        })
+        console.log(localStorage.ipinfo)
+        if(localStorage.ipinfo == '') {
+          PUBLIC.get('User.User.adminselenter',{uid: this.uid}, (data) => {
+            console.log(data)
+            this.lastLog = data[0].time
+            this.ip = data[0].ip
+            localStorage.ipinfo = JSON.stringify(data[0])
+            console.log(localStorage.ipinfo)
+          })
+        }else{
+          this.lastLog = JSON.parse(localStorage.ipinfo).time
+          this.ip = JSON.parse(localStorage.ipinfo).ip
+        }
       },
       logout: function () {
         removeToken()

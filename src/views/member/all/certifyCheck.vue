@@ -2,7 +2,7 @@
   <div class="addMember">
     <div class="memberInfo">
       <p><span><span class="title">用户手机:</span><span class="innerText">{{person.name}}</span></span><span><span class="title">申请时间:</span><span class="innerText">{{newData.create_time}}</span></span></p>
-      <p><span><span class="title">公司名称:</span><span class="innerText">{{newData.region}}</span></span><span><span class="title">证书名称:</span><span class="innerText">{{newData.unit}}</span></span></p>
+      <p><span><span class="title">公司名称:</span><span class="innerText">{{compname}}</span></span><span><span class="title">证书名称:</span><span class="innerText">{{newData.cert_name}}</span></span></p>
       <p><span><span class="title">证书类型:</span><span class="innerText">{{person.rel_code}}</span></span><span><span class="title">有效期:</span><span class="innerText">{{person.rel_code}}</span></span></p>
       <p><span><span class="title">真实姓名:</span><span class="innerText">{{person.rel_name}}</span></span><span><span class="title">姓名拼音:</span><span class="innerText">{{newData.spell}}</span></span></p>
       <p><span><span class="title">身份证号:</span><span class="innerText">{{person.rel_code}}</span></span><span><span class="title">艺名:</span><span class="innerText">{{person.rel_code}}</span></span></p>
@@ -82,7 +82,8 @@ export default {
       whySuccess: '',
       stopTime: '',
       page: '',
-      admin: ''
+      admin: '',
+      compname: ''
     }
   },
   created() {
@@ -111,13 +112,17 @@ export default {
         this.newData = data
         this.fazhengTime = data.applyTime != null ? data.applyTime : ''
         console.log(this.fazhengTime)
-        PUBLIC.get("Configure.Configure.Selone",{type:"branch",key:data.unit},function(data){
-          if(data){
-            data=JSON.parse(data.value)
-            console.log(data)
-            _this.newData.region=data.region
-            _this.newData=JSON.parse(JSON.stringify(_this.newData))
-          }
+        // PUBLIC.get("Configure.Configure.Selone",{type:"branch",key:data.unit},function(datas){
+        //   if(data){
+        //     data=JSON.parse(data.value)
+        //     console.log(data)
+        //     _this.newData.region=data.region
+        //     _this.newData=JSON.parse(JSON.stringify(_this.newData))
+        //   }
+        // })
+        PUBLIC.get('User.Company.seltid', { tid: data.cert_tid }, v=>{
+          console.log(v)
+          this.compname = v.company_name
         })
         PUBLIC.get('User.User.Userone' ,{ uid: data.uid }, data =>{
           console.log(data)

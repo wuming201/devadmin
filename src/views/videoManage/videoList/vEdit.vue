@@ -142,10 +142,7 @@
       <p class='upFile' :style="'display:'+ hideup "><span class='title'>资源文件:</span>{{vfile}}<span><el-button type='primary' @click='upFile()'>上传文件</el-button></span></p>
       <el-input type='file' id='upimgs' v-on:change='upImgs' hidden></el-input>
       <el-input type='file' id='upFile' v-on:change='upFiles' hidden></el-input>
-      <p>
-        <el-button type='success' @click='save'>保存</el-button>
-        <el-button type='info' @click='quit'>取消</el-button>
-      </p>
+      <p><el-button type='success' @click='save'>保存</el-button><el-button type='info' @click='quit'>取消</el-button></p>
 
       <!-- <p class="isUp " ><span class="title">是否上架:</span><span class="innerText"><span><el-radio v-model="up" label="1">合作视频</el-radio><el-input placeholder="请输入内容"></el-input></span><span><el-radio v-model="up" label="2">VIP视频</el-radio><el-input v-model="input" placeholder="请输入内容"></el-input></span><span><el-radio v-model="up" label="3">普通视频</el-radio><el-input v-model="input" placeholder="请输入内容"></el-input></span></span></p>
       <p class="oneDemand" ><span class="title">单次点播:</span><span class="innerText"><span><el-radio v-model="up" label="1">支持</el-radio><el-radio v-model="up" label="2">不支持</el-radio><el-input placeholder="请输入内容"></el-input></span></span></p>
@@ -175,6 +172,8 @@
     },
     data() {
       return {
+        meiziChange: false,
+        fengmianChange: false,
         // priceWrong: false,
         hideup: 'none',
         showCWrong: [],
@@ -374,6 +373,14 @@
         } else {
           this.url_type = 'baidu'
         }
+        console.log(this.fengmianChang)
+        if(this.fengmianChange != true) {
+          if(this.vimg.indexOf('file.kkip.cn') == -1){
+            this.vimg = ''
+          }else{
+            console.log(this.vimg)
+          }
+        }
         var args = {
           id: this.vid,
           title: this.vtitle,
@@ -452,6 +459,7 @@
         PUBLIC.postFile('upimgs', function (url) {
           console.log(url)
           _this.vimg = url
+          _this.fengmianChange = true
         })
       },
       upFile(tab) {
@@ -633,6 +641,22 @@
       },
     },
     watch: {
+      vimg() {
+        console.log(this.vmeizi,this.vimg)
+        // this.meiziChange = true
+        // this.vimg = ''
+        // this.$alert('修改媒资后请重新上传视频封面！', {
+        //   confirmButtonText: '确定',
+        //   callback: action => {
+        //     // this.$message({
+        //     //   type: 'info',
+        //     //   message: `action: ${ action }`
+        //     // });
+        //     this.vimg = ''
+        //     console.log(this.vmeizi,this.vimg)
+        //   }
+        // });
+      },
       onePrice() {
         console.log(this.onePrice)
       },
